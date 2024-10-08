@@ -1,0 +1,12 @@
+{
+  "name": "expedients",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "api": "pnpm --filter expedients-api",
+    "client": "pnpm --filter expedients-client"
+  },
+  "keywords": [],
+  "author": "Christian Carrillo",
+  "license": "ISC"
+}

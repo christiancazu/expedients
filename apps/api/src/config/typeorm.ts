@@ -4,17 +4,19 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 
 dotenvConfig();
 
-const config: DataSourceOptions = {
+const config = {
   type: 'postgres',
   host: `${process.env.POSTGRES_HOST}`,
   port: +`${process.env.POSTGRES_PORT}`,
   username: `${process.env.POSTGRES_USERNAME}`,
   password: `${process.env.POSTGRES_PASSWORD}`,
   database: `${process.env.POSTGRES_DATABASE}`,
-  entities: [`${__dirname}../../**/*.entity{.ts,.js}`],
+  entities: [`${__dirname}../../../dist/**/*.entity{.ts,.js}`],
   migrations: [`${__dirname}../../migrations/*{.ts,.js}`],
-  synchronize: false
+  synchronize: false,
+  autloadEntities: true,
+  migrationsTableName: 'migrations'
 };
 
 export const registerTypeOrm = registerAs('typeorm', () => config);
-export default new DataSource(config);
+export default new DataSource(config as DataSourceOptions);

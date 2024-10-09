@@ -5,7 +5,7 @@ import {
   IsString,
   MaxLength
 } from 'class-validator';
-import { ROLES } from '../interfaces';
+import { USER_ROLES } from 'types';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -28,6 +28,6 @@ export class CreateUserDto {
   @MaxLength(50)
   lastName: string;
 
-  @IsEnum(ROLES)
-  role: ROLES;
+  @IsEnum(USER_ROLES)
+  role: USER_ROLES;
 }

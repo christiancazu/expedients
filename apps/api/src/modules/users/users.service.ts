@@ -1,10 +1,14 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnprocessableEntityException
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ROLES } from './interfaces';
+import { USER_ROLES } from 'types';
 
 @Injectable()
 export class UsersService {
@@ -21,32 +25,54 @@ export class UsersService {
 
     const createUser = await this._userRepository.create(createUserDto);
 
-    if (createUserDto.role === ROLES.ADMIN) {
-      createUser.role = ROLES.PRACTICANTE;
+    if (createUserDto.role === USER_ROLES.ADMIN) {
+      createUser.role = USER_ROLES.PRACTICANTE;
     }
 
-    return this._userRepository.save(createUser);
+    return this._userRepository.save(this.sanitizeUser(createUser));
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  async findOne(id: string) {
-    const user = await this._userRepository.findOne({ where: { id } });
+  async findByEmailAndPassword({ email, password }: Partial<User>) {
+    const user = await this._userRepository.findOne({ where: { email } });
 
     if (!user) {
       throw new UnprocessableEntityException('not found');
     }
 
-    return user;
+    const isMatch = user.comparePassword(password!);
+
+    if (!isMatch) {
+      throw new BadRequestException('Password does not match');
+    }
+
+    return this.sanitizeUser(user);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async findOne(payload: Partial<User>) {
+    const [key, value] = Object.entries(payload)[0];
+
+    return this._userRepository.findOne({
+      where: { [key as string]: value }
+    });
+  }
+
+  update(id: string, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  private sanitizeUser(user: User) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete user.password;
+
+    return user;
   }
 }

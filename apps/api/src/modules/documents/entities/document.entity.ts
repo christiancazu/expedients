@@ -11,19 +11,20 @@ import {
 } from 'typeorm';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
 import { User } from 'src/modules/users/entities/user.entity';
+import { FIELD } from 'types';
 
 @Entity('documents')
 export class Document extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: FIELD.DOCUMENT_NAME_MAX_LENGTH })
   name: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: FIELD.DOCUMENT_URL_MAX_LENGTH })
   url: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: FIELD.DOCUMENT_TYPE_MAX_LENGTH })
   type: string;
 
   @ManyToOne(() => Expedient, (expedient) => expedient.documents)

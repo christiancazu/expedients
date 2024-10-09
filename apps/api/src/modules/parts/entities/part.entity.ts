@@ -6,14 +6,14 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
-import { PART_TYPES } from '../interfaces';
+import { FIELD, PART_TYPES } from 'types';
 
 @Entity('parts')
 export class Part extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: FIELD.PART_NAME_MAX_LENGTH })
   name: string;
 
   @Column({

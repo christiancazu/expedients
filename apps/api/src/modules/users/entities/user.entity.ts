@@ -1,12 +1,13 @@
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { ROLES } from '../interfaces';
 
 @Entity('users')
@@ -17,7 +18,7 @@ export class User extends BaseEntity {
   @Column({ unique: true, type: 'varchar', length: 50 })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @Column({ type: 'varchar', length: 50 })
@@ -26,9 +27,11 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   lastName: string;
 
-  @Column('enum', {
+  @Column({
+    type: 'enum',
+    name: 'role_',
     enum: ROLES,
-    nullable: true
+    default: ROLES.PRACTICANTE
   })
   role: ROLES;
 
@@ -38,7 +41,24 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @BeforeInsert()
+  async emailLowerCase(): Promise<void> {
+    this.email = this.email.toLowerCase();
+  }
+
   async validatePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.password);
+  }
+
+  toJSON() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    delete this.password;
+    return this;
   }
 }

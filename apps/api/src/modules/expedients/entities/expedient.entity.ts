@@ -29,7 +29,9 @@ export class Expedient extends BaseEntity {
   @Column({ unique: true, type: 'varchar', length: 50 })
   court: string;
 
-  @Column('enum', {
+  @Column({
+    type: 'enum',
+    name: 'status_',
     enum: EXPEDIENT_STATUS,
     default: EXPEDIENT_STATUS.EJECUCION
   })

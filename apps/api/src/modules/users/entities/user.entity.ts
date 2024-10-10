@@ -4,11 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { FIELD, USER_ROLES } from 'types';
+import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -33,11 +35,18 @@ export class User extends BaseEntity {
 
   @Column({
     type: 'enum',
-    name: 'role_',
+    name: 'role',
+    enumName: 'role',
     enum: USER_ROLES,
     default: USER_ROLES.PRACTICANTE
   })
   role: USER_ROLES;
+
+  @OneToMany(() => Expedient, (expedient) => expedient.createdByUser)
+  createdExpedients: Expedient[];
+
+  @OneToMany(() => Expedient, (expedient) => expedient.updatedByUser)
+  updatedExpedients: Expedient[];
 
   @CreateDateColumn()
   createdAt: Date;

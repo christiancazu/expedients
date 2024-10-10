@@ -14,6 +14,7 @@ import { USER_ROLES } from 'types';
 export class UsersService {
   @InjectRepository(User)
   private readonly _userRepository: Repository<User>;
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this._userRepository.findOne({
       where: { email: createUserDto.email }
@@ -29,7 +30,9 @@ export class UsersService {
       createUser.role = USER_ROLES.PRACTICANTE;
     }
 
-    return this._userRepository.save(this.sanitizeUser(createUser));
+    const registeredUser = await this._userRepository.save(createUser);
+
+    return this.sanitizeUser(registeredUser);
   }
 
   findAll() {

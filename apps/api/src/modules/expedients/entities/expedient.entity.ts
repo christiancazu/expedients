@@ -1,11 +1,11 @@
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
@@ -28,14 +28,12 @@ export class Expedient extends BaseEntity {
   code: string;
 
   @Column({
-    unique: true,
     type: 'varchar',
     length: FIELD.EXPEDIENT_SUBJECT_MAX_LENGTH
   })
   subject: string;
 
   @Column({
-    unique: true,
     type: 'varchar',
     length: FIELD.EXPEDIENT_COURT_MAX_LENGTH
   })
@@ -43,19 +41,25 @@ export class Expedient extends BaseEntity {
 
   @Column({
     type: 'enum',
-    name: 'status_',
+    name: 'status',
+    enumName: 'status',
     enum: EXPEDIENT_STATUS,
-    default: EXPEDIENT_STATUS.EJECUCION
+    default: EXPEDIENT_STATUS.EN_EJECUCION
   })
   status: EXPEDIENT_STATUS;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  createdBy: User;
+  @Column({
+    type: 'varchar',
+    length: FIELD.EXPEDIENT_STATUS_DESCRIPTION_MAX_LENGTH,
+    nullable: true
+  })
+  statusDescription: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  updatedBy: User;
+  @ManyToOne(() => User, (user) => user.createdExpedients)
+  createdByUser: User;
+
+  @ManyToOne(() => User, (user) => user.updatedExpedients)
+  updatedByUser: User;
 
   @OneToMany(() => Part, (part) => part.expedient)
   parts: Part[];
@@ -71,4 +75,11 @@ export class Expedient extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @BeforeInsert()
+  async defaultStatus() {
+    if (!this.status) {
+      this.status = EXPEDIENT_STATUS.EN_EJECUCION;
+    }
+  }
 }

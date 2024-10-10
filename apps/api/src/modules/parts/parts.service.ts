@@ -1,11 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreatePartDto } from './dto/create-part.dto';
 import { UpdatePartDto } from './dto/update-part.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Part } from './entities/part.entity';
+import { Repository } from 'typeorm';
+import { Expedient } from '../expedients/entities/expedient.entity';
 
 @Injectable()
 export class PartsService {
-  create(createPartDto: CreatePartDto) {
-    return 'This action adds a new part';
+  @InjectRepository(Part)
+  private readonly _partRepository: Repository<Part>;
+
+  async create(createPartDto: CreatePartDto) {
+    const part = this._partRepository.create(createPartDto);
+
+    const expedient = new Expedient();
+    expedient.id = createPartDto.expedientId;
+    part.expedient = expedient;
+
+    try {
+      const partSaved = await this._partRepository.save(part);
+
+      return partSaved;
+    } catch (error) {
+      throw new UnprocessableEntityException(
+        error?.driverError?.detail ?? error
+      );
+    }
   }
 
   findAll() {

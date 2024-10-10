@@ -18,7 +18,8 @@ export class Part extends BaseEntity {
 
   @Column({
     type: 'enum',
-    name: 'part_',
+    name: 'type',
+    enumName: 'type',
     enum: PART_TYPES,
     nullable: true
   })

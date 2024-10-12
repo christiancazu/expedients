@@ -4,19 +4,31 @@ import {
 } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import HomeView from './views/HomeView'
+import LoginView from './views/LoginView'
+import AuthRoutes, { AuthProvider } from './router'
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/"
-          element={ <MainLayout /> }
-        >
-          <Route index
-            element={ <HomeView /> }
+      <AuthProvider>
+        <Routes>
+          <Route element = { <AuthRoutes /> }>
+            <Route
+              path="/"
+              element={ <MainLayout /> }
+            >
+              <Route
+                index
+                element={ <HomeView /> }
+              />
+            </Route>
+          </Route>
+          <Route
+            path='/login'
+            element={ <LoginView /> }
           />
-        </Route>
-      </Routes>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 };

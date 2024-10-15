@@ -2,32 +2,41 @@
 import {
   BrowserRouter, Routes, Route 
 } from 'react-router-dom'
-import MainLayout from './layouts/MainLayout'
-import HomeView from './views/HomeView'
-import LoginView from './views/LoginView'
 import AuthRoutes, { AuthProvider } from './router'
+import { QueryClientProvider } from './composables/useQuery'
+
+import MainLayout from './layouts/MainLayout'
+import LoginView from './views/LoginView'
+import HomeView from './views/HomeView'
+import ExpedientsView from './views/ExpedientsView'
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route element = { <AuthRoutes /> }>
-            <Route
-              path="/"
-              element={ <MainLayout /> }
-            >
+        <QueryClientProvider>
+          <Routes>
+            <Route element = { <AuthRoutes /> }>
               <Route
-                index
-                element={ <HomeView /> }
-              />
+                path="/"
+                element={ <MainLayout /> }
+              >
+                <Route
+                  index
+                  element={ <HomeView /> }
+                />
+                <Route
+                  path='/expedients'
+                  element={ <ExpedientsView /> }
+                />
+              </Route>
             </Route>
-          </Route>
-          <Route
-            path='/login'
-            element={ <LoginView /> }
-          />
-        </Routes>
+            <Route
+              path='/login'
+              element={ <LoginView /> }
+            />
+          </Routes>
+        </QueryClientProvider>
       </AuthProvider>
     </BrowserRouter>
   )

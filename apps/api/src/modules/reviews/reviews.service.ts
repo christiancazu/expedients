@@ -21,7 +21,7 @@ export class ReviewsService {
 
     const user = new User();
     user.id = userId;
-    review.updatedBy = user;
+    review.createdByUser = user;
 
     try {
       const reviewSaved = await this._reviewsRepository.save(review);

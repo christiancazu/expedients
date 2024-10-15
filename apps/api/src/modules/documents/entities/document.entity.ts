@@ -32,11 +32,11 @@ export class Document extends BaseEntity {
 
   @OneToOne(() => User)
   @JoinColumn()
-  createdBy: User;
+  createdByUser: User;
 
   @OneToOne(() => User)
   @JoinColumn()
-  updatedBy: User;
+  updatedByUser: User;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppstoreOutlined, } from '@ant-design/icons'
+import { FolderOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
 import { Layout, Menu, theme } from 'antd'
@@ -8,15 +8,15 @@ import { Outlet } from 'react-router-dom'
 const { Content, Sider } = Layout
 
 const items: MenuProps['items'] = [
-  AppstoreOutlined,
+  FolderOutlined
 ].map((icon, index) => ({
   key: String(index + 1),
   icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
+  label: `Expedientes`
 }))
 
 const MainLayout: React.FC = () => {
-  const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken()
+  const { token: { borderRadiusLG } } = theme.useToken()
 
   return (
     <Layout style={ { minHeight: '100vh' } }>
@@ -32,8 +32,6 @@ const MainLayout: React.FC = () => {
         <Content
           style={ {
             margin: '16px',
-            padding: '16px',
-            backgroundColor: colorBgContainer,
             borderRadius: borderRadiusLG
           } }
         >

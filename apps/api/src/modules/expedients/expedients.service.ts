@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Expedient } from './entities/expedient.entity';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { Review } from '../reviews/entities/review.entity';
 
 @Injectable()
 export class ExpedientsService {
@@ -32,19 +33,29 @@ export class ExpedientsService {
   async findAll(): Promise<Expedient[]> {
     const query = await this._expedientRepository
       .createQueryBuilder('expedients')
-      .distinctOn(['expedients.id'])
       .select('expedients')
-      .leftJoinAndSelect('expedients.reviews', 'reviews')
       .leftJoinAndSelect('expedients.parts', 'parts')
-      .leftJoin('expedients.createdByUser', 'createdByUser')
+      .leftJoin('expedients.updatedByUser', 'updatedByUser')
+      .leftJoinAndMapMany(
+        "expedients.reviews",
+        Review,
+        "reviews",
+        'reviews."expedientId" = expedients.id'
+      ).where(
+        (query) => "reviews.id =" + query
+          .subQuery()
+          .select("id")
+          .from(Review, "p")
+          .where('expedients.id=reviews."expedientId"')
+          .orderBy('"createdAt"', "DESC")
+          .limit(1)
+          .getQuery()
+      ).orWhere('reviews.id IS NULL')
       .addSelect([
-        'createdByUser.id',
-        'createdByUser.firstName',
-        'createdByUser.lastName'
+        'updatedByUser.id',
+        'updatedByUser.firstName',
+        'updatedByUser.lastName'
       ])
-      .orderBy({ 'expedients.id': 'DESC', 'reviews.createdAt': 'DESC' })
-      .orderBy('expedients.id')
-      .addOrderBy('reviews."createdAt"', 'DESC')
       .getMany();
 
     return query;

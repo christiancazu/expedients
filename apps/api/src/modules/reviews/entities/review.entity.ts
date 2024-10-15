@@ -5,6 +5,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -22,9 +23,8 @@ export class Review extends BaseEntity {
   @ManyToOne(() => Expedient, (expedient) => expedient.reviews)
   expedient: Expedient;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  updatedBy: User;
+  @ManyToOne(() => User, (user) => user.reviews)
+  createdByUser: User;
 
   @CreateDateColumn()
   createdAt: Date;

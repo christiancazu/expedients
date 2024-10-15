@@ -46,7 +46,7 @@ export class UsersService {
       throw new UnprocessableEntityException('not found');
     }
 
-    const isMatch = user.comparePassword(password!);
+    const isMatch = await user.comparePassword(password!);
 
     if (!isMatch) {
       throw new BadRequestException('Password does not match');

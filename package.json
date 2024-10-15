@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "api": "pnpm --filter expedients-api",
-    "client": "pnpm --filter expedients-client"
+    "api": "pnpm --filter api",
+    "client": "pnpm --filter client",
+    "types": "pnpm --filter types"
   },
   "keywords": [],
   "author": "Christian Carrillo",

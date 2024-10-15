@@ -11,6 +11,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { FIELD, USER_ROLES } from 'types';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
+import { Review } from 'src/modules/reviews/entities/review.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -41,6 +42,9 @@ export class User extends BaseEntity {
     default: USER_ROLES.PRACTICANTE
   })
   role: USER_ROLES;
+
+  @OneToMany(() => Review, (review) => review.createdByUser)
+  reviews: Review[];
 
   @OneToMany(() => Expedient, (expedient) => expedient.createdByUser)
   createdExpedients: Expedient[];

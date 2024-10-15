@@ -39,3 +39,58 @@ export enum USER_ROLES {
   ABOGADO = 'ABOGADO',
   PRACTICANTE = 'PRACTICANTE'
 }
+
+export type User = {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  role: USER_ROLES
+  createdExpedients?: Expedient[]
+  updatedExpedients?: Expedient[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Expedient = {
+  id: string
+  code: string
+  subject: string
+  court: string
+  status: EXPEDIENT_STATUS
+  createdByUser?: User
+  updatedByUser?: User
+  createdAt: Date
+  updatedAt: Date
+
+  dataIndex: string
+  key: string
+}
+
+export type Part = {
+  id: string
+  name: string
+  type: PART_TYPES
+  expedient?: Expedient
+}
+
+export type Review = {
+  id: string
+  description: string
+  expedient?: Expedient
+  updatedByUser?: User
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Document = {
+  id: string
+  name: string
+  url: string
+  type: string
+  expedient?: Expedient
+  createdByUser?: User
+  updatedByUser?: User
+  createdAt: Date
+  updatedAt: Date
+}

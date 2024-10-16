@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  Request
+  Request,
+  Query
 } from '@nestjs/common';
 import { ExpedientsService } from './expedients.service';
 import { CreateExpedientDto } from './dto/create-expedient.dto';
 import { UpdateExpedientDto } from './dto/update-expedient.dto';
+import { FindExpedientDto } from './dto/find-expedient.dto';
 
 @Controller('expedients')
 export class ExpedientsController {
@@ -22,8 +24,8 @@ export class ExpedientsController {
   }
 
   @Get()
-  findAll() {
-    return this.expedientsService.findAll();
+  findAll(@Query() query: FindExpedientDto) {
+    return this.expedientsService.findAll(query);
   }
 
   @Get(':id')

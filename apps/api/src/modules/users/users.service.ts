@@ -36,7 +36,9 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this._userRepository.find({
+      select: ['id', 'firstName', 'lastName']
+    });
   }
 
   async findByEmailAndPassword({ email, password }: Partial<User>) {

@@ -45,6 +45,12 @@ export default tseslint.config(
       'react/jsx-tag-spacing': ['warn', {
         beforeSelfClosing: 'always'
       }],
+      'react/jsx-sort-props': ['warn', { 
+        'callbacksLast': true,
+        'shorthandFirst': true,
+        'shorthandLast': true,
+        'multiline': 'last'
+      }],
       // 'react/react-in-jsx-scope': 'off',
       // 'react/jsx-no-target-blank': 'off',
 
@@ -78,6 +84,8 @@ export default tseslint.config(
       '@stylistic/no-extra-semi': 'warn',
       '@stylistic/member-delimiter-style': 'warn',
       '@stylistic/comma-dangle': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {

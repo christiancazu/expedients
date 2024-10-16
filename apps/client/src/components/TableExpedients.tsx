@@ -22,8 +22,8 @@ const columns: TableColumnsType<DataType> = [
     render: (text) =>
       <Tooltip title={ text }>
         <Button
-          type="link"
           style={ { width: '142px', paddingLeft: 0, paddingRight: 4 } }
+          type="link"
         >
           <span
             style={ {
@@ -66,12 +66,8 @@ const columns: TableColumnsType<DataType> = [
   },
   {
     title: 'Última revisión', dataIndex: 'reviews', key: 'reviews', width: 300,
-    render: (reviews: Review[]) => <>
-      {
-        reviews.length
-          ? reviews[0].description
-          : null
-      }
+    render: (reviews: Review) => <>
+      {reviews?.description}
     </>
   },
   {
@@ -79,8 +75,8 @@ const columns: TableColumnsType<DataType> = [
     render: (_, expedient) => <>
       <Tooltip title="Ver expediente">
         <Button
-          shape="circle"
           icon={ <SearchOutlined /> }
+          shape="circle"
         />
       </Tooltip>
     </>
@@ -93,11 +89,11 @@ const TableExpedients: React.FC<Props> = ({ expedients, loading }: Props) => {
     <TableBase>
       <Table<DataType>
         columns={ columns }
-        scroll={ { x: 1200 } }
-        pagination={ { position: ['topRight'] } }
-        loading={ loading }
         dataSource={ expedients }
+        loading={ loading }
+        pagination={ { position: ['topRight'] } }
         rowKey={ (expedient) => expedient.id }
+        scroll={ { x: 1200 } }
       />
     </TableBase>
   )

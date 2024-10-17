@@ -14,9 +14,10 @@ const expedientStatuOptions = Object.keys(EXPEDIENT_STATUS).map(status => ({ lab
 
 interface Props {
   onSearch: (values: any) => void;
+  loading: boolean;
 }
 
-const FilterExpedients: React.FC<Props> = ({ onSearch }) => {
+const FilterExpedients: React.FC<Props> = ({ onSearch, loading }) => {
   const { token: { colorBgContainer, borderRadiusLG, paddingMD, marginMD } } = theme.useToken()
 
   const [form] = Form.useForm()
@@ -128,6 +129,8 @@ const FilterExpedients: React.FC<Props> = ({ onSearch }) => {
                 htmlType="submit"
                 icon={ <SearchOutlined /> }
                 iconPosition="end"
+                loading={ loading }
+
                 type="primary"
               >
                 Buscar

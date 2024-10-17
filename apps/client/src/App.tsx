@@ -9,6 +9,7 @@ import MainLayout from './layouts/MainLayout'
 import LoginView from './views/LoginView'
 import HomeView from './views/HomeView'
 import ExpedientsView from './views/ExpedientsView'
+import ExpedientView from './views/ExpedientView'
 
 function App() {
   return (
@@ -18,28 +19,32 @@ function App() {
           <Routes>
             <Route element = { <AuthRoutes /> }>
               <Route
-                path="/"
                 element={ <MainLayout /> }
+                path="/"
               >
                 <Route
                   index
                   element={ <HomeView /> }
                 />
                 <Route
-                  path='/expedients'
                   element={ <ExpedientsView /> }
+                  path='/expedients'
+                />
+                <Route
+                  element={ <ExpedientView /> }
+                  path='/expedients/:id'
                 />
               </Route>
             </Route>
             <Route
-              path='/login'
               element={ <LoginView /> }
+              path='/login'
             />
           </Routes>
         </QueryClientProvider>
       </AuthProvider>
     </BrowserRouter>
   )
-};
+}
 
 export default App

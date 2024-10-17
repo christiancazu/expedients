@@ -58,8 +58,12 @@ export type Expedient = {
   subject: string
   court: string
   status: EXPEDIENT_STATUS
+  statusDescription?: string
   createdByUser?: User
   updatedByUser?: User
+  parts: Part[]
+  reviews: Review[]
+  documents: Document[]
   createdAt: Date
   updatedAt: Date
 

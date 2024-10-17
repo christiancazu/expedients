@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { Button, ConfigProvider, Table, TableProps, Tooltip, type TableColumnsType } from 'antd'
+import { Button, Table, TableProps, Tooltip, type TableColumnsType } from 'antd'
 import { Expedient, EXPEDIENT_STATUS, Review, User } from 'types'
 import { dateUtil } from '../utils'
 import { SearchOutlined } from '@ant-design/icons'
 import { TableBase } from './base/TableBase'
+import { Link } from 'react-router-dom'
 
 interface DataType {
   key: React.Key;
@@ -19,24 +20,26 @@ type Props = {
 const columns: TableColumnsType<DataType> = [
   {
     title: 'Código', dataIndex: 'code', key: 'code', width: 150,
-    render: (text) =>
-      <Tooltip title={ text }>
-        <Button
-          style={ { width: '142px', paddingLeft: 0, paddingRight: 4 } }
-          type="link"
-        >
-          <span
-            style={ {
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              display: 'block',
-              textOverflow: 'ellipsis'
-            } }
+    render: (text, expedient) => 
+      <Link to={ `/expedients/${expedient.id}` }>
+        <Tooltip title={ text }>
+          <Button
+            style={ { width: '142px', paddingLeft: 0, paddingRight: 4 } }
+            type="link"
           >
-            {text}
-          </span>
-        </Button>
-      </Tooltip>
+            <span
+              style={ {
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                display: 'block',
+                textOverflow: 'ellipsis'
+              } }
+            >
+              {text}
+            </span>
+          </Button>
+        </Tooltip>
+      </Link>
   },
   {
     title: 'Material', dataIndex: 'subject', key: 'subject'
@@ -72,31 +75,29 @@ const columns: TableColumnsType<DataType> = [
   },
   {
     title: 'Acciones', key: 'actions', align: 'center', width: 100,
-    render: (_, expedient) => <>
-      <Tooltip title="Ver expediente">
-        <Button
-          icon={ <SearchOutlined /> }
-          shape="circle"
-        />
-      </Tooltip>
-    </>
+    render: (_, expedient) => 
+      <Link to={ `/expedients/${expedient.id}` }>
+        <Tooltip title="Ver expediente">
+          <Button
+            icon={ <SearchOutlined /> }
+            shape="circle"
+          />
+        </Tooltip>
+      </Link>
   }
 ]
 
-const TableExpedients: React.FC<Props> = ({ expedients, loading }: Props) => {
-
-  return (
-    <TableBase>
-      <Table<DataType>
-        columns={ columns }
-        dataSource={ expedients }
-        loading={ loading }
-        pagination={ { position: ['topRight'] } }
-        rowKey={ (expedient) => expedient.id }
-        scroll={ { x: 1200 } }
-      />
-    </TableBase>
-  )
-}
+const TableExpedients: React.FC<Props> = ({ expedients, loading }) => (
+  <TableBase>
+    <Table<DataType>
+      columns={ columns }
+      dataSource={ expedients }
+      loading={ loading }
+      pagination={ { position: ['topRight'] } }
+      rowKey={ (expedient) => expedient.id }
+      scroll={ { x: 1200 } }
+    />
+  </TableBase>
+)
 
 export default TableExpedients

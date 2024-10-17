@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import TableExpedients from '../components/TableExpedients'
 import { getExpedients } from '../composables/useQuery'
 import { Expedient, EXPEDIENT_STATUS } from 'types'
 import FilterExpedients from '../components/FilterExpedients'
-import { theme } from 'antd'
+import Title from 'antd/es/typography/Title'
 
 
 interface SearchParams {
@@ -22,23 +22,24 @@ const ExpedientsView: React.FC = () => {
     updatedByUser: null
   })
 
-  const { data, isFetching, refetch } = useQuery({ queryKey: ['expedients'], queryFn: (): Promise<Expedient[]> => getExpedients(params) })
-
-  const { token: { marginMD } } = theme.useToken()
+  const { data, isFetching  } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params) })
 
   function handleSearch(search: SearchParams) {
-    setParams(search)
+    setParams(prev => ({ prev, ...search }))
   }
-
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params])
 
   return (
     <>
-      <h2 style={ { marginBottom: marginMD } }>Expedientes</h2>
-      <FilterExpedients onSearch={ handleSearch } />
+      <Title
+        className='mb-20'
+        level={ 4 }
+      >
+        Expedientes
+      </Title>
+      <FilterExpedients
+        loading={ isFetching } 
+        onSearch={ handleSearch }
+      />
 
       <TableExpedients
         expedients={ data! }

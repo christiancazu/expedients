@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import React, { createContext, useContext, useState } from 'react'
 
-export type AuthContextType = {
+export interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
-};
+}
 
 const AuthContext = createContext<AuthContextType | null>(null)
 

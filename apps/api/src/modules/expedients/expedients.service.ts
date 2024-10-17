@@ -113,7 +113,9 @@ export class ExpedientsService {
         parts: true,
         createdByUser: true,
         updatedByUser: true,
-        reviews: true
+        reviews: {
+          createdByUser: true
+        }
       },
       select: {
         parts: {
@@ -132,7 +134,11 @@ export class ExpedientsService {
         reviews: {
           id: true,
           description: true,
-          createdAt: true
+          createdAt: true,
+          createdByUser: {
+            firstName: true,
+            lastName: true
+          }
         }
       }
     });

@@ -1,39 +1,80 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 import React from 'react'
 import useUserState from './composables/useUserState'
-import HomeView from './views/HomeView'
+// import HomeView from './views/HomeView'
 import ExpedientsView from './views/ExpedientsView'
 import ExpedientView from './views/ExpedientView'
-import LoginView from './views/LoginView'
+import SignInView from './views/SignInView'
+import NotFoundView from './views/NotFoundView'
+import MainLayout from './layouts/MainLayout'
+
+const SessionRoutes: React.FC = () => {
+  const { user, purgeUserSession } = useUserState()
+  const location = useLocation()
+
+  if (!user) {
+    // TODO: excluded auth routes
+    if (location.pathname === '/auth/sign-in') {
+      return <Navigate to={ location } />
+    }
+
+    purgeUserSession()
+
+    return <Navigate
+      replace
+      to='/auth/sign-in'
+    />
+  }
+
+  return <MainLayout />
+}
 
 const AuthRoutes: React.FC = () => {
   const { user } = useUserState()
+  const location = useLocation()
 
-  return user ? <Outlet /> : <Navigate to="/login" />
+  if (user && location.pathname === '/auth/sign-in') {
+    return <Navigate to='/' />
+  }
+
+  return <Outlet />
 }
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AuthRoutes />,
+    element: <SessionRoutes />,
     children: [
       {
         index: true,
-        element: <HomeView />
+        element: <Navigate
+          replace
+          to="/expedients"
+        />
       },
       {
-        path: '/expedients',
+        path: 'expedients',
         element: <ExpedientsView />
       },
       {
-        path: '/expedients/:id',
+        path: 'expedients/:id',
         element: <ExpedientView />
       }
     ]
   },
   {
-    path: '/login',
-    element: <LoginView />
+    path: '/auth',
+    element: <AuthRoutes />,
+    children: [
+      {
+        path: 'sign-in',
+        element: <SignInView />
+      }
+    ]
+  },
+  {
+    path: '*',
+    element: <NotFoundView />
   }
 ])
 

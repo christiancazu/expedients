@@ -4,15 +4,14 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Button, Modal } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
+import { useQuery } from '@tanstack/react-query'
 import { Expedient } from 'types'
 
+import { createExpedientReview } from '../../services/api.service.ts'
+import { queryClient } from '../../config/queryClient.ts'
 import suggestion from './suggestion.ts'
 
-import { useQuery } from '@tanstack/react-query'
-
 import './text-editor.scss'
-import { createExpedientReview } from '../../services/api.ts'
-import { queryClient } from '../../config/queryClient.ts'
 
 const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)

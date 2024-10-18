@@ -2,6 +2,8 @@
 @import './spacing';
 @import './flex';
 
+@import './login-view';
+
 h1,
 h2,
 h3,
@@ -11,4 +13,8 @@ h6,
 p {
   margin: 0;
   padding: 0;
+}
+
+.text-center {
+  text-align: center;
 }

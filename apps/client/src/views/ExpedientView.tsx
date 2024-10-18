@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { getExpedient } from '../services/api'
+import { getExpedient } from '../services/api.service'
 import { Expedient } from 'types'
 import {  Card, Col, Divider, Row, theme } from 'antd'
 import Title from 'antd/es/typography/Title'

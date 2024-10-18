@@ -4,7 +4,7 @@ import TableExpedients from '../components/TableExpedients'
 import { Expedient, EXPEDIENT_STATUS } from 'types'
 import FilterExpedients from '../components/FilterExpedients'
 import Title from 'antd/es/typography/Title'
-import { getExpedients } from '../services/api'
+import { getExpedients } from '../services/api.service'
 
 interface SearchParams {
   byText?: string[];

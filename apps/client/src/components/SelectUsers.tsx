@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Select } from 'antd'
 
 import { User } from 'types'
-import { getUsers } from '../services/api'
+import { getUsers } from '../services/api.service'
 
 interface Props {
   setUpdatedByUser: (value: string) => void;

@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import TableExpedients from '../components/TableExpedients'
-import { getExpedients } from '../composables/useQuery'
 import { Expedient, EXPEDIENT_STATUS } from 'types'
 import FilterExpedients from '../components/FilterExpedients'
 import Title from 'antd/es/typography/Title'
-
+import { getExpedients } from '../services/api'
 
 interface SearchParams {
   byText?: string[];

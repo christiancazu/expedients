@@ -1,8 +1,9 @@
+import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Select } from 'antd'
-import React, { useEffect } from 'react'
+
 import { User } from 'types'
-import { getUsers } from '../composables/useQuery'
+import { getUsers } from '../services/api'
 
 interface Props {
   setUpdatedByUser: (value: string) => void;

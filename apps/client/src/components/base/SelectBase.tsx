@@ -1,7 +1,7 @@
-import { Select } from 'antd'
 import React from 'react'
+import { Select } from 'antd'
 
-const SelectBase: React.FC = props => {
+const SelectBase: React.FC = () => {
   return (
     <Select
       showSearch

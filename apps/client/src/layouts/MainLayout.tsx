@@ -22,10 +22,10 @@ const MainLayout: React.FC = () => {
     <Layout style={ { minHeight: '100vh' } }>
       <Sider collapsible>
         <Menu
-          theme="dark"
-          mode="inline"
           defaultSelectedKeys={ ['1'] }
           items={ items }
+          mode="inline"
+          theme="dark"
         />
       </Sider>
       <Layout>

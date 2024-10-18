@@ -4,11 +4,8 @@ import { User } from 'types'
 import { queryClient } from '../config/queryClient'
 import persisterUtil from '../utils/persister.util'
 import { setToken } from '../config/httpClient'
-import { useNavigate } from 'react-router-dom'
 
 const useUserState = (user?: User) => {
-  const navigate = useNavigate()
-
   const setUser = (value: Partial<User> | null) => {
     queryClient.setQueryData(['user'], (prevState: User) => ({ ...prevState, ...value }))
   }

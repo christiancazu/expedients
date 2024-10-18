@@ -12,9 +12,11 @@ import { queryClient } from '../../config/queryClient.ts'
 import suggestion from './suggestion.ts'
 
 import './text-editor.scss'
+import useNotify from '../../composables/useNotification.tsx'
 
 const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const notify = useNotify()
 
   const editor = useEditor({
     extensions: [
@@ -76,12 +78,13 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
             }
           }, ...old.reviews]
         }))
+      notify({ message: 'Informe creado con éxito' })
 
-      handleCancel()
+      handleCloseModal()
     }
   }
 
-  const handleCancel = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false)
     editor?.commands.clearContent(true)
   }
@@ -102,7 +105,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         footer={ [
           <Button
             key="back"
-            onClick={ handleCancel }
+            onClick={ handleCloseModal }
           >
             Cancelar
           </Button>,
@@ -116,7 +119,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
             Crear
           </Button>
         ] }
-        onCancel={ handleCancel }
+        onCancel={ handleCloseModal }
       >
         <EditorContent editor={ editor } />
       </Modal>

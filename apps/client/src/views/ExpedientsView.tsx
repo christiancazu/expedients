@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import TableExpedients from '../components/TableExpedients'
 import { Expedient, EXPEDIENT_STATUS } from 'types'
 import FilterExpedients from '../components/FilterExpedients'
 import Title from 'antd/es/typography/Title'
 import { getExpedients } from '../services/api.service'
+import useNotify from '../composables/useNotification'
 
 interface SearchParams {
   byText?: string[];
@@ -20,12 +21,19 @@ const ExpedientsView: React.FC = () => {
     status: null,
     updatedByUser: null
   })
+  const notify = useNotify()
 
-  const { data, isFetching  } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params) })
+  const { data, isFetching, isFetched } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params), refetchOnMount: true })
 
   function handleSearch(search: SearchParams) {
     setParams(prev => ({ prev, ...search }))
   }
+
+  useEffect(() => {
+    if (isFetched && data?.length === 0) {
+      notify({ message: 'La busqueda no produjo resultados', type: 'info' })
+    }
+  })
 
   return (
     <>
@@ -36,7 +44,7 @@ const ExpedientsView: React.FC = () => {
         Expedientes
       </Title>
       <FilterExpedients
-        loading={ isFetching } 
+        loading={ isFetching }
         onSearch={ handleSearch }
       />
 

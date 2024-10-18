@@ -34,7 +34,10 @@ const AuthRoutes: React.FC = () => {
   const location = useLocation()
 
   if (user && location.pathname === '/auth/sign-in') {
-    return <Navigate to='/' />
+    return <Navigate
+      replace
+      to='/'
+    />
   }
 
   return <Outlet />

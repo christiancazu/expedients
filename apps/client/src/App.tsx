@@ -1,11 +1,14 @@
 
 import RouterProvider from './router'
 import QueryClientProvider from './query'
+import NotifyProvider from './notify'
 
 function App() {
   return (
     <QueryClientProvider>
-      <RouterProvider />
+      <NotifyProvider>
+        <RouterProvider />
+      </NotifyProvider>
     </QueryClientProvider>
   )
 }

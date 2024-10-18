@@ -3,11 +3,11 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { getExpedient } from '../services/api.service'
 import { Expedient } from 'types'
-import {  Card, Col, Divider, Row, theme } from 'antd'
+import { Card, Col, Divider, Row, theme } from 'antd'
 import Title from 'antd/es/typography/Title'
 import TextEditor from '../components/text-editor/TextEditor'
 
-import parse from 'html-react-parser'
+import htmlReactParser from 'html-react-parser'
 
 import { dateUtil } from '../utils'
 
@@ -161,7 +161,7 @@ const ExpedientView: React.FC = () => {
                     </em>
                   </div> }
                 >
-                  {parse(review.description)}
+                  {htmlReactParser(review.description)}
                 </Card>
               )
             }

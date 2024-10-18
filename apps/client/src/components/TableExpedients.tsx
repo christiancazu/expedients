@@ -6,6 +6,7 @@ import { dateUtil } from '../utils'
 import { SearchOutlined } from '@ant-design/icons'
 import { TableBase } from './base/TableBase'
 import { Link } from 'react-router-dom'
+import htmlReactParser from 'html-react-parser'
 
 interface DataType {
   key: React.Key;
@@ -20,7 +21,7 @@ type Props = {
 const columns: TableColumnsType<DataType> = [
   {
     title: 'Código', dataIndex: 'code', key: 'code', width: 150,
-    render: (text, expedient) => 
+    render: (text, expedient) =>
       <Link to={ `/expedients/${expedient.id}` }>
         <Tooltip title={ text }>
           <Button
@@ -70,12 +71,12 @@ const columns: TableColumnsType<DataType> = [
   {
     title: 'Última revisión', dataIndex: 'reviews', key: 'reviews', width: 300,
     render: (reviews: Review) => <>
-      {reviews?.description}
+      {htmlReactParser(reviews?.description ?? '')}
     </>
   },
   {
     title: 'Acciones', key: 'actions', align: 'center', width: 100,
-    render: (_, expedient) => 
+    render: (_, expedient) =>
       <Link to={ `/expedients/${expedient.id}` }>
         <Tooltip title="Ver expediente">
           <Button

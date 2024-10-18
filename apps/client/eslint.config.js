@@ -41,7 +41,6 @@ export default tseslint.config(
       'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
       'react/jsx-first-prop-new-line': ['warn', 'multiline'],
       'react/jsx-max-props-per-line': [1, { maximum: 1 }],
-      'react/jsx-space-before-closing': ['warn', 'always'],
       'react/jsx-tag-spacing': ['warn', {
         beforeSelfClosing: 'always'
       }],

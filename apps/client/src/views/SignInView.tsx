@@ -5,21 +5,19 @@ import { signIn } from '../services/api.service'
 import { useForm } from 'antd/es/form/Form'
 import useUserState from '../composables/useUserState'
 import { useNavigate } from 'react-router-dom'
+import useNotify from '../composables/useNotification'
 
 interface FieldType {
   email?: string;
   password?: string;
 }
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  // TODO: toast
-}
-
-
 const SignInView: React.FC = () => {
+
   const [form] = useForm()
   const { setUserSession } = useUserState()
   const navigate = useNavigate()
+  const notify = useNotify()
 
   const { refetch, isFetching, data, status } = useQuery({
     queryKey: ['sign-in'],
@@ -27,18 +25,19 @@ const SignInView: React.FC = () => {
     enabled: false
   })
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    // TODO: toast
-  }
-
   const onFinish: FormProps<FieldType>['onFinish'] = async () => {
     await refetch()
   }
 
   useEffect(() => {
+    console.warn(status)
     if (status === 'success') {
       setUserSession(data)
       navigate('/')
+      notify({ message: 'La sessión ha sido iniciada con éxito' })
+    }
+    if (status === 'error') {
+      notify({ message: 'El usuario o la contraseña son incorrectos', type: 'error' })
     }
   })
 
@@ -67,7 +66,6 @@ const SignInView: React.FC = () => {
               layout="vertical"
               name="login"
               onFinish={ onFinish }
-              onFinishFailed={ onFinishFailed }
             >
               <Form.Item<FieldType>
                 label="Correo electrónico"

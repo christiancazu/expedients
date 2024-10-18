@@ -6,7 +6,7 @@ import { axiosInstance } from '../config/axios'
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -30,6 +30,10 @@ export function getExpedients(params: any = {}) {
 
 export function getExpedient(id: string) {
   return axiosInstance.get(`/expedients/${id}`).then(res => res.data)
+}
+
+export function createExpedientReview(data: {description: string; expedientId: string}) {
+  return axiosInstance.post(`/reviews`, { ...data }).then(res => res.data)
 }
 
 export function getUsers() {

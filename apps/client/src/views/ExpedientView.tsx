@@ -4,15 +4,19 @@ import { useParams } from 'react-router-dom'
 import { getExpedient } from '../composables/useQuery'
 import { Expedient } from 'types'
 import {  Card, Col, Divider, Row, theme } from 'antd'
-import { dateUtil } from '../utils'
 import Title from 'antd/es/typography/Title'
+import TextEditor from '../components/text-editor/TextEditor'
+
+import parse from 'html-react-parser'
+
+import { dateUtil } from '../utils'
 
 const ExpedientView: React.FC = () => {
   const { id } = useParams()
 
   const { token: { colorBgContainer, borderRadiusLG, paddingMD, marginMD, colorTextSecondary } } = theme.useToken()
 
-  const { data, error } = useQuery({ queryKey: ['expedient', id], queryFn: (): Promise<Expedient> => getExpedient(id!) })
+  const { data, error } = useQuery({ queryKey: ['expedient', id], queryFn: (): Promise<Expedient> => getExpedient(id!), refetchOnMount: true })
 
   const sectionStyle = {
     backgroundColor: colorBgContainer, borderRadius: borderRadiusLG, padding: paddingMD, marginBottom: marginMD
@@ -70,9 +74,9 @@ const ExpedientView: React.FC = () => {
               </Col>
             </Row>
 
-            <Divider dashed />
+            <Divider className='my-12' />
 
-            <Row>
+            <Row className='mt-20'>
               <Col
                 md={ 16 }
                 sm={ 24 }
@@ -122,9 +126,25 @@ const ExpedientView: React.FC = () => {
               </Col>
             </Row>
 
-            <p className='mb-12'>
-              <strong>Revisiones:</strong>
-            </p>
+            <Row
+              align={ 'middle' }
+              className='mb-12'
+            >
+              <Col
+                md={ 12 }
+                sm={ 24 }
+              >
+                <strong>Informes:</strong>
+              </Col>
+
+              <Col
+                className='d-flex justify-content-end'
+                md={ 12 }
+                sm={ 24 }
+              >
+                <TextEditor expedientId={ data.id } />
+              </Col>
+            </Row>
 
             {
               data.reviews.map(review =>
@@ -136,17 +156,12 @@ const ExpedientView: React.FC = () => {
                     className='d-flex align-items-end flex-column'
                     style={ { color: colorTextSecondary } }
                   >
-                    <div>
-                      Actualizado el:
-                      <em>
-                        {' ' + dateUtil.formatDate(review.createdAt)}
-                      </em>
-                    </div>
+                    <em>
+                      {' ' + dateUtil.formatDate(review.createdAt)}
+                    </em>
                   </div> }
                 >
-                  <p>
-                    {review.description}
-                  </p>
+                  {parse(review.description)}
                 </Card>
               )
             }
@@ -165,6 +180,8 @@ const ExpedientView: React.FC = () => {
             >
               Documentos
             </Title>
+
+            <Divider className='my-12' />
           </div>
         </Col>
       </Row>

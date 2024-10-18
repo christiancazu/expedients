@@ -140,6 +140,11 @@ export class ExpedientsService {
             lastName: true
           }
         }
+      },
+      order: {
+        reviews: {
+          createdAt: 'DESC'
+        }
       }
     });
   }

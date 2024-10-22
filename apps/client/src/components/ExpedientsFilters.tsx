@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Checkbox, Input, theme, Button, Flex, Select, Form, Row, Col, CheckboxOptionType } from 'antd'
 import { EXPEDIENT_STATUS } from 'types/src/index'
 import { ClearOutlined, FilterOutlined, SearchOutlined } from '@ant-design/icons'
-import SelectUsers from './SelectUsers'
+import SelectUsers from './UsersSelect'
 
 const textFilterOptions: CheckboxOptionType[] = [
   { label: 'Código', value: 'code' },

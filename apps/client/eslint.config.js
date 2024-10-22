@@ -10,7 +10,11 @@ import stylistic from '@stylistic/eslint-plugin'
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, eslint.configs.recommended, ...tseslint.configs.strict, ...tseslint.configs.stylistic],
+    extends: [
+      js.configs.recommended, eslint.configs.recommended, 
+      ...tseslint.configs.strict,
+      ...tseslint.configs.stylistic
+    ],
     files: ['**/*.{js,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,

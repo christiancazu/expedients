@@ -18,3 +18,28 @@ p {
 .text-center {
   text-align: center;
 }
+
+.text-primary {
+  color: #007bff !important;
+}
+
+.text-link {
+  @extend .text-primary;
+  padding: 8px 4px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+
+  & p {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &:hover {
+    background-color: whitesmoke;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}

@@ -30,7 +30,6 @@ const SignInView: React.FC = () => {
   }
 
   useEffect(() => {
-    console.warn(status)
     if (status === 'success') {
       setUserSession(data)
       navigate('/')

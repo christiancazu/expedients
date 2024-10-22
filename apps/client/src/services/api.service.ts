@@ -1,5 +1,6 @@
 import { User } from 'types'
 import { httpClient } from '../config/httpClient'
+import { AxiosRequestConfig } from 'axios'
 
 export async function signIn(data: { email: string; password: string }): Promise<{ user: User; token: string }> {
   return await httpClient.post(`/auth/sign-in`, { ...data }).then(res => res.data)
@@ -19,4 +20,16 @@ export async function createExpedientReview(data: { description: string; expedie
 
 export async function getUsers() {
   return httpClient.get(`/users`).then(res => res.data)
+}
+
+export async function getDocument(id: string) {
+  return httpClient.get(`/documents/${id}`).then(res => res.data)
+}
+
+export async function createDocument(formData: FormData, config: AxiosRequestConfig) {
+  return httpClient.post(`/documents`, formData, config).then(res => res.data)
+}
+
+export async function updateDocument(formData: FormData, config: AxiosRequestConfig) {
+  return httpClient.patch(`/documents/${formData.get('expedientId')}`, formData, config).then(res => res.data)
 }

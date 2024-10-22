@@ -113,6 +113,7 @@ export class ExpedientsService {
         parts: true,
         createdByUser: true,
         updatedByUser: true,
+        documents: true,
         reviews: {
           createdByUser: true
         }
@@ -139,6 +140,12 @@ export class ExpedientsService {
             firstName: true,
             lastName: true
           }
+        },
+        documents: {
+          id: true,
+          name: true,
+          key: true,
+          updatedAt: true
         }
       },
       order: {

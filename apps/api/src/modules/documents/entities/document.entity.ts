@@ -21,21 +21,17 @@ export class Document extends BaseEntity {
   @Column({ type: 'varchar', length: FIELD.DOCUMENT_NAME_MAX_LENGTH })
   name: string;
 
-  @Column({ type: 'varchar', length: FIELD.DOCUMENT_URL_MAX_LENGTH })
-  url: string;
-
-  @Column({ type: 'varchar', length: FIELD.DOCUMENT_TYPE_MAX_LENGTH })
-  type: string;
+  @Column({ type: 'varchar', length: FIELD.DOCUMENT_KEY_MAX_LENGTH })
+  key: string;
 
   @ManyToOne(() => Expedient, (expedient) => expedient.documents)
   expedient: Expedient;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.createdDocuments)
   @JoinColumn()
   createdByUser: User;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.updatedDocuments)
   updatedByUser: User;
 
   @CreateDateColumn()

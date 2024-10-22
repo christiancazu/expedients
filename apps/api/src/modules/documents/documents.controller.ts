@@ -1,30 +1,68 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipeBuilder,
+  HttpStatus,
+  Request,
+  ParseUUIDPipe
+} from '@nestjs/common';
 import { DocumentsService } from './documents.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateDocumentDto } from './dto/create-document.dto';
-import { UpdateDocumentDto } from './dto/update-document.dto';
 
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post()
-  create(@Body() createDocumentDto: CreateDocumentDto) {
-    return this.documentsService.create(createDocumentDto);
+  @UseInterceptors(FileInterceptor('file'))
+  create(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addMaxSizeValidator({ maxSize: 10485760 /* 10MB */ })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+        })
+    )
+    file: Express.Multer.File,
+    @Body() createDocumentDto: CreateDocumentDto,
+    @Request() req: any
+  ) {
+    return this.documentsService.create(file, createDocumentDto, req.user.id);
   }
 
   @Get()
   findAll() {
-    return this.documentsService.findAll();
+    return this.documentsService.findOne('asd');
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.documentsService.findOne(+id);
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.documentsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDocumentDto: UpdateDocumentDto) {
-    return this.documentsService.update(+id, updateDocumentDto);
+  @UseInterceptors(FileInterceptor('file'))
+  update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addMaxSizeValidator({ maxSize: 10485760 /* 10MB */ })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+        })
+    )
+    file: Express.Multer.File,
+    @Request() req: any
+  ) {
+    return this.documentsService.update(id, file, req.user.id);
   }
 
   @Delete(':id')

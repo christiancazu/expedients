@@ -24,7 +24,7 @@ export class UsersService {
       throw new UnprocessableEntityException('auth.errors.exists.email');
     }
 
-    const createUser = await this._userRepository.create(createUserDto);
+    const createUser = this._userRepository.create(createUserDto);
 
     if (createUserDto.role === USER_ROLES.ADMIN) {
       createUser.role = USER_ROLES.PRACTICANTE;

@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { FIELD, USER_ROLES } from 'types';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
 import { Review } from 'src/modules/reviews/entities/review.entity';
+import { Document } from 'src/modules/documents/entities/document.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -51,6 +52,12 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Expedient, (expedient) => expedient.updatedByUser)
   updatedExpedients: Expedient[];
+
+  @OneToMany(() => Document, (document) => document.createdByUser)
+  createdDocuments: Document[];
+
+  @OneToMany(() => Document, (document) => document.updatedByUser)
+  updatedDocuments: Document[];
 
   @CreateDateColumn()
   createdAt: Date;

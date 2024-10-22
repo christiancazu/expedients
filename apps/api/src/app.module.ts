@@ -10,6 +10,7 @@ import { DocumentsModule } from './modules/documents/documents.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { AuthGuard } from './modules/auth/guards/auth.guard';
     PartsModule,
     ReviewsModule,
     DocumentsModule,
-    AuthModule
+    AuthModule,
+    UploadModule
   ],
   providers: [
     {

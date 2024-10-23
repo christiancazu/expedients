@@ -7,6 +7,7 @@ import ExpedientView from './views/ExpedientView'
 import SignInView from './views/SignInView'
 import NotFoundView from './views/NotFoundView'
 import MainLayout from './layouts/MainLayout'
+import ExpedientsCreateView from './views/ExpedientsCreateView'
 
 const SessionRoutes: React.FC = () => {
   const { user, purgeUserSession } = useUserState()
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: 'expedients',
         element: <ExpedientsView />
+      },
+      {
+        path: 'expedients/create',
+        element: <ExpedientsCreateView />
       },
       {
         path: 'expedients/:id',

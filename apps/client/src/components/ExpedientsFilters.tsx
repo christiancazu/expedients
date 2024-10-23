@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import { Checkbox, Input, theme, Button, Flex, Select, Form, Row, Col, CheckboxOptionType } from 'antd'
-import { EXPEDIENT_STATUS } from 'types/src/index'
+import { Checkbox, Input, theme, Button, Flex, Form, Row, Col, CheckboxOptionType } from 'antd'
 import { ClearOutlined, FilterOutlined, SearchOutlined } from '@ant-design/icons'
 import SelectUsers from './UsersSelect'
+import ExpedientStatusSelect from './ExpedientStatusSelect'
 
 const textFilterOptions: CheckboxOptionType[] = [
   { label: 'Código', value: 'code' },
   { label: 'Materia', value: 'subject' },
   { label: 'Corte', value: 'court' }
 ]
-
-const expedientStatuOptions = Object.keys(EXPEDIENT_STATUS).map(status => ({ label: status.replace('_', ' '), value: status }))
 
 interface Props {
   onSearch: (values: any) => void;
@@ -106,17 +104,10 @@ const FilterExpedients: React.FC<Props> = ({ onSearch, loading }) => {
             md={ 4 }
             sm={ 24 }
           >
-            <Form.Item name="status">
-              <Select
-                allowClear
-                options={ expedientStatuOptions }
-                placeholder="Estado"
-                style={ { width: '100%' } }
-                filterOption={ (input, option) =>
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase()) }
-                onChange={ handleOnChange }
-              />
-            </Form.Item>
+            <ExpedientStatusSelect
+              name={ 'status' }
+              onChange={ handleOnChange }
+            />
           </Col>
 
           <Col

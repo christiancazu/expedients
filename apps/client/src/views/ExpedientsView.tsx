@@ -6,6 +6,9 @@ import FilterExpedients from '../components/ExpedientsFilters'
 import Title from 'antd/es/typography/Title'
 import { getExpedients } from '../services/api.service'
 import useNotify from '../composables/useNotification'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 
 interface SearchParams {
   byText?: string[];
@@ -21,6 +24,7 @@ const ExpedientsView: React.FC = () => {
     status: null,
     updatedByUser: null
   })
+  const navigate = useNavigate()
   const notify = useNotify()
 
   const { data, isFetching, isFetched } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params), refetchOnMount: true })
@@ -37,12 +41,22 @@ const ExpedientsView: React.FC = () => {
 
   return (
     <>
-      <Title
-        className='mb-20'
-        level={ 4 }
-      >
-        Expedientes
-      </Title>
+      <div className='d-flex justify-content-between'>
+        <Title
+          className='mb-20'
+          level={ 4 }
+        >
+          Expedientes
+        </Title>
+
+        <Button
+          icon={ <PlusOutlined /> }
+          type='primary'
+          onClick={ () => navigate('/expedients/create') }
+        >
+          Crear expediente
+        </Button>
+      </div>
       <FilterExpedients
         loading={ isFetching }
         onSearch={ handleSearch }

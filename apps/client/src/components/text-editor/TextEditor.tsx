@@ -83,6 +83,11 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
   }
 
   const handleOk = async () => {
+    if (editor?.getText() === '') {
+      notify({ message: 'El informe no puede estar vacío', type: 'info' })
+      return
+    }
+    
     const { status, data } = await refetch()
 
     if (status === 'success') {

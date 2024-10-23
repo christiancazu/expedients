@@ -19,10 +19,8 @@ const useUserState = (user?: User) => {
       setToken(data.token)
     },
     purgeUserSession() {
-      persisterUtil.purgeUser()
-      persisterUtil.remove('token')
-      localStorage.clear()
       queryClient.setQueryData(['user'], null)
+      persisterUtil.clear()
     }
   }
 }

@@ -14,5 +14,6 @@ export default {
     }
 
     return user as User
-  }
+  },
+  clear: () => localStorage.clear()
 }

@@ -1,4 +1,4 @@
-import { User } from 'types'
+import { Expedient, User } from 'types'
 import { httpClient } from '../config/httpClient'
 import { AxiosRequestConfig } from 'axios'
 
@@ -12,6 +12,10 @@ export async function getExpedients(params: any = {}) {
 
 export async function getExpedient(id: string) {
   return httpClient.get(`/expedients/${id}`).then(res => res.data)
+}
+
+export async function createExpedient(data: Expedient) {
+  return httpClient.post(`/expedients`, { ...data }).then(res => res.data)
 }
 
 export async function createExpedientReview(data: { description: string; expedientId: string }) {

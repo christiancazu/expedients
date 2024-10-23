@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import { Button, Card, Col, Form, FormProps, Input, Row } from 'antd'
-import { useQuery } from '@tanstack/react-query'
+import React from 'react'
+import { Button, Card, Col, Form, Input, Row } from 'antd'
+import { useMutation } from '@tanstack/react-query'
 import { signIn } from '../services/api.service'
 import { useForm } from 'antd/es/form/Form'
 import useUserState from '../composables/useUserState'
@@ -13,29 +13,21 @@ interface FieldType {
 }
 
 const SignInView: React.FC = () => {
-
   const [form] = useForm()
   const { setUserSession } = useUserState()
   const navigate = useNavigate()
   const notify = useNotify()
 
-  const { refetch, isFetching, data, status } = useQuery({
-    queryKey: ['sign-in'],
-    queryFn: () => signIn({ email: form.getFieldValue('email'), password: form.getFieldValue('password') }),
-    enabled: false
-  })
-
-  const onFinish: FormProps<FieldType>['onFinish'] = async () => {
-    await refetch()
-  }
-
-  useEffect(() => {
-    if (status === 'success') {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['sign-in'],
+    mutationFn: () => signIn({ email: form.getFieldValue('email'), password: form.getFieldValue('password') }),
+    onSuccess: (data) => {
       setUserSession(data)
       navigate('/')
       notify({ message: 'La sessión ha sido iniciada con éxito' })
-    }
-    if (status === 'error') {
+    },
+    onError: (err) => {
+      console.error(err)
       notify({ message: 'El usuario o la contraseña son incorrectos', type: 'error' })
     }
   })
@@ -60,11 +52,11 @@ const SignInView: React.FC = () => {
           >
             <Form
               autoComplete="off"
-              disabled={ isFetching }
+              disabled={ isPending }
               form={ form }
               layout="vertical"
               name="login"
-              onFinish={ onFinish }
+              onFinish={ mutate }
             >
               <Form.Item<FieldType>
                 label="Correo electrónico"
@@ -87,7 +79,7 @@ const SignInView: React.FC = () => {
                   block
                   className='mt-20'
                   htmlType="submit"
-                  loading={ isFetching }
+                  loading={ isPending }
                   type="primary"
                 >
                   Ingresar

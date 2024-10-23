@@ -6,9 +6,6 @@ export class CreatePartDto {
   @MaxLength(FIELD.PART_NAME_MAX_LENGTH)
   name: string;
 
-  @IsNotEmpty()
-  expedientId: string;
-
   @IsEnum(PART_TYPES)
   type: PART_TYPES;
 }

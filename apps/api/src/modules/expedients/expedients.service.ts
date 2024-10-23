@@ -1,20 +1,26 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateExpedientDto } from './dto/create-expedient.dto';
-import { UpdateExpedientDto } from './dto/update-expedient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Expedient } from './entities/expedient.entity';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Review } from '../reviews/entities/review.entity';
 import { FindExpedientDto } from './dto/find-expedient.dto';
+import { Part } from '../parts/entities/part.entity';
 
 @Injectable()
 export class ExpedientsService {
   @InjectRepository(Expedient)
   private readonly _expedientRepository: Repository<Expedient>;
 
+  @InjectRepository(Part)
+  private readonly _partsRepository: Repository<Part>;
+
   async create(userId: string, createExpedientDto: CreateExpedientDto) {
-    const expedient = this._expedientRepository.create(createExpedientDto);
+    const { parts, ...restExpedient } = createExpedientDto;
+    console.error({ parts });
+
+    const expedient = this._expedientRepository.create(restExpedient);
 
     const user = new User();
     user.id = userId;
@@ -22,6 +28,14 @@ export class ExpedientsService {
 
     try {
       const expedientSaved = await this._expedientRepository.save(expedient);
+
+      const result = this._partsRepository.create(
+        parts.map((part) => ({ ...part, expedient: expedientSaved }))
+      );
+
+      if (parts?.length) {
+        await this._partsRepository.save(result);
+      }
 
       return expedientSaved;
     } catch (error) {
@@ -145,18 +159,22 @@ export class ExpedientsService {
           id: true,
           name: true,
           key: true,
-          updatedAt: true
+          updatedAt: true,
+          createdAt: true
         }
       },
       order: {
         reviews: {
+          createdAt: 'DESC'
+        },
+        documents: {
           createdAt: 'DESC'
         }
       }
     });
   }
 
-  update(id: number, updateExpedientDto: UpdateExpedientDto) {
+  update(id: number) {
     return `This action updates a #${id} expedient`;
   }
 

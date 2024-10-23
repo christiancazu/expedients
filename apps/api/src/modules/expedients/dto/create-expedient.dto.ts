@@ -1,10 +1,14 @@
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  MaxLength
+  MaxLength,
+  ValidateNested
 } from 'class-validator';
+import { CreatePartDto } from 'src/modules/parts/dto/create-part.dto';
 import { EXPEDIENT_STATUS, FIELD } from 'types';
 
 export class CreateExpedientDto {
@@ -30,4 +34,10 @@ export class CreateExpedientDto {
   @IsOptional()
   @IsString()
   statusDescription?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePartDto)
+  parts: CreatePartDto[];
 }

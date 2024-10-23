@@ -3,9 +3,13 @@ import { ExpedientsService } from './expedients.service';
 import { ExpedientsController } from './expedients.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Expedient } from './entities/expedient.entity';
+import { Part } from '../parts/entities/part.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Expedient])],
+  imports: [
+    TypeOrmModule.forFeature([Expedient]),
+    TypeOrmModule.forFeature([Part])
+  ],
   controllers: [ExpedientsController],
   providers: [ExpedientsService]
 })

@@ -1,6 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreatePartDto } from './dto/create-part.dto';
-import { UpdatePartDto } from './dto/update-part.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Part } from './entities/part.entity';
 import { Repository } from 'typeorm';
@@ -15,7 +14,7 @@ export class PartsService {
     const part = this._partRepository.create(createPartDto);
 
     const expedient = new Expedient();
-    expedient.id = createPartDto.expedientId;
+    // expedient.id = createPartDto.expedientId;
     part.expedient = expedient;
 
     try {
@@ -37,7 +36,7 @@ export class PartsService {
     return `This action returns a #${id} part`;
   }
 
-  update(id: number, updatePartDto: UpdatePartDto) {
+  update(id: number) {
     return `This action updates a #${id} part`;
   }
 

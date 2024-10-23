@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ExpedientsService } from './expedients.service';
 import { CreateExpedientDto } from './dto/create-expedient.dto';
-import { UpdateExpedientDto } from './dto/update-expedient.dto';
 import { FindExpedientDto } from './dto/find-expedient.dto';
 
 @Controller('expedients')
@@ -34,11 +33,8 @@ export class ExpedientsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateExpedientDto: UpdateExpedientDto
-  ) {
-    return this.expedientsService.update(+id, updateExpedientDto);
+  update(@Param('id') id: string) {
+    return this.expedientsService.update(+id);
   }
 
   @Delete(':id')

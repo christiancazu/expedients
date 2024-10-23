@@ -16,6 +16,7 @@ interface DataType {
 
 type Props = {
   expedients: Expedient[];
+  onChangePagination: () => void;
 } & TableProps
 
 const columns: TableColumnsType<DataType> = [
@@ -88,17 +89,19 @@ const columns: TableColumnsType<DataType> = [
   }
 ]
 
-const TableExpedients: React.FC<Props> = ({ expedients, loading }) => (
-  <TableBase>
-    <Table<DataType>
-      columns={ columns }
-      dataSource={ expedients }
-      loading={ loading }
-      pagination={ { position: ['topRight'] } }
-      rowKey={ (expedient) => expedient.id }
-      scroll={ { x: 1200 } }
-    />
-  </TableBase>
-)
+const TableExpedients: React.FC<Props> = ({ expedients, loading, onChangePagination }) => {
+  return (
+    <TableBase>
+      <Table<DataType>
+        columns={ columns }
+        dataSource={ expedients }
+        loading={ loading }
+        pagination={ { position: ['topRight'], hideOnSinglePage: true, onChange: onChangePagination } }
+        rowKey={ (expedient) => expedient.id }
+        scroll={ { x: 1200 } }
+      />
+    </TableBase>
+  )
+}
 
 export default TableExpedients

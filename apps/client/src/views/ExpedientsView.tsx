@@ -9,6 +9,8 @@ import useNotify from '../composables/useNotification'
 import { Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import { DocumentFile } from './ExpedientView'
+import DocumentDetail from '../components/DocumentDetail'
 
 interface SearchParams {
   byText?: string[];
@@ -16,6 +18,9 @@ interface SearchParams {
   status?: EXPEDIENT_STATUS | null;
   updatedByUser?: string | null;
 }
+
+const dom = document
+let mentions: HTMLElement[] | Element[] = []
 
 const ExpedientsView: React.FC = () => {
   const [params, setParams] = useState<SearchParams>({
@@ -26,6 +31,13 @@ const ExpedientsView: React.FC = () => {
   })
   const navigate = useNavigate()
   const notify = useNotify()
+  const [documentFile, setDocumentFile] = useState<DocumentFile>({
+    id: '',
+    showDetail: false,
+    showUpload: false,
+    isLoading: false,
+    action: 'create'
+  })
 
   const { data, isFetching, isFetched } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params), refetchOnMount: true })
 
@@ -38,6 +50,38 @@ const ExpedientsView: React.FC = () => {
       notify({ message: 'La busqueda no produjo resultados', type: 'info' })
     }
   })
+
+  const docEventListeners = (event: any) => {
+    if (!(event.target instanceof HTMLSpanElement)) {
+      return
+    }
+    setDocumentFile(prev => ({ ...prev, showDetail: true, id: event.target.dataset['id'] }))
+  }
+
+  const setupMentionListeners = () => {
+    mentions.forEach((element) => {
+      element.removeEventListener('click', docEventListeners)
+    })
+
+    setTimeout(() => { 
+      mentions = Array.from(dom.getElementsByClassName('mention'))
+      mentions.forEach((element) => {
+        element.addEventListener('click', docEventListeners)
+      })
+    }, 1)
+  }
+
+  useEffect(() => {
+    if (data?.length) {
+      setupMentionListeners()
+    }
+
+    return () => {
+      mentions.forEach((element) => {
+        element.removeEventListener('click', docEventListeners)
+      })
+    }
+  }, [data])
 
   return (
     <>
@@ -65,7 +109,16 @@ const ExpedientsView: React.FC = () => {
       <TableExpedients
         expedients={ data! }
         loading={ isFetching }
+        onChangePagination={ setupMentionListeners }
       />
+
+      {
+        documentFile.showDetail &&
+          <DocumentDetail
+            documentFile={ documentFile }
+            setDocumentFile={ setDocumentFile }
+          />
+      }
     </>
   )
 }

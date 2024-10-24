@@ -1,5 +1,6 @@
-## TODO
+## FULL STACK MONOREPO
 
-- [ ] API - timezone createdAt updatedAt
-- [ ] CLIENT - expedient filters
-- [ ] CLIENT - expedient get by id
+- pnpm
+- Nest.js
+- React
+

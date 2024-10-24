@@ -1,17 +1,26 @@
 {
-  "name": "types",
-  "version": "0.0.0",
-  "description": "",
-  "main": "build/index.js",
+  "name": "@expedients/types",
+  "version": "0.0.1",
+  "description": "expedients types",
+  "author": "Christian Carrillo - christiancazu@gmail.com",
+  "private": true,
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "commonjs",
   "scripts": {
-    "clean": "rm -rf build tsconfig.tsbuildinfo",
-    "build": "tsc --incremental",
-    "start:dev": "tsc -w --incremental"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "build": "tsc",
+    "start:dev": "tsc -w"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "typescript": "^5.5.3"
-  }
+  },
+  "keywords": [
+    "pnpm",
+    "monorepo",
+    "typescript",
+    "lib",
+    "tsc"
+  ]
 }

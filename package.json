@@ -1,13 +1,26 @@
 {
-  "name": "expedients",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@expedients/root",
+  "version": "0.0.1",
+  "description": "expedients root",
+  "author": "Christian Carrillo christiancazu@gmail.com",
+  "private": true,
+  "license": "ISC",
   "scripts": {
     "api": "pnpm --filter api",
     "client": "pnpm --filter client",
     "types": "pnpm --filter types"
   },
-  "keywords": [],
-  "author": "Christian Carrillo",
-  "license": "ISC"
+  "keywords": [
+    "pnpm",
+    "monorepo",
+    "typescript",
+    "vite",
+    "lib",
+    "tsc",
+    "nest.js",
+    "react",
+    "ant design",
+    "aws",
+    "s3"
+  ]
 }

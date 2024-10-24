@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
 import { User } from 'src/modules/users/entities/user.entity';
-import { FIELD } from 'types';
+import { FIELD } from '@expedients/types';
 
 @Entity('documents')
 export class Document extends BaseEntity {

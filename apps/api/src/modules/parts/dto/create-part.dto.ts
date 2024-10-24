@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, MaxLength } from 'class-validator';
-import { FIELD, PART_TYPES } from 'types';
+import { FIELD, PART_TYPES } from '@expedients/types';
 
 export class CreatePartDto {
   @IsNotEmpty()

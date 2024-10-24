@@ -18,7 +18,6 @@ export class ExpedientsService {
 
   async create(userId: string, createExpedientDto: CreateExpedientDto) {
     const { parts, ...restExpedient } = createExpedientDto;
-    console.error({ parts });
 
     const expedient = this._expedientRepository.create(restExpedient);
 
@@ -29,11 +28,11 @@ export class ExpedientsService {
     try {
       const expedientSaved = await this._expedientRepository.save(expedient);
 
-      const result = this._partsRepository.create(
-        parts.map((part) => ({ ...part, expedient: expedientSaved }))
-      );
-
       if (parts?.length) {
+        const result = this._partsRepository.create(
+          parts.map((part) => ({ ...part, expedient: expedientSaved }))
+        );
+
         await this._partsRepository.save(result);
       }
 
@@ -115,9 +114,9 @@ export class ExpedientsService {
       )
     `);
 
-    const expedients = await qb.getMany();
+    qb.orderBy('expedients.updatedAt', 'DESC');
 
-    return expedients;
+    return await qb.getMany();
   }
 
   findOne(id: string) {

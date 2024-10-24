@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
-import { FIELD, PART_TYPES } from 'types';
+import { FIELD, PART_TYPES } from '@expedients/types';
 
 @Entity('parts')
 export class Part extends BaseEntity {

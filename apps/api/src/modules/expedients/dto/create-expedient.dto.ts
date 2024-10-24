@@ -9,7 +9,7 @@ import {
   ValidateNested
 } from 'class-validator';
 import { CreatePartDto } from 'src/modules/parts/dto/create-part.dto';
-import { EXPEDIENT_STATUS, FIELD } from 'types';
+import { EXPEDIENT_STATUS, FIELD } from '@expedients/types';
 
 export class CreateExpedientDto {
   @IsNotEmpty()

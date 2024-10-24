@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { FIELD, USER_ROLES } from 'types';
+import { FIELD, USER_ROLES } from '@expedients/types';
 import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
 import { Review } from 'src/modules/reviews/entities/review.entity';
 import { Document } from 'src/modules/documents/entities/document.entity';

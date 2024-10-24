@@ -5,7 +5,7 @@ import {
   IsString,
   MaxLength
 } from 'class-validator';
-import { FIELD, USER_ROLES } from 'types';
+import { FIELD, USER_ROLES } from '@expedients/types';
 
 export class CreateUserDto {
   @IsNotEmpty()

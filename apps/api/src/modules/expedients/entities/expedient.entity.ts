@@ -13,7 +13,7 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { Part } from 'src/modules/parts/entities/part.entity';
 import { Review } from 'src/modules/reviews/entities/review.entity';
 import { Document } from 'src/modules/documents/entities/document.entity';
-import { FIELD, EXPEDIENT_STATUS } from 'types';
+import { FIELD, EXPEDIENT_STATUS } from '@expedients/types';
 
 @Entity('expedients')
 export class Expedient extends BaseEntity {

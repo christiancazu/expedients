@@ -1,5 +1,5 @@
 import { IsEnum, IsIn, IsOptional } from 'class-validator';
-import { EXPEDIENT_STATUS } from 'types';
+import { EXPEDIENT_STATUS } from '@expedients/types';
 
 export class FindExpedientDto {
   @IsOptional()

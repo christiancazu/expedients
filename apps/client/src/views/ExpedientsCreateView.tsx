@@ -9,7 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createExpedient } from '../services/api.service'
 import useNotify from '../composables/useNotification'
 import { useNavigate } from 'react-router-dom'
-import { Expedient } from 'types'
+import { Expedient } from '@expedients/types'
 import { AxiosError } from 'axios'
 
 

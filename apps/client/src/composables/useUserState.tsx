@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { User } from 'types'
+import { User } from '@expedients/types'
 import { queryClient } from '../config/queryClient'
 import persisterUtil from '../utils/persister.util'
 import { setToken } from '../config/httpClient'

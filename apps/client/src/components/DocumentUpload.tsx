@@ -9,7 +9,7 @@ import { UploadChangeParam } from 'antd/es/upload'
 import { createDocument, updateDocument } from '../services/api.service'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../config/queryClient'
-import { Document, Expedient } from 'types'
+import { Document, Expedient } from '@expedients/types'
 import useNotify from '../composables/useNotification'
 import { useParams } from 'react-router-dom'
 
@@ -154,7 +154,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
           customRequest={ customRequest }
           defaultFileList={ defaultFileList }
           maxCount={ 1 }
-          itemRender={ (originNode, file, fileList, actions) => fileList.length ? <div className='mt-20'>
+          itemRender={ (_, file, fileList, actions) => fileList.length ? <div className='mt-20'>
             <p>Nuevo documento:</p>
             <div className='text-link d-flex justify-content-between align-items-center'>
               <p>

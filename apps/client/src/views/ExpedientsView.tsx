@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import TableExpedients from '../components/ExpedientsTable'
-import { Expedient, EXPEDIENT_STATUS } from 'types'
+import { Expedient, EXPEDIENT_STATUS } from '@expedients/types'
 import FilterExpedients from '../components/ExpedientsFilters'
 import Title from 'antd/es/typography/Title'
 import { getExpedients } from '../services/api.service'

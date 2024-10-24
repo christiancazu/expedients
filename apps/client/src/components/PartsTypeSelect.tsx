@@ -1,8 +1,8 @@
 import React from 'react'
 import { Form, Select } from 'antd'
-import { PART_TYPES } from 'types/src/index'
+import { PART_TYPES } from '@expedients/types'
 
-const expedientStatuOptions = Object.keys(PART_TYPES).map(status => ({ label: status.replace('_', ' '), value: status }))
+const partTypesOptions = Object.keys(PART_TYPES).map(status => ({ label: status.replace('_', ' '), value: status }))
 
 interface Props {
   label?: string;
@@ -15,7 +15,7 @@ const PartsTypeSelect: React.FC<Props> = (props) => {
     <Form.Item { ...props }>
       <Select
         allowClear
-        options={ expedientStatuOptions }
+        options={ partTypesOptions }
         placeholder="Tipo"
         style={ { width: '100%' } }
         filterOption={ (input, option) =>

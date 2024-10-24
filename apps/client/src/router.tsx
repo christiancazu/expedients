@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
+import { createHashRouter,  Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 import React from 'react'
 import useUserState from './composables/useUserState'
 // import HomeView from './views/HomeView'
@@ -44,7 +44,7 @@ const AuthRoutes: React.FC = () => {
   return <Outlet />
 }
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <SessionRoutes />,

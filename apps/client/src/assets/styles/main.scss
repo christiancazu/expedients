@@ -1,8 +1,8 @@
-@import 'antd/dist/reset.css';
-@import './spacing';
-@import './flex';
+@use './_spacing.scss' as *;
+@use './_flex.scss' as *;
+@use './_login-view.scss' as *;
 
-@import './login-view';
+@use 'antd/dist/reset.css' as *;
 
 h1,
 h2,

@@ -10,7 +10,12 @@ export default defineConfig(() => {
     },
     build: {
       commonjsOptions: {
-        include: [/shared/, /node_modules/]
+        include: [/types/, /node_modules/]
+      }
+    },
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler'
       }
     },
     server: {

@@ -17,7 +17,12 @@ const config = {
   entities: [`${__dirname}../../../dist/**/*.entity{.ts,.js}`],
   migrations: [`${__dirname}../../migrations/*{.ts,.js}`],
   synchronize: false,
-  ssl: process.env.NODE_ENV === 'production',
+  ssl: {
+    rejectUnauthorized: false
+  },
+  dialectOptions: {
+    ssl: process.env.NODE_ENV === 'production'
+  },
   migrationsTableName: 'migrations'
 };
 

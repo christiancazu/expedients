@@ -26,8 +26,7 @@ const SignInView: React.FC = () => {
       navigate('/')
       notify({ message: 'La sessión ha sido iniciada con éxito' })
     },
-    onError: (err) => {
-      console.error(err)
+    onError: () => {
       notify({ message: 'El usuario o la contraseña son incorrectos', type: 'error' })
     }
   })

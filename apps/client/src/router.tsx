@@ -1,13 +1,14 @@
 import { createHashRouter,  Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
-import React from 'react'
+import { lazy } from 'react'
 import useUserState from './composables/useUserState'
-// import HomeView from './views/HomeView'
-import ExpedientsView from './views/ExpedientsView'
-import ExpedientView from './views/ExpedientView'
-import SignInView from './views/SignInView'
-import NotFoundView from './views/NotFoundView'
-import MainLayout from './layouts/MainLayout'
-import ExpedientsCreateView from './views/ExpedientsCreateView'
+
+// const HomeView = lazy(() => import('./views/HomeView'))
+const ExpedientsView = lazy(() => import('./views/ExpedientsView'))
+const ExpedientView = lazy(() => import('./views/ExpedientView'))
+const SignInView = lazy(() => import('./views/SignInView'))
+const NotFoundView = lazy(() => import('./views/NotFoundView'))
+const MainLayout = lazy(() => import('./layouts/MainLayout'))
+const ExpedientsCreateView = lazy(() => import('./views/ExpedientsCreateView'))
 
 const SessionRoutes: React.FC = () => {
   const { user, purgeUserSession } = useUserState()

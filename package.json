@@ -10,6 +10,7 @@
     "client": "pnpm --filter client",
     "types": "pnpm --filter types"
   },
+  "repository": "https://github.com/christiancazu/expedients",
   "keywords": [
     "pnpm",
     "monorepo",

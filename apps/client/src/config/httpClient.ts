@@ -5,7 +5,7 @@ import { message } from 'antd'
 const sessionToken = localStorage.getItem('token') as string
 
 export const httpClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL || '/api'
 })
 
 httpClient.interceptors.response.use((response) => {
@@ -16,7 +16,7 @@ httpClient.interceptors.response.use((response) => {
   }
   
   if (error.status === 401) {
-    localStorage.clear()
+    persisterUtil.clear()
     message.error('La sessión ha finalizado, ingrese nuevamente')
     window.location.href = '/auth/sign-in'
   }

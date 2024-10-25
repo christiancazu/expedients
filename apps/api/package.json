@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "NODE_ENV=production node dist/main",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./src/config/typeorm.ts",
     "migration:generate": "npx typeorm-ts-node-commonjs -d ./src/config/typeorm.ts migration:generate src/migrations/$name",

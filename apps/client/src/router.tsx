@@ -1,6 +1,7 @@
 import { createHashRouter,  Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import useUserState from './composables/useUserState'
+import { Spin } from 'antd'
 
 // const HomeView = lazy(() => import('./views/HomeView'))
 const ExpedientsView = lazy(() => import('./views/ExpedientsView'))
@@ -88,6 +89,15 @@ const router = createHashRouter([
 ])
 
 const RouterProviderComponent: React.FC<{ children?: React.ReactNode }> =
-  () => <RouterProvider router={ router } />
+  () => (
+    <Suspense
+      fallback={ <Spin
+        className='d-flex justify-content-center my-20'
+        size="large"
+      /> }
+    >
+      <RouterProvider router={ router } />
+    </Suspense>
+  )
 
 export default RouterProviderComponent

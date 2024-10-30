@@ -7,7 +7,7 @@ import ExpedientStatusSelect from './ExpedientStatusSelect'
 const textFilterOptions: CheckboxOptionType[] = [
   { label: 'Código', value: 'code' },
   { label: 'Materia', value: 'subject' },
-  { label: 'Corte', value: 'court' }
+  { label: 'Juzgado', value: 'court' }
 ]
 
 interface Props {

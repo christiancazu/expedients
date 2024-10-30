@@ -67,7 +67,7 @@ const ExpedientsCreateView: React.FC = () => {
           onFinish={ onSearch }
         >
           <Form.Item
-            label="Código"
+            label="n.º Expediente"
             name="code"
             rules={ [{ required: true, message: 'El campo es requerido' }] }
           >
@@ -83,7 +83,15 @@ const ExpedientsCreateView: React.FC = () => {
           </Form.Item>
 
           <Form.Item
-            label="Corte"
+            label="Proceso"
+            name="process"
+            rules={ [{ required: true, message: 'El campo es requerido' }] }
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Juzgado"
             name="court"
             rules={ [{ required: true, message: 'El campo es requerido' }] }
           >

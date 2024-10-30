@@ -35,6 +35,13 @@ export class Expedient extends BaseEntity {
 
   @Column({
     type: 'varchar',
+    length: FIELD.EXPEDIENT_PROCESS_MAX_LENGTH,
+    nullable: true
+  })
+  process: string;
+
+  @Column({
+    type: 'varchar',
     length: FIELD.EXPEDIENT_COURT_MAX_LENGTH
   })
   court: string;
@@ -54,6 +61,12 @@ export class Expedient extends BaseEntity {
     nullable: true
   })
   statusDescription: string;
+
+  @ManyToOne(() => User, (user) => user.assignedLawyerExpedients)
+  assignedLawyer: User;
+
+  @ManyToOne(() => User, (user) => user.assignedAssistantExpedients)
+  assignedAssistant: User;
 
   @ManyToOne(() => User, (user) => user.createdExpedients)
   createdByUser: User;

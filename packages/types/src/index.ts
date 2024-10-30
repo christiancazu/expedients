@@ -6,6 +6,7 @@ export const FIELD = {
 
   EXPEDIENT_CODE_MAX_LENGTH: 100,
   EXPEDIENT_SUBJECT_MAX_LENGTH: 100,
+  EXPEDIENT_PROCESS_MAX_LENGTH: 100,
   EXPEDIENT_COURT_MAX_LENGTH: 100,
   EXPEDIENT_STATUS_DESCRIPTION_MAX_LENGTH: 255,
 
@@ -55,6 +56,7 @@ export type Expedient = {
   id: string
   code: string
   subject: string
+  process: string
   court: string
   status: EXPEDIENT_STATUS
   statusDescription?: string

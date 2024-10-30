@@ -21,7 +21,7 @@ type Props = {
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: 'Código', dataIndex: 'code', key: 'code', width: 150,
+    title: 'n.º Expediente', dataIndex: 'code', key: 'code', width: 150,
     render: (text, expedient) =>
       <Link to={ `/expedients/${expedient.id}` }>
         <Tooltip title={ text }>
@@ -44,10 +44,13 @@ const columns: TableColumnsType<DataType> = [
       </Link>
   },
   {
-    title: 'Material', dataIndex: 'subject', key: 'subject'
+    title: 'Materia', dataIndex: 'subject', key: 'subject'
   },
   {
-    title: 'Corte', dataIndex: 'court', key: 'court'
+    title: 'Proceso', dataIndex: 'process', key: 'process'
+  },
+  {
+    title: 'Juzgado', dataIndex: 'court', key: 'court'
   },
   {
     title: 'Estado', dataIndex: 'status', key: 'status', width: 140, align: 'center',

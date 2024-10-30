@@ -98,7 +98,7 @@ const ExpedientView: React.FC = () => {
                     level={ 5 }
                   >
                     {'Expediente: '}
-                    {data?.code}
+                    {data.code}
                   </Title>
                 </Col>
 
@@ -123,13 +123,20 @@ const ExpedientView: React.FC = () => {
                   <p className='mb-12'>
                     <strong>Materia:</strong>
                     {' '}
-                    {data?.subject}
+                    {data.subject}
                   </p>
 
                   <p className='mb-12'>
-                    <strong>Corte:</strong>
+                    <strong>Proceso:</strong>
                     {' '}
-                    {data?.court}
+                    {data.process}
+                  </p>
+
+
+                  <p className='mb-12'>
+                    <strong>Juzgado:</strong>
+                    {' '}
+                    {data.court}
                   </p>
 
                   <p className='mb-12'>
@@ -149,7 +156,7 @@ const ExpedientView: React.FC = () => {
                   </p>
                   <div className='mb-12'>
                     {
-                      data?.parts.map(part =>
+                      data.parts.map(part =>
                         <p
                           className='mb-8'
                           key={ part.id }

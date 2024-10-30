@@ -50,6 +50,12 @@ export class User extends BaseEntity {
   @OneToMany(() => Expedient, (expedient) => expedient.createdByUser)
   createdExpedients: Expedient[];
 
+  @OneToMany(() => Expedient, (expedient) => expedient.assignedLawyer)
+  assignedLawyerExpedients: Expedient[];
+
+  @OneToMany(() => Expedient, (expedient) => expedient.assignedAssistant)
+  assignedAssistantExpedients: Expedient[];
+
   @OneToMany(() => Expedient, (expedient) => expedient.updatedByUser)
   updatedExpedients: Expedient[];
 

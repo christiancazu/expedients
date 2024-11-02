@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import TableExpedients from '../components/ExpedientsTable'
-import { Expedient, EXPEDIENT_STATUS } from '@expedients/types'
+import { Expedient, EXPEDIENT_STATUS } from '@expedients/shared'
 import FilterExpedients from '../components/ExpedientsFilters'
 import Title from 'antd/es/typography/Title'
 import { getExpedients } from '../services/api.service'
@@ -41,7 +41,7 @@ const ExpedientsView: React.FC = () => {
 
   const { data, isFetching, isFetched } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params), refetchOnMount: true })
 
-  function handleSearch(search: SearchParams) {
+  const handleSearch = (search: SearchParams) => {
     setParams(prev => ({ prev, ...search }))
   }
 

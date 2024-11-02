@@ -1,10 +1,10 @@
-import { registerAs } from '@nestjs/config';
-import { config as dotenvConfig } from 'dotenv';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { registerAs } from '@nestjs/config'
+import { config as dotenvConfig } from 'dotenv'
+import { DataSource, DataSourceOptions } from 'typeorm'
 
 dotenvConfig({
   path: '../../.env'
-});
+})
 
 const config = {
   name: 'default',
@@ -24,7 +24,7 @@ const config = {
     ssl: process.env.NODE_ENV === 'production'
   },
   migrationsTableName: 'migrations'
-};
+}
 
-export const registerTypeOrm = registerAs('typeorm', () => config);
-export default new DataSource(config as DataSourceOptions);
+export const registerTypeOrm = registerAs('typeorm', () => config)
+export default new DataSource(config as DataSourceOptions)

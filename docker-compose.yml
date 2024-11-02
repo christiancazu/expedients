@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     build:
@@ -11,6 +9,6 @@ services:
     ports:
       - ${PORT}:${PORT}
     environment:
-      NODE_ENV: production
+      NODE_ENV: production-local
     restart: on-failure
-    network_mode: host
+    network_mode: host # if database is in localhost

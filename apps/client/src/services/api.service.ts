@@ -1,4 +1,4 @@
-import { Expedient, User } from '@expedients/types'
+import { Expedient, User } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
 import { AxiosRequestConfig } from 'axios'
 

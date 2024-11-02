@@ -1,18 +1,18 @@
-import { IsEnum, IsIn, IsOptional } from 'class-validator';
-import { EXPEDIENT_STATUS } from '@expedients/types';
+import { IsEnum, IsIn, IsOptional } from 'class-validator'
+import { EXPEDIENT_STATUS } from '@expedients/shared'
 
 export class FindExpedientDto {
   @IsOptional()
   @IsIn(['code', 'subject', 'court'], { each: true })
-  byText: string;
+  byText: string
 
   @IsOptional()
-  text: string;
+  text: string
 
   @IsOptional()
-  updatedByUser: string;
+  updatedByUser: string
 
   @IsOptional()
   @IsEnum(EXPEDIENT_STATUS)
-  status?: EXPEDIENT_STATUS;
+  status?: EXPEDIENT_STATUS
 }

@@ -1,12 +1,12 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import {
   GetObjectCommand,
   PutObjectCommand,
   S3Client
-} from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+} from '@aws-sdk/client-s3'
+import { v4 as uuidv4 } from 'uuid'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 @Injectable()
 export class UploadService {
@@ -18,13 +18,13 @@ export class UploadService {
       accessKeyId: this._configService.get<string>('AWS_PUBLIC_KEY')!,
       secretAccessKey: this._configService.get<string>('AWS_SECRECT_KEY')!
     }
-  });
+  })
 
   private readonly bucketName =
-    this._configService.get<string>('AWS_BUCKET_NAME');
+    this._configService.get<string>('AWS_BUCKET_NAME')
 
   async put(file: Express.Multer.File, key?: string) {
-    const Key = key ?? uuidv4();
+    const Key = key ?? uuidv4()
 
     try {
       const result = await this._s3Client.send(
@@ -37,14 +37,14 @@ export class UploadService {
             fileName: file.originalname
           }
         })
-      );
+      )
 
       return {
         ...result,
         key: Key
-      };
+      }
     } catch (error) {
-      throw new UnprocessableEntityException(error);
+      throw new UnprocessableEntityException(error)
     }
   }
 
@@ -58,6 +58,6 @@ export class UploadService {
       {
         expiresIn: 60
       }
-    );
+    )
   }
 }

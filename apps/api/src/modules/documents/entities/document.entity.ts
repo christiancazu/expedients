@@ -7,35 +7,35 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
-} from 'typeorm';
-import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
-import { User } from 'src/modules/users/entities/user.entity';
-import { FIELD } from '@expedients/types';
+} from 'typeorm'
+import { Expedient } from 'src/modules/expedients/entities/expedient.entity'
+import { User } from 'src/modules/users/entities/user.entity'
+import { FIELD } from '@expedients/shared'
 
 @Entity('documents')
 export class Document extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ type: 'varchar', length: FIELD.DOCUMENT_NAME_MAX_LENGTH })
-  name: string;
+  name: string
 
   @Column({ type: 'varchar', length: FIELD.DOCUMENT_KEY_MAX_LENGTH })
-  key: string;
+  key: string
 
   @ManyToOne(() => Expedient, (expedient) => expedient.documents)
-  expedient: Expedient;
+  expedient: Expedient
 
   @ManyToOne(() => User, (user) => user.createdDocuments)
   @JoinColumn()
-  createdByUser: User;
+  createdByUser: User
 
   @ManyToOne(() => User, (user) => user.updatedDocuments)
-  updatedByUser: User;
+  updatedByUser: User
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }

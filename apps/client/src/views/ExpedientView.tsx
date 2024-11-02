@@ -8,7 +8,7 @@ import TextEditor from '../components/text-editor/TextEditor'
 import DocumentDetail from '../components/DocumentDetail'
 
 import { getExpedient } from '../services/api.service'
-import { Expedient } from '@expedients/types'
+import { Expedient } from '@expedients/shared'
 import { dateUtil } from '../utils'
 import { EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DocumentUpload from '../components/DocumentUpload'

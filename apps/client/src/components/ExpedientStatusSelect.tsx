@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Select } from 'antd'
-import { EXPEDIENT_STATUS } from '@expedients/types'
+import { EXPEDIENT_STATUS } from '@expedients/shared'
 
 const expedientStatusOptions = Object.keys(EXPEDIENT_STATUS).map(status => ({ label: status.replace('_', ' '), value: status }))
 

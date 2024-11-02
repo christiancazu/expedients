@@ -9,7 +9,7 @@ import { UploadChangeParam } from 'antd/es/upload'
 import { createDocument, updateDocument } from '../services/api.service'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../config/queryClient'
-import { Document, Expedient } from '@expedients/types'
+import { Document, Expedient } from '@expedients/shared'
 import useNotify from '../composables/useNotification'
 import { useParams } from 'react-router-dom'
 

@@ -1,20 +1,23 @@
 {
-  "name": "@expedients/types",
+  "name": "@expedients/shared",
   "version": "0.0.1",
-  "description": "expedients types",
+  "description": "expedients shared",
   "author": "Christian Carrillo - christiancazu@gmail.com",
   "private": true,
   "license": "ISC",
-  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
   "type": "commonjs",
   "scripts": {
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
-    "build": "tsc",
-    "start:dev": "tsc -w"
+    "build": "vite build",
+    "start:dev": "vite"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "vite-plugin-dts": "^4.3.0"
   },
   "keywords": [
     "pnpm",

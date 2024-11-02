@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Button, Modal, Typography } from 'antd'
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { Document } from '@expedients/types'
+import { Document } from '@expedients/shared'
 import { dateUtil } from '../utils'
 import { getDocument } from '../services/api.service'
 import { DownloadOutlined } from '@ant-design/icons'

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Button, Table, TableProps, Tooltip, type TableColumnsType } from 'antd'
-import { Expedient,EXPEDIENT_STATUS, Review, User } from '@expedients/types'
+import { Expedient,EXPEDIENT_STATUS, Review, User } from '@expedients/shared'
 import { dateUtil } from '../utils'
 import { SearchOutlined } from '@ant-design/icons'
 import { TableBase } from './base/TableBase'

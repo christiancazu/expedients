@@ -6,15 +6,15 @@ export default defineConfig(() => {
   return {
     plugins: [react()],
     optimizeDeps: {
-      include: ['@expedients/types']
+      include: ['@expedients/shared']
     },
     build: {
       commonjsOptions: {
-        include: [/types/, /node_modules/]
+        include: [/shared/, /node_modules/]
       }
     },
     preprocessorOptions: {
-      scss: {
+      sass: {
         api: 'modern-compiler'
       }
     },

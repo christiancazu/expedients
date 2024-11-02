@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../users/entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import { SignInDto } from './dto/sign-in-auth.dto';
-import { UsersService } from '../users/users.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { Injectable } from '@nestjs/common'
+import { User } from '../users/entities/user.entity'
+import { JwtService } from '@nestjs/jwt'
+import { SignInDto } from './dto/sign-in-auth.dto'
+import { UsersService } from '../users/users.service'
+import { CreateUserDto } from '../users/dto/create-user.dto'
 
 @Injectable()
 export class AuthService {
@@ -16,13 +16,13 @@ export class AuthService {
     const user = await this._usersService.findByEmailAndPassword({
       email,
       password
-    });
+    })
 
-    return this.provideSession(user);
+    return this.provideSession(user)
   }
 
   async signUp(createUserDto: CreateUserDto) {
-    return this._usersService.create(createUserDto);
+    return this._usersService.create(createUserDto)
   }
 
   private async provideSession(
@@ -35,6 +35,6 @@ export class AuthService {
         email: user.email,
         role: user.role
       })
-    };
+    }
   }
 }

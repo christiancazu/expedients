@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Select } from 'antd'
-import { PART_TYPES } from '@expedients/types'
+import { PART_TYPES } from '@expedients/shared'
 
 const partTypesOptions = Object.keys(PART_TYPES).map(status => ({ label: status.replace('_', ' '), value: status }))
 

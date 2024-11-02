@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete
-} from '@nestjs/common';
-import { PartsService } from './parts.service';
-import { CreatePartDto } from './dto/create-part.dto';
+} from '@nestjs/common'
+import { PartsService } from './parts.service'
+import { CreatePartDto } from './dto/create-part.dto'
 
 @Controller('parts')
 export class PartsController {
@@ -16,26 +16,26 @@ export class PartsController {
 
   @Post()
   create(@Body() createPartDto: CreatePartDto) {
-    return this.partsService.create(createPartDto);
+    return this.partsService.create(createPartDto)
   }
 
   @Get()
   findAll() {
-    return this.partsService.findAll();
+    return this.partsService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.partsService.findOne(+id);
+    return this.partsService.findOne(+id)
   }
 
   @Patch(':id')
   update(@Param('id') id: string) {
-    return this.partsService.update(+id);
+    return this.partsService.update(+id)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.partsService.remove(+id);
+    return this.partsService.remove(+id)
   }
 }

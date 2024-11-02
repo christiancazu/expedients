@@ -5,7 +5,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { Button, Modal } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
-import { Expedient } from '@expedients/types'
+import { Expedient } from '@expedients/shared'
 
 import { createExpedientReview } from '../../services/api.service.ts'
 import { queryClient } from '../../config/queryClient.ts'

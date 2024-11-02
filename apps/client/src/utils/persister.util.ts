@@ -1,4 +1,4 @@
-import { User } from '@expedients/types'
+import { User } from '@expedients/shared'
 
 export default {
   set: (key: string, value: any) => localStorage.setItem(key, value),

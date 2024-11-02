@@ -12,10 +12,10 @@ import {
   HttpStatus,
   Request,
   ParseUUIDPipe
-} from '@nestjs/common';
-import { DocumentsService } from './documents.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateDocumentDto } from './dto/create-document.dto';
+} from '@nestjs/common'
+import { DocumentsService } from './documents.service'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { CreateDocumentDto } from './dto/create-document.dto'
 
 @Controller('documents')
 export class DocumentsController {
@@ -35,17 +35,17 @@ export class DocumentsController {
     @Body() createDocumentDto: CreateDocumentDto,
     @Request() req: any
   ) {
-    return this.documentsService.create(file, createDocumentDto, req.user.id);
+    return this.documentsService.create(file, createDocumentDto, req.user.id)
   }
 
   @Get()
   findAll() {
-    return this.documentsService.findOne('asd');
+    return this.documentsService.findOne('asd')
   }
 
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.documentsService.findOne(id);
+    return this.documentsService.findOne(id)
   }
 
   @Patch(':id')
@@ -62,11 +62,11 @@ export class DocumentsController {
     file: Express.Multer.File,
     @Request() req: any
   ) {
-    return this.documentsService.update(id, file, req.user.id);
+    return this.documentsService.update(id, file, req.user.id)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.documentsService.remove(+id);
+    return this.documentsService.remove(+id)
   }
 }

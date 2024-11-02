@@ -7,33 +7,33 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import { FIELD, USER_ROLES } from '@expedients/types';
-import { Expedient } from 'src/modules/expedients/entities/expedient.entity';
-import { Review } from 'src/modules/reviews/entities/review.entity';
-import { Document } from 'src/modules/documents/entities/document.entity';
+} from 'typeorm'
+import * as bcrypt from 'bcrypt'
+import { FIELD, USER_ROLES } from '@expedients/shared'
+import { Expedient } from 'src/modules/expedients/entities/expedient.entity'
+import { Review } from 'src/modules/reviews/entities/review.entity'
+import { Document } from 'src/modules/documents/entities/document.entity'
 
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({
     unique: true,
     type: 'varchar',
     length: FIELD.USER_EMAIL_MAX_LENGTH
   })
-  email: string;
+  email: string
 
   @Column({ type: 'varchar', length: 200 })
-  password: string;
+  password: string
 
   @Column({ type: 'varchar', length: FIELD.USER_FIRST_NAME_MAX_LENGTH })
-  firstName: string;
+  firstName: string
 
   @Column({ type: 'varchar', length: FIELD.USER_LAST_NAME_MAX_LENGTH })
-  lastName: string;
+  lastName: string
 
   @Column({
     type: 'enum',
@@ -42,57 +42,57 @@ export class User extends BaseEntity {
     enum: USER_ROLES,
     default: USER_ROLES.PRACTICANTE
   })
-  role: USER_ROLES;
+  role: USER_ROLES
 
   @OneToMany(() => Review, (review) => review.createdByUser)
-  reviews: Review[];
+  reviews: Review[]
 
   @OneToMany(() => Expedient, (expedient) => expedient.createdByUser)
-  createdExpedients: Expedient[];
+  createdExpedients: Expedient[]
 
   @OneToMany(() => Expedient, (expedient) => expedient.assignedLawyer)
-  assignedLawyerExpedients: Expedient[];
+  assignedLawyerExpedients: Expedient[]
 
   @OneToMany(() => Expedient, (expedient) => expedient.assignedAssistant)
-  assignedAssistantExpedients: Expedient[];
+  assignedAssistantExpedients: Expedient[]
 
   @OneToMany(() => Expedient, (expedient) => expedient.updatedByUser)
-  updatedExpedients: Expedient[];
+  updatedExpedients: Expedient[]
 
   @OneToMany(() => Document, (document) => document.createdByUser)
-  createdDocuments: Document[];
+  createdDocuments: Document[]
 
   @OneToMany(() => Document, (document) => document.updatedByUser)
-  updatedDocuments: Document[];
+  updatedDocuments: Document[]
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10)
   }
 
   @BeforeInsert()
   async emailLowerCase(): Promise<void> {
-    this.email = this.email.toLowerCase();
+    this.email = this.email.toLowerCase()
   }
 
   async validatePassword(password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password);
+    return await bcrypt.compare(password, this.password)
   }
 
   comparePassword(attempt: string): Promise<boolean> {
-    return bcrypt.compare(attempt, this.password);
+    return bcrypt.compare(attempt, this.password)
   }
 
   toJSON() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    delete this.password;
-    return this;
+    delete this.password
+    return this
   }
 }

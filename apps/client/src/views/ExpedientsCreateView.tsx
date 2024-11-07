@@ -11,6 +11,7 @@ import useNotify from '../composables/useNotification'
 import { useNavigate } from 'react-router-dom'
 import { Expedient } from '@expedients/shared'
 import { AxiosError } from 'axios'
+import UsersSelect from '../components/UsersSelect'
 
 
 const ExpedientsCreateView: React.FC = () => {
@@ -40,10 +41,6 @@ const ExpedientsCreateView: React.FC = () => {
     }
   })
 
-  const onSearch = () => {
-    mutate()
-  }
-
   return (
     <div style={ sectionStyle }>
       <Title
@@ -64,10 +61,10 @@ const ExpedientsCreateView: React.FC = () => {
           style={ { width: '100%', maxWidth: 800 } }
           wrapperCol={ { xs: { span: 24 }, lg: { span: 18 } } }
           // onChange={ handleOnChange }
-          onFinish={ onSearch }
+          onFinish={ mutate }
         >
           <Form.Item
-            label="n.º Expediente"
+            label="Nº Expediente"
             name="code"
             rules={ [{ required: true, message: 'El campo es requerido' }] }
           >
@@ -110,6 +107,16 @@ const ExpedientsCreateView: React.FC = () => {
           >
             <Input />
           </Form.Item>
+
+          <UsersSelect
+            label={ 'Abogado asignado' }
+            name={ 'assignedLawyerId' }
+          />
+
+          <UsersSelect
+            label={ 'Asistente asignado' }
+            name={ 'assignedAssistantId' }
+          />
 
           <Form.List
             name="parts"

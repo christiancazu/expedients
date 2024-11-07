@@ -2,13 +2,16 @@
 import RouterProvider from './router'
 import QueryClientProvider from './query'
 import NotifyProvider from './notify'
+import ThemeProvider from './theme'
 
 function App() {
   return (
     <QueryClientProvider>
-      <NotifyProvider>
-        <RouterProvider />
-      </NotifyProvider>
+      <ThemeProvider>
+        <NotifyProvider>
+          <RouterProvider />
+        </NotifyProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }

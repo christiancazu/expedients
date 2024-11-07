@@ -4,7 +4,7 @@ import globals from 'globals'
 export default [
   ...sharedEslint,
   {
-    ignores: ['**/eslint.config.mjs'],
+    ignores: ['**/eslint.config.mjs', '**/migrations/**'],
   },
   {
     languageOptions: {

@@ -6,20 +6,21 @@ import {
   Patch,
   Param,
   Delete,
-  Request,
   Query
 } from '@nestjs/common'
 import { ExpedientsService } from './expedients.service'
 import { CreateExpedientDto } from './dto/create-expedient.dto'
 import { FindExpedientDto } from './dto/find-expedient.dto'
+import { UserRequest } from '../users/user-request.decorator'
+import { User } from '../users/entities/user.entity'
 
 @Controller('expedients')
 export class ExpedientsController {
   constructor(private readonly expedientsService: ExpedientsService) {}
 
   @Post()
-  create(@Body() createExpedientDto: CreateExpedientDto, @Request() req: any) {
-    return this.expedientsService.create(req.user.id, createExpedientDto)
+  create(@Body() createExpedientDto: CreateExpedientDto, @UserRequest() user: User) {
+    return this.expedientsService.create(user.id, createExpedientDto)
   }
 
   @Get()

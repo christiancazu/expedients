@@ -1,26 +1,42 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Mention from '@tiptap/extension-mention'
+
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Button, Modal } from 'antd'
+import { Badge, Button, DatePicker, GetProps, Modal, Typography } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Expedient } from '@expedients/shared'
+
+import dayjs from 'dayjs'
 
 import { createExpedientReview } from '../../services/api.service.ts'
 import { queryClient } from '../../config/queryClient.ts'
 import suggestion from './suggestion.ts'
-import useNotify from '../../composables/useNotification.tsx'
+import useNotify from '../../composables/useNotification'
 
 import './text-editor.scss'
+import useUserState from '../../composables/useUserState.tsx'
+
+const { Text } = Typography
 
 interface DocumentSuggestion {
   id: string;
   label: string;
 }
 
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>
+
+const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+  return current && current > dayjs().endOf('day')
+}
+
 const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { user } = useUserState()
+
+  const now = dayjs(new Date().toISOString(), 'YYYY-MM-DD HH:mm').subtract(5, 'hour')
+  const createdAt = useRef(new Date().toISOString())
 
   const expedient = queryClient.getQueryData<Expedient>(['expedient', expedientId]) as Expedient
 
@@ -69,11 +85,41 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
     editor?.destroy()
   }, [expedient])
 
-  const { isFetching, refetch } = useQuery(
-    {
-      queryKey: ['createExpedient'],
-      queryFn: () => createExpedientReview({ description: editor?.getHTML() as string, expedientId }), enabled: false
-    })
+  const { isPending, mutate } = useMutation({
+    mutationFn: () => createExpedientReview({
+      description: editor?.getHTML() as string,
+      createdAt: createdAt.current,
+      expedientId
+    }),
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ['expedient', expedientId],
+        (old: Expedient) => ({
+          ...old,
+          updatedAt: data.createdAt,
+          reviews: [
+            {
+              description: editor?.getHTML() as string,
+              id: data.id,
+              createdAt: data.createdAt,
+              createdByUser: {
+                id: user?.id,
+                firstName: user?.firstName,
+                lastName: user?.lastName
+              }
+            },
+            ...old.reviews
+          ].sort((a, b) => (dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1))
+        }))
+
+      notify({ message: 'Informe creado con éxito' })
+
+      handleCloseModal()
+    },
+    onError() {
+      notify({ message: 'Ha sucedido un error al crear el informe', type: 'error' })
+    }
+  })
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -82,34 +128,13 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
     }, 1)
   }
 
-  const handleOk = async () => {
+  const handleOk = () => {
     if (editor?.getText() === '') {
       notify({ message: 'El informe no puede estar vacío', type: 'info' })
       return
     }
-    
-    const { status, data } = await refetch()
 
-    if (status === 'success') {
-      queryClient.setQueryData(
-        ['expedient', expedientId],
-        (old: Expedient) => ({
-          ...old,
-          updatedAt: data.createdAt,
-          reviews: [{
-            description: editor?.getHTML() as string,
-            id: data.id,
-            createdAt: data.createdAt,
-            createdbyUser: {
-              firstName: 'christian', // TODO FROM USER
-              lastName: 'christian'
-            }
-          }, ...old.reviews]
-        }))
-      notify({ message: 'Informe creado con éxito' })
-
-      handleCloseModal()
-    }
+    mutate()
   }
 
   const handleCloseModal = () => {
@@ -140,7 +165,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
           <Button
             icon={ <FileTextOutlined /> }
             key="submit"
-            loading={ isFetching }
+            loading={ isPending }
             type="primary"
             onClick={ handleOk }
           >
@@ -149,7 +174,34 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         ] }
         onCancel={ handleCloseModal }
       >
-        <EditorContent editor={ editor } />
+        <DatePicker
+          allowClear={ false }
+          className='mb-20'
+          defaultValue={ now }
+          disabledDate={ disabledDate }
+          placeholder='Seleccione una fecha'
+          onChange={ (value) => {
+            createdAt.current = value.toISOString()
+          } }
+        />
+
+        <EditorContent
+          editor={ editor }
+        />
+
+        <div className='d-flex my-8'>
+          <Badge
+            color="cyan"
+            count={ 'TIP' }
+          />
+          <Text
+            className='ml-8'
+            type="secondary"
+          >
+            usar @ para referenciar un documento
+          </Text>
+        </div>
+
       </Modal>
     </>
   )

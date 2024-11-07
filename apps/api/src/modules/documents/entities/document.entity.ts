@@ -23,6 +23,9 @@ export class Document extends BaseEntity {
   @Column({ type: 'varchar', length: FIELD.DOCUMENT_KEY_MAX_LENGTH })
   key: string
 
+  @Column({ type: 'varchar', length: FIELD.DOCUMENT_EXTENSION_MAX_LENGTH })
+  extension: string
+
   @ManyToOne(() => Expedient, (expedient) => expedient.documents)
   expedient: Expedient
 

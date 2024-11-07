@@ -23,6 +23,6 @@ export class Review extends BaseEntity {
   @ManyToOne(() => User, (user) => user.reviews)
   createdByUser: User
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(-5)' })
   createdAt: Date
 }

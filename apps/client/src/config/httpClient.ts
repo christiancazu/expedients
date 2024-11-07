@@ -14,7 +14,7 @@ httpClient.interceptors.response.use((response) => {
   if (error?.code === 'ERR_NETWORK') {
     message.error('No hay conexión con el servidor')
   }
-  
+
   if (error.status === 401) {
     persisterUtil.clear()
     message.error('La sessión ha finalizado, ingrese nuevamente')

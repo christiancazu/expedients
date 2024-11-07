@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Checkbox, Input, theme, Button, Flex, Form, Row, Col, CheckboxOptionType } from 'antd'
 import { ClearOutlined, FilterOutlined, SearchOutlined } from '@ant-design/icons'
-import SelectUsers from './UsersSelect'
+import UsersSelect from './UsersSelect'
 import ExpedientStatusSelect from './ExpedientStatusSelect'
 
 const textFilterOptions: CheckboxOptionType[] = [
@@ -47,7 +47,7 @@ const FilterExpedients: React.FC<Props> = ({ onSearch, loading }) => {
             <FilterOutlined />
           </h3>
 
-          {canDeleteFilter && 
+          {canDeleteFilter &&
             <Button
               danger
               icon={ <ClearOutlined /> }
@@ -95,9 +95,15 @@ const FilterExpedients: React.FC<Props> = ({ onSearch, loading }) => {
             md={ 4 }
             sm={ 24 }
           >
-            <Form.Item name="updatedByUser">
-              <SelectUsers setUpdatedByUser={ updatedByUser => { form.setFieldsValue({ updatedByUser }); handleOnChange() } } />
-            </Form.Item>
+            <UsersSelect
+              name={ 'updatedByUser' }
+              placeholder={ 'Actualizado por' }
+              onChange={ (updatedByUser) => { form.setFieldsValue({ updatedByUser }); handleOnChange() } }
+            />
+
+            {/* <Form.Item name="updatedByUser">
+              <UsersSelect ={ updatedByUser => { form.setFieldsValue({ updatedByUser }); handleOnChange() } } />
+            </Form.Item> */}
           </Col>
 
           <Col

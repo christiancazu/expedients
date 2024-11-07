@@ -25,6 +25,18 @@ export class ExpedientsService {
     user.id = userId
     expedient.createdByUser = expedient.updatedByUser = user
 
+    if (createExpedientDto.assignedLawyerId) {
+      const assignedLawyer = new User()
+      assignedLawyer.id = createExpedientDto.assignedLawyerId
+      expedient.assignedLawyer = assignedLawyer
+    }
+
+    if (createExpedientDto.assignedAssistantId) {
+      const assignedAssistant = new User()
+      assignedAssistant.id = createExpedientDto.assignedAssistantId
+      expedient.assignedAssistant = assignedAssistant
+    }
+
     try {
       const expedientSaved = await this._expedientRepository.save(expedient)
 
@@ -52,9 +64,18 @@ export class ExpedientsService {
       .select('expedients')
       .leftJoin('expedients.updatedByUser', 'updatedByUser')
       .addSelect([
-        'updatedByUser.id',
         'updatedByUser.firstName',
         'updatedByUser.lastName'
+      ])
+      .leftJoin('expedients.assignedLawyer', 'assignedLawyer')
+      .addSelect([
+        'assignedLawyer.firstName',
+        'assignedLawyer.lastName'
+      ])
+      .leftJoin('expedients.assignedAssistant', 'assignedAssistant')
+      .addSelect([
+        'assignedAssistant.firstName',
+        'assignedAssistant.lastName'
       ])
       .leftJoinAndSelect('expedients.parts', 'parts')
 
@@ -124,6 +145,8 @@ export class ExpedientsService {
       where: { id },
       relations: {
         parts: true,
+        assignedLawyer: true,
+        assignedAssistant: true,
         createdByUser: true,
         updatedByUser: true,
         documents: true,
@@ -137,7 +160,18 @@ export class ExpedientsService {
           name: true,
           type: true
         },
+        assignedLawyer: {
+          id: true,
+          firstName: true,
+          lastName: true
+        },
+        assignedAssistant: {
+          id: true,
+          firstName: true,
+          lastName: true
+        },
         createdByUser: {
+          id: true,
           firstName: true,
           lastName: true
         },
@@ -150,6 +184,7 @@ export class ExpedientsService {
           description: true,
           createdAt: true,
           createdByUser: {
+            id: true,
             firstName: true,
             lastName: true
           }
@@ -158,6 +193,7 @@ export class ExpedientsService {
           id: true,
           name: true,
           key: true,
+          extension: true,
           updatedAt: true,
           createdAt: true
         }
@@ -170,6 +206,15 @@ export class ExpedientsService {
           createdAt: 'DESC'
         }
       }
+    })
+  }
+
+  getUserAssigned(assignedUser: User, id: string) {
+    return this._expedientRepository.findOne({
+      where: [
+        { id, assignedAssistant: assignedUser },
+        { id, assignedLawyer: assignedUser }
+      ]
     })
   }
 

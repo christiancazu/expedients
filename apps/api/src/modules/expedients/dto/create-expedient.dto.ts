@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   MaxLength,
   ValidateNested
 } from 'class-validator'
@@ -24,6 +25,11 @@ export class CreateExpedientDto {
 
   @IsNotEmpty()
   @IsString()
+  @MaxLength(FIELD.EXPEDIENT_PROCESS_MAX_LENGTH)
+  process: string
+
+  @IsNotEmpty()
+  @IsString()
   @MaxLength(FIELD.EXPEDIENT_COURT_MAX_LENGTH)
   court: string
 
@@ -34,6 +40,14 @@ export class CreateExpedientDto {
   @IsOptional()
   @IsString()
   statusDescription?: string
+
+  @IsOptional()
+  @IsUUID()
+  assignedLawyerId: string
+
+  @IsOptional()
+  @IsUUID()
+  assignedAssistantId: string
 
   @IsOptional()
   @IsArray()

@@ -61,7 +61,7 @@ const MainLayout: React.FC = () => {
                 className='my-20'
                 style={ { color: 'white' } }
               >
-                {user?.firstName} 
+                {user?.firstName}
                 {' '}
                 {` ${user?.lastName}`}
               </div>

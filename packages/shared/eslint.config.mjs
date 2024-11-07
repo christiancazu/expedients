@@ -33,7 +33,8 @@ export default tseslint.config(
           MemberExpression: 1,
           ImportDeclaration: 1
         }
-      ],
+      ], 
+      '@stylistic/no-trailing-spaces': 'warn',
       'object-curly-spacing': ['warn', 'always'],
       '@stylistic/semi': ['warn', 'never'],
       '@stylistic/eol-last': ['warn', 'always'],
@@ -52,4 +53,4 @@ export default tseslint.config(
       ],
     }
   }
-)
+);

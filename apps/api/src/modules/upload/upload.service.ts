@@ -23,7 +23,7 @@ export class UploadService {
   private readonly bucketName =
     this._configService.get<string>('AWS_BUCKET_NAME')
 
-  async put(file: Express.Multer.File, key?: string) {
+  async put(file: Express.Multer.File, fileName: string, extension: string, key?: string) {
     const Key = key ?? uuidv4()
 
     try {
@@ -32,9 +32,9 @@ export class UploadService {
           Bucket: this.bucketName,
           Key,
           Body: file.buffer,
-          ContentType: file.mimetype,
+          ContentType: extension,
           Metadata: {
-            fileName: file.originalname
+            fileName
           }
         })
       )
@@ -43,8 +43,8 @@ export class UploadService {
         ...result,
         key: Key
       }
-    } catch (error) {
-      throw new UnprocessableEntityException(error)
+    } catch {
+      throw new UnprocessableEntityException('error uploading file')
     }
   }
 

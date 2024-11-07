@@ -11,6 +11,7 @@ import { Part } from '../parts/entities/part.entity'
     TypeOrmModule.forFeature([Part])
   ],
   controllers: [ExpedientsController],
-  providers: [ExpedientsService]
+  providers: [ExpedientsService],
+  exports: [ExpedientsService]
 })
 export class ExpedientsModule {}

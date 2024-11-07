@@ -1,7 +1,7 @@
-export const FIELD = { 
+export const FIELD = {
   USER_EMAIL_MAX_LENGTH: 50,
   USER_PASSWORD_MAX_LENGTH: 25,
-   
+
   USER_FIRST_NAME_MAX_LENGTH: 50,
   USER_LAST_NAME_MAX_LENGTH: 50,
 
@@ -14,7 +14,8 @@ export const FIELD = {
   PART_NAME_MAX_LENGTH: 50,
 
   DOCUMENT_NAME_MAX_LENGTH: 200,
-  DOCUMENT_KEY_MAX_LENGTH: 100
+  DOCUMENT_KEY_MAX_LENGTH: 36,
+  DOCUMENT_EXTENSION_MAX_LENGTH: 5
 }
 
 export enum EXPEDIENT_STATUS {
@@ -60,17 +61,16 @@ export interface Expedient {
   process: string;
   court: string;
   status: EXPEDIENT_STATUS;
-  statusDescription?: string;
-  createdByUser?: User;
-  updatedByUser?: User;
+  statusDescription: string;
+  assignedLawyer?: User;
+  assignedAssistant?: User;
+  createdByUser: User;
+  updatedByUser: User;
   parts: Part[];
   reviews: Review[];
   documents: Document[];
   createdAt: Date;
   updatedAt: Date;
-
-  dataIndex: string;
-  key: string;
 }
 
 export interface Part {
@@ -84,19 +84,18 @@ export interface Review {
   id: string;
   description: string;
   expedient?: Expedient;
-  updatedByUser?: User;
+  createdByUser?: User;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Document {
   id: string;
   name: string;
-  url: string;
-  type: string;
-  expedient?: Expedient;
-  createdByUser?: User;
-  updatedByUser?: User;
+  key: string;
+  extension: string;
+  expedient: Expedient;
+  createdByUser: User;
+  updatedByUser: User;
   createdAt: Date;
   updatedAt: Date;
 }

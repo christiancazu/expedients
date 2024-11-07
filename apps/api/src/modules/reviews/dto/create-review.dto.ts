@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateReviewDto {
   @IsNotEmpty()
@@ -6,4 +6,8 @@ export class CreateReviewDto {
 
   @IsNotEmpty()
   expedientId: string
+
+  @IsOptional()
+  @IsDateString()
+  createdAt?: string
 }

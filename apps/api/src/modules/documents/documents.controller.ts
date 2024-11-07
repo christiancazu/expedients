@@ -16,6 +16,7 @@ import {
 import { DocumentsService } from './documents.service'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { CreateDocumentDto } from './dto/create-document.dto'
+import { UpdateDocumentDto } from './dto/update-document.dto'
 
 @Controller('documents')
 export class DocumentsController {
@@ -60,9 +61,10 @@ export class DocumentsController {
         })
     )
     file: Express.Multer.File,
-    @Request() req: any
+    @Request() req: any,
+    @Body() updateDocumentDto: UpdateDocumentDto
   ) {
-    return this.documentsService.update(id, file, req.user.id)
+    return this.documentsService.update(id, file, req.user.id, updateDocumentDto.name)
   }
 
   @Delete(':id')

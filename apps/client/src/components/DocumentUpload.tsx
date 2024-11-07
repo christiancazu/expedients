@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react'
 
-import { Button, Modal, Progress, Tooltip, UploadFile, UploadProps } from 'antd'
+import { Button, Checkbox, Form, Modal, Progress, Tooltip, UploadFile, UploadProps } from 'antd'
 import { DeleteOutlined, InboxOutlined, UploadOutlined } from '@ant-design/icons'
 import { DocumentFile } from '../views/ExpedientView'
 import Dragger from 'antd/es/upload/Dragger'
@@ -9,9 +9,13 @@ import { UploadChangeParam } from 'antd/es/upload'
 import { createDocument, updateDocument } from '../services/api.service'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../config/queryClient'
-import { Document, Expedient } from '@expedients/shared'
+import { Document, Expedient, FIELD } from '@expedients/shared'
 import useNotify from '../composables/useNotification'
 import { useParams } from 'react-router-dom'
+import TextArea from 'antd/es/input/TextArea'
+import { useForm } from 'antd/es/form/Form'
+import Title from 'antd/es/typography/Title'
+import { getSpritePositionX } from '../utils'
 
 interface Props {
   documentFile: DocumentFile;
@@ -32,18 +36,25 @@ const props: UploadProps = {
 
 const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
   const { id } = useParams()
-  const [open, setOpen] = useState(true)
   const notify = useNotify()
+  const [form] = useForm()
 
+  const [open, setOpen] = useState(true)
+  const [name, setName] = useState(documentFile.name || '')
+  const [checkChangeName, setCheckChangeName] = useState<boolean>(documentFile.action !== 'edit')
   const [defaultFileList, setDefaultFileList] = useState<UploadRequestFile[]>([])
-  const [progress, setProgress] = useState(0)
   const [requestSetup, setRequestSetup] = useState<{ formData: FormData; config: AxiosRequestConfig }>()
+  const [progress, setProgress] = useState(0)
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['expedient', documentFile.id],
-    mutationFn: () => documentFile.action === 'create'
-      ? createDocument(requestSetup!.formData, requestSetup!.config)
-      : updateDocument(requestSetup!.formData, requestSetup!.config),
+    mutationFn: () => {
+      requestSetup?.formData.set('name', name)
+
+      return documentFile.action === 'create'
+        ? createDocument(requestSetup!.formData, requestSetup!.config)
+        : updateDocument(requestSetup!.formData, requestSetup!.config)
+    },
 
     onSuccess: (newDocument: Document) => {
       let updatedDocuments = queryClient.getQueryData<Expedient>(['expedient', id])?.documents || []
@@ -85,7 +96,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 
     defaultFileList.push(file as UploadRequestFile)
 
-    const fmData = new FormData()
+    const formData = new FormData()
     const config = {
       headers: { 'content-type': 'multipart/form-data' },
       onUploadProgress: (event: AxiosProgressEvent) => {
@@ -98,16 +109,17 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
       }
     }
 
-    fmData.append('file', file)
-    fmData.append('expedientId', documentFile.id)
+    formData.append('file', file)
+    formData.append('expedientId', documentFile.id)
 
-    setRequestSetup((prev) => ({ ...prev, formData: fmData, config }))
+    setRequestSetup((prev) => ({ ...prev, formData, config }))
   }
 
   const handleClose = () => {
+    setName('')
     setOpen(false)
     setTimeout(() => {
-      setDocumentFile((prev) => ({ ...prev, showUpload: false }))
+      setDocumentFile((prev) => ({ ...prev, name: '', showUpload: false }))
     }, 500)
   }
 
@@ -124,7 +136,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
           Cancelar
         </Button>,
         <Button
-          disabled={ !defaultFileList.length }
+          disabled={ !defaultFileList.length || !name }
           icon={ <UploadOutlined /> }
           key="download"
           loading={ isPending }
@@ -139,28 +151,38 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
       <div className='my-20'>
         {
           documentFile.action === 'edit' &&
-            <>
-              <p>Documento actual:</p>
-              <div className='text-link'>
-                <p>
-                  {documentFile.name}
-                </p>
-              </div>
-            </>
+            <div className='d-flex'>
+              <div
+                style={ {
+                  background: 'url(/docs.png) no-repeat',
+                  height: 32,
+                  width: 32,
+                  backgroundPositionX: getSpritePositionX(documentFile?.extension as string),
+                  display: 'inline-block'
+                } }
+              />
+              <Title
+                className='text-primary ml-8'
+                level={ 3 }
+              >
+                {documentFile?.name}
+              </Title>
+            </div>
         }
 
         <Dragger
           { ...props }
+          className='my-12'
           customRequest={ customRequest }
           defaultFileList={ defaultFileList }
           maxCount={ 1 }
-          itemRender={ (_, file, fileList, actions) => fileList.length ? <div className='mt-20'>
+          itemRender={ (_, file, fileList, actions) => fileList.length ? <div className='mt-12'>
             <p>Nuevo documento:</p>
             <div className='text-link d-flex justify-content-between align-items-center'>
               <p>
                 {file.name}
               </p>
-              <Tooltip title="Eliminar archivo">
+              <Tooltip title="Eliminar documento">
                 <Button
                   color='danger'
                   icon={ <DeleteOutlined /> }
@@ -176,8 +198,46 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Haga click o arrastre el archivo a esta área para cargarlo.</p>
+          <p className="ant-upload-text">Haga click o arrastre el documento a esta área para cargarlo.</p>
         </Dragger>
+
+        <div
+          className='my-12'
+          style={ { position: 'relative' } }
+        >
+          <Form
+            autoComplete='off'
+            disabled={ !checkChangeName }
+            form={ form }
+            initialValues={ { name: documentFile.name } }
+            layout='vertical'
+            onChange={ () => setName(form.getFieldValue('name')) }
+          >
+            <Form.Item
+              label="Nombre de documento"
+              name="name"
+              rules={ [{ required: true, message: 'El campo es requerido' }] }
+            >
+              <TextArea
+                allowClear
+                showCount
+                maxLength={ FIELD.DOCUMENT_NAME_MAX_LENGTH }
+                placeholder="Ingrese el nombre del documento"
+              />
+            </Form.Item>
+          </Form>
+
+          {
+            documentFile.action === 'edit' &&
+              <Checkbox
+                checked={ checkChangeName }
+                style={ { position: 'absolute', top: 0, right: '-8px' } }
+                onChange={ (e) => setCheckChangeName(e.target.checked) }
+              >
+                Cambiar nombre
+              </Checkbox>
+          }
+        </div>
 
         <div
           className='pb-12'

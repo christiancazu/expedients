@@ -18,8 +18,12 @@ export async function createExpedient(data: Expedient) {
   return httpClient.post(`/expedients`, { ...data }).then(res => res.data)
 }
 
-export async function createExpedientReview(data: { description: string; expedientId: string }) {
+export async function createExpedientReview(data: { description: string; createdAt: string; expedientId: string }) {
   return httpClient.post(`/reviews`, { ...data }).then(res => res.data)
+}
+
+export async function deleteExpedientReview(id: string) {
+  return httpClient.delete(`/reviews/${id}`).then(res => res.data)
 }
 
 export async function getUsers() {

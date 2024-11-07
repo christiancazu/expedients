@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Button, Modal, Typography } from 'antd'
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { Document } from '@expedients/shared'
-import { dateUtil } from '../utils'
+import { dateUtil, getSpritePositionX } from '../utils'
 import { getDocument } from '../services/api.service'
 import { DownloadOutlined } from '@ant-design/icons'
 import { DocumentFile } from '../views/ExpedientView'
@@ -62,12 +62,24 @@ const DocumentDetail: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
           Descargar
         </Button>
       ] }
-      title={ <Title
-        className='text-primary'
-        level={ 3 }
-      >
-        {data?.name}
-      </Title> }
+      title={ data &&
+        <div className='d-flex'>
+          <div
+            style={ {
+              background: 'url(/docs.png) no-repeat',
+              height: 32,
+              width: 32,
+              backgroundPositionX: getSpritePositionX(data!.extension),
+              display: 'inline-block'
+            } }
+          />
+          <Title
+            className='text-primary ml-8'
+            level={ 3 }
+          >
+            {data?.name}
+          </Title>
+        </div> }
       onCancel={ handleClose }
     >
       <div>

@@ -1,27 +1,26 @@
 import React from 'react'
 
 import { Button, Table, TableProps, Tooltip, type TableColumnsType } from 'antd'
-import { Expedient,EXPEDIENT_STATUS, Review, User } from '@expedients/shared'
+import { Expedient, EXPEDIENT_STATUS, Review, User } from '@expedients/shared'
 import { dateUtil } from '../utils'
 import { SearchOutlined } from '@ant-design/icons'
 import { TableBase } from './base/TableBase'
 import { Link } from 'react-router-dom'
 import htmlReactParser from 'html-react-parser'
 
-interface DataType {
+type DataType = {
   key: React.Key;
-  id: string;
   dataIndex?: string;
-}
+} & Expedient
 
 type Props = {
-  expedients: Expedient[];
+  expedients: DataType[];
   onChangePagination: () => void;
 } & TableProps
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: 'n.º Expediente', dataIndex: 'code', key: 'code', width: 150,
+    title: 'Nº Expediente', dataIndex: 'code', key: 'code', width: 150,
     render: (text, expedient) =>
       <Link to={ `/expedients/${expedient.id}` }>
         <Tooltip title={ text }>
@@ -44,18 +43,41 @@ const columns: TableColumnsType<DataType> = [
       </Link>
   },
   {
-    title: 'Materia', dataIndex: 'subject', key: 'subject'
+    title: 'Materia', dataIndex: 'subject', key: 'subject', width: 140
   },
   {
-    title: 'Proceso', dataIndex: 'process', key: 'process'
+    title: 'Proceso', dataIndex: 'process', key: 'process', width: 140
   },
   {
-    title: 'Juzgado', dataIndex: 'court', key: 'court'
+    title: 'Juzgado', dataIndex: 'court', key: 'court', width: 140
   },
   {
     title: 'Estado', dataIndex: 'status', key: 'status', width: 140, align: 'center',
     render: (status: EXPEDIENT_STATUS) => <>
       {status.replace('_', ' ')}
+    </>
+  },
+  {
+    title: 'Asignados', key: 'assigned', width: 180,
+    render: (_, expedient) => <>
+      {expedient.assignedLawyer && <div>
+        <strong>
+          {'Abogado: '}
+        </strong>
+        {expedient.assignedLawyer?.firstName}
+        {' '}
+        {expedient.assignedLawyer?.lastName}
+      </div>
+      }
+      {expedient.assignedLawyer && <div>
+        <strong>
+          {'Asistente: '}
+        </strong>
+        {expedient.assignedAssistant?.firstName}
+        {' '}
+        {expedient.assignedAssistant?.lastName}
+      </div>
+      }
     </>
   },
   {
@@ -95,7 +117,7 @@ const columns: TableColumnsType<DataType> = [
 const TableExpedients: React.FC<Props> = ({ expedients, loading, onChangePagination }) => {
   return (
     <TableBase>
-      <Table<DataType>
+      <Table<DataType & {key: React.Key}>
         columns={ columns }
         dataSource={ expedients }
         loading={ loading }

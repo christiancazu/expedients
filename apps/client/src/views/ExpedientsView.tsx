@@ -39,7 +39,12 @@ const ExpedientsView: React.FC = () => {
     action: 'create'
   })
 
-  const { data, isFetching, isFetched } = useQuery({ queryKey: ['expedients', params], queryFn: (): Promise<Expedient[]> => getExpedients(params), refetchOnMount: true })
+  const { data, isFetching, isFetched } = useQuery({
+    queryKey: ['expedients', params],
+    queryFn: (): Promise<Expedient[]> => getExpedients(params),
+    refetchOnMount: true,
+    select: (expedients) => expedients.map(expedient => ({ ...expedient, key: expedient.id }))
+  })
 
   const handleSearch = (search: SearchParams) => {
     setParams(prev => ({ prev, ...search }))
@@ -63,7 +68,7 @@ const ExpedientsView: React.FC = () => {
       element.removeEventListener('click', docEventListeners)
     })
 
-    setTimeout(() => { 
+    setTimeout(() => {
       mentions = Array.from(dom.getElementsByClassName('mention'))
       mentions.forEach((element) => {
         element.addEventListener('click', docEventListeners)

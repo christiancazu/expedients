@@ -10,7 +10,7 @@ import { Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { DocumentFile } from './ExpedientView'
-import DocumentDetail from '../components/DocumentDetail'
+import DocumentDetail from '../components/document/DocumentDetail'
 
 interface SearchParams {
   byText?: string[];

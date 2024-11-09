@@ -10,18 +10,18 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 @Injectable()
 export class UploadService {
-  constructor(private _configService: ConfigService) {}
+  constructor(private _configService: ConfigService) { }
+
+  private readonly bucketName = this._configService.get<string>('AWS_BUCKET_NAME')
+  private readonly region = this._configService.get<string>('AWS_BUCKET_REGION')
 
   private readonly _s3Client = new S3Client({
-    region: this._configService.get<string>('AWS_BUCKET_REGION'),
+    region: this.region,
     credentials: {
       accessKeyId: this._configService.get<string>('AWS_PUBLIC_KEY')!,
       secretAccessKey: this._configService.get<string>('AWS_SECRECT_KEY')!
     }
   })
-
-  private readonly bucketName =
-    this._configService.get<string>('AWS_BUCKET_NAME')
 
   async put(file: Express.Multer.File, fileName: string, extension: string, key?: string) {
     const Key = key ?? uuidv4()
@@ -32,7 +32,7 @@ export class UploadService {
           Bucket: this.bucketName,
           Key,
           Body: file.buffer,
-          ContentType: extension,
+          ContentType: file.mimetype,
           Metadata: {
             fileName
           }
@@ -56,7 +56,7 @@ export class UploadService {
         Key
       }),
       {
-        expiresIn: 60
+        expiresIn: 300
       }
     )
   }

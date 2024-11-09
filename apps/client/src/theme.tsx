@@ -1,18 +1,18 @@
 import { ReactNode } from 'react'
-import { Button, ConfigProvider, Modal, theme } from 'antd'
-import { useConfirmModal } from './composables/useConfirmModal'
+import { ConfigProvider, theme } from 'antd'
+import useToogleTheme from './composables/useToogleTheme'
+import ConfirmModal from './components/ConfirmModal'
 
 interface Props {
   children: ReactNode;
 }
 
 const ThemeProvider: React.FC<Props> = ({ children }) => {
-  const { isConfirmModalOpen, isLoading, closeConfirmModal, execCbConfirmModal }
-   = useConfirmModal()
+  const { currentTheme } = useToogleTheme()
 
   return <ConfigProvider
     theme={ {
-      algorithm: theme.darkAlgorithm,
+      algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
       token: {
         fontFamily: 'Assistant'
       }
@@ -20,32 +20,7 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
   >
     {children}
 
-    <Modal
-      maskClosable={ !isLoading }
-      open={ isConfirmModalOpen }
-      title="Confirmación"
-      footer={ [
-        <Button
-          disabled={ isLoading }
-          key="back"
-          onClick={ closeConfirmModal }
-        >
-          Cancelar
-        </Button>,
-        <Button
-          key="submit"
-          loading={ isLoading }
-          type="primary"
-          onClick={ execCbConfirmModal }
-        >
-          Confirmar
-        </Button>
-      ] }
-    >
-      <p>
-        ¿Está seguro de realización esta acción?
-      </p>
-    </Modal>
+    <ConfirmModal />
   </ConfigProvider>
 }
 

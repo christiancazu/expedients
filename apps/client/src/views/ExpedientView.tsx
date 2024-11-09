@@ -5,7 +5,7 @@ import htmlReactParser from 'html-react-parser'
 import { Button, Card, Col, Divider, Flex, Row, Spin, theme, Tooltip } from 'antd'
 import Title from 'antd/es/typography/Title'
 import TextEditor from '../components/text-editor/TextEditor'
-import DocumentDetail from '../components/DocumentDetail'
+import DocumentDetail from '../components/document/DocumentDetail'
 
 import { deleteExpedientReview, getExpedient } from '../services/api.service'
 import { Expedient as ExpedientType, Document as DocumentType } from '@expedients/shared'
@@ -338,12 +338,12 @@ const ExpedientView: React.FC = () => {
                         <div
                           className='mr-16'
                           style={ { wordBreak: 'break-all' } }
-                          onClick={ () => (setDocumentFile((prev) => ({
+                          onClick={ () => setDocumentFile((prev) => ({
                             ...prev,
                             showDetail: true,
                             action: 'create',
                             id: document.id
-                          }))) }
+                          })) }
                         >
                           <div className='d-flex align-items-center'>
                             <div

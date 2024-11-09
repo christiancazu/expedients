@@ -18,6 +18,13 @@ export const FIELD = {
   DOCUMENT_EXTENSION_MAX_LENGTH: 5
 }
 
+export const SETTINGS = {
+  FILE_SIZE_LIMIT: 10485760, // 10MB
+
+  UPLOAD_PRESIGNED_URL_EXPIRATION: 120, // 2 min
+  GET_PRESIGNED_URL_EXPIRATION: 300 // 5 min
+}
+
 export enum EXPEDIENT_STATUS {
   TACHADO = 'TACHADO',
   SANEADO = 'SANEADO',
@@ -92,6 +99,7 @@ export interface Document {
   id: string;
   name: string;
   key: string;
+  url: string;
   extension: string;
   expedient: Expedient;
   createdByUser: User;

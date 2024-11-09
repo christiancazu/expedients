@@ -20,7 +20,7 @@ const useUserState = (user?: User) => {
     },
     purgeUserSession() {
       queryClient.setQueryData(['user'], null)
-      persisterUtil.clear()
+      persisterUtil.purgeSession()
     }
   }
 }

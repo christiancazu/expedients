@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Mention from '@tiptap/extension-mention'
 
-import { EditorContent, useEditor } from '@tiptap/react'
+import { EditorContent, useEditor, Extension, Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Badge, Button, DatePicker, GetProps, Modal, Typography } from 'antd'
+import { Button, DatePicker, GetProps, Modal, Tag } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Expedient } from '@expedients/shared'
@@ -14,29 +14,33 @@ import { createExpedientReview } from '../../services/api.service.ts'
 import { queryClient } from '../../config/queryClient.ts'
 import suggestion from './suggestion.ts'
 import useNotify from '../../composables/useNotification'
-
-import './text-editor.scss'
 import useUserState from '../../composables/useUserState.tsx'
 
-const { Text } = Typography
+import './text-editor.scss'
 
 interface DocumentSuggestion {
   id: string;
   label: string;
 }
-
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>
+
+const MentionStorage = Extension.create({
+  name: 'mentionStorage',
+  addStorage() {
+    return {
+      mentions: []
+    }
+  }
+})
 
 const disabledDate: RangePickerProps['disabledDate'] = (current) => {
   return current && current > dayjs().endOf('day')
 }
 
 const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const notify = useNotify()
   const { user } = useUserState()
-
-  const now = dayjs(new Date().toISOString(), 'YYYY-MM-DD HH:mm').subtract(5, 'hour')
-  const createdAt = useRef(new Date().toISOString())
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const expedient = queryClient.getQueryData<Expedient>(['expedient', expedientId]) as Expedient
 
@@ -45,11 +49,10 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
     label: d.name
   })), [expedient])
 
-  const notify = useNotify()
-
   const editor = useEditor({
     extensions: [
       StarterKit,
+      MentionStorage,
       Mention.configure({
         renderHTML(props) {
           const { node } = props
@@ -68,8 +71,9 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         },
         suggestion: {
           ...suggestion,
-          items: ({ query }: { query: string }) => {
-            return getSuggestions.filter(item => item.label.toLowerCase().startsWith(query.toLowerCase()))
+          items: ({ query, editor }: {query: string; editor: Editor}) => {
+            const suggestions: DocumentSuggestion[]  = editor.storage.mentionStorage.mentions
+            return suggestions.filter(item => item.label.toLowerCase().startsWith(query.toLowerCase()))
           }
         }
       })
@@ -82,8 +86,15 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
   })
 
   useEffect(() => {
-    editor?.destroy()
-  }, [expedient])
+    if (editor) {
+      editor.storage.mentionStorage.mentions = getSuggestions
+    }
+
+    return () => editor?.destroy()
+  }, [getSuggestions, editor])
+
+  const now = dayjs(new Date().toISOString(), 'YYYY-MM-DD HH:mm').subtract(5, 'hour')
+  const createdAt = useRef(new Date().toISOString())
 
   const { isPending, mutate } = useMutation({
     mutationFn: () => createExpedientReview({
@@ -190,16 +201,10 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         />
 
         <div className='d-flex my-8'>
-          <Badge
-            color="cyan"
-            count={ 'TIP' }
-          />
-          <Text
-            className='ml-8'
-            type="secondary"
-          >
+          <Tag color="cyan">
+            {' '}
             usar @ para referenciar un documento
-          </Text>
+          </Tag>
         </div>
 
       </Modal>

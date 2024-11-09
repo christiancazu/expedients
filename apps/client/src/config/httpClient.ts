@@ -16,7 +16,7 @@ httpClient.interceptors.response.use((response) => {
   }
 
   if (error.status === 401) {
-    persisterUtil.clear()
+    persisterUtil.purgeSession()
     message.error('La sessión ha finalizado, ingrese nuevamente')
     window.location.href = '/auth/sign-in'
   }

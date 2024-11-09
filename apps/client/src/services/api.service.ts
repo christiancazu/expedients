@@ -41,3 +41,7 @@ export async function createDocument(formData: FormData, config: AxiosRequestCon
 export async function updateDocument(formData: FormData, config: AxiosRequestConfig) {
   return httpClient.patch(`/documents/${formData.get('expedientId')}`, formData, config).then(res => res.data)
 }
+
+export async function downloadDocument(url: string): Promise<Blob> {
+  return httpClient.get(url, { responseType: 'blob', headers: { 'Authorization': undefined } }).then(res => res.data)
+}

@@ -1,4 +1,4 @@
-import { createHashRouter,  Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import useUserState from './composables/useUserState'
 import { Spin } from 'antd'
@@ -46,7 +46,7 @@ const AuthRoutes: React.FC = () => {
   return <Outlet />
 }
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <SessionRoutes />,

@@ -15,5 +15,8 @@ export default {
 
     return user as User
   },
-  clear: () => localStorage.clear()
+  purgeSession: () => {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+  }
 }

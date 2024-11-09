@@ -3,23 +3,28 @@ import { ConfigProvider, theme } from 'antd'
 import useToogleTheme from './composables/useToogleTheme'
 import ConfirmModal from './components/ConfirmModal'
 
+import variables from './assets/styles/_variables.module.scss'
+
+const { colorBgContainerDark, colorBgContainerLight, colorBgLayoutDark, colorBgLayoutLight } = variables
 interface Props {
   children: ReactNode;
 }
 
 const ThemeProvider: React.FC<Props> = ({ children }) => {
-  const { currentTheme } = useToogleTheme()
+  const { isDarkTheme } = useToogleTheme()
 
   return <ConfigProvider
     theme={ {
-      algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+      cssVar: true,
+      algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
       token: {
-        fontFamily: 'Assistant'
+        fontFamily: 'Assistant',
+        colorBgLayout: isDarkTheme ? colorBgLayoutDark : colorBgLayoutLight,
+        colorBgContainer: isDarkTheme ? colorBgContainerDark : colorBgContainerLight
       }
     } }
   >
     {children}
-
     <ConfirmModal />
   </ConfigProvider>
 }

@@ -1,11 +1,11 @@
-import React from 'react'
-import { FolderOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Outlet, useMatches, useNavigate } from 'react-router-dom'
+import { Avatar, Button, Flex, Layout, Menu, theme, MenuProps } from 'antd'
+import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
-import { Avatar, Button, Flex, Layout, Menu, theme } from 'antd'
-import { Outlet, useNavigate } from 'react-router-dom'
-import useUserState from '../composables/useUserState'
-import useNotify from '../composables/useNotification'
+import { Header } from 'antd/es/layout/layout'
+import Title from 'antd/es/typography/Title'
+import HeaderToolbar from '../components/header/HeaderToolbar'
 
 const { Content, Sider } = Layout
 
@@ -17,15 +17,23 @@ const siderStyle: React.CSSProperties = {
   top: 0,
   bottom: 0,
   scrollbarWidth: 'thin',
-  scrollbarGutter: 'stable'
+  scrollbarGutter: 'stable',
+  transition: 'min-width .2s ease-in-out, width .2s ease-in-out, max-width .2s ease-in-out'
 }
 
 const MainLayout: React.FC = () => {
-  const { token: { borderRadiusLG } } = theme.useToken()
-  const { user, purgeUserSession } = useUserState()
-
   const navigate = useNavigate()
-  const notify = useNotify()
+  const matches = useMatches()
+
+  const { token: { borderRadiusLG, colorBgLayout } } = theme.useToken()
+
+  const [collapsed, setCollapsed] = useState(false)
+  const [viewTitle, setViewTitle] = useState('')
+
+  useEffect(() => {
+    const handle = matches[matches.length - 1]?.handle || ''
+    setViewTitle(handle as string)
+  }, [matches])
 
   const items: MenuProps['items'] = [
     FolderOutlined
@@ -37,12 +45,14 @@ const MainLayout: React.FC = () => {
   }))
 
   return (
-    <Layout
-      hasSider
-      style={ { minHeight: '100vh' } }
-    >
+    <Layout style={ { minHeight: '100vh' } }>
       <Sider
+        collapsible
+        breakpoint="lg"
+        collapsed={ collapsed }
+        collapsedWidth="0"
         style={ siderStyle }
+        trigger={ null }
       >
         <Flex
           vertical
@@ -52,19 +62,10 @@ const MainLayout: React.FC = () => {
           <div>
             <div className='d-flex flex-column align-items-center justify-content-center my-20'>
               <Avatar
-                icon={ <UserOutlined /> }
-                size={ 64 }
+                size={ 160 }
+                src="/kallpa-logo.png"
                 style={ { backgroundColor: 'whitesmoke' } }
               />
-
-              <div
-                className='my-20'
-                style={ { color: 'white' } }
-              >
-                {user?.firstName}
-                {' '}
-                {` ${user?.lastName}`}
-              </div>
             </div>
 
             <Menu
@@ -74,20 +75,47 @@ const MainLayout: React.FC = () => {
               theme="dark"
             />
           </div>
-          <div className='mb-20 d-flex justify-content-center'>
-            <Button
-              color='default'
-              icon={ <LogoutOutlined /> }
-              style={ { color: '#f5f5f5' } }
-              type='text'
-              onClick={ ()=>(purgeUserSession(), notify({ message: 'La sesión ha sido finalizada', type: 'info' })) }
-            >
-              Cerrar sesión
-            </Button>
-          </div>
         </Flex>
       </Sider>
-      <Layout style={ { marginInlineStart: 200 } }>
+      <Layout style={ { marginLeft: collapsed ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
+        <Header
+          style={ {
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            background: colorBgLayout,
+            padding: 0
+          } }
+        >
+          <Flex
+            align='center'
+            className='w-100'
+            justify="space-between"
+          >
+            <Flex align='center'>
+              <Button
+                icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
+                type="text"
+                style={ {
+                  fontSize: '16px',
+                  width: 64,
+                  height: 64
+                } }
+                onClick={ () => setCollapsed(!collapsed) }
+              />
+              <Title
+                className='mb-0'
+                level={ 3 }
+              >
+                {viewTitle}
+              </Title>
+            </Flex>
+            <HeaderToolbar />
+          </Flex>
+        </Header>
         <Content
           style={ {
             margin: '16px',

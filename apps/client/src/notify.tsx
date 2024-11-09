@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useMemo } from 'react'
 
-import { notification } from 'antd'
-import type { NotificationArgsProps } from 'antd'
+import { notification, NotificationArgsProps } from 'antd'
 
 type NotificationPlacement = NotificationArgsProps['placement']
 type NotificationType = 'success' | 'info' | 'warning' | 'error'

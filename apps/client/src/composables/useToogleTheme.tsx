@@ -34,5 +34,5 @@ export default function useToogleTheme() {
 
     queryClient.setQueryData(['theme'], { theme: isDarkTheme ? 'dark' : 'default' })
   }
-  return { toggleTheme, currentTheme }
+  return { toggleTheme, isDarkTheme: currentTheme === 'dark' }
 }

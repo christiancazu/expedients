@@ -9,7 +9,7 @@ const ExpedientView = lazy(() => import('./views/ExpedientView'))
 const SignInView = lazy(() => import('./views/SignInView'))
 const NotFoundView = lazy(() => import('./views/NotFoundView'))
 const MainLayout = lazy(() => import('./layouts/MainLayout'))
-const ExpedientsCreateView = lazy(() => import('./views/ExpedientsCreateView'))
+const ExpedientsCreateView = lazy(() => import('./views/ExpedientCreateView'))
 
 const SessionRoutes: React.FC = () => {
   const { user, purgeUserSession } = useUserState()
@@ -60,14 +60,17 @@ const router = createBrowserRouter([
       },
       {
         path: 'expedients',
+        handle: 'Expedientes',
         element: <ExpedientsView />
       },
       {
         path: 'expedients/create',
+        handle: 'Crear expediente',
         element: <ExpedientsCreateView />
       },
       {
         path: 'expedients/:id',
+        handle: 'Detalle de expediente',
         element: <ExpedientView />
       }
     ]

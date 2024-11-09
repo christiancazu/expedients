@@ -20,11 +20,12 @@ type Props = {
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: 'Nº Expediente', dataIndex: 'code', key: 'code', width: 150,
+    title: 'Expediente', dataIndex: 'code', key: 'code', width: 150,
     render: (text, expedient) =>
       <Link to={ `/expedients/${expedient.id}` }>
         <Tooltip title={ text }>
           <Button
+            className='text-left'
             style={ { width: '142px', paddingLeft: 0, paddingRight: 4 } }
             type="link"
           >

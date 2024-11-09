@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+
 import TableExpedients from '../components/ExpedientsTable'
 import { Expedient, EXPEDIENT_STATUS } from '@expedients/shared'
 import FilterExpedients from '../components/ExpedientsFilters'
-import Title from 'antd/es/typography/Title'
 import { getExpedients } from '../services/api.service'
 import useNotify from '../composables/useNotification'
-import { Button } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
 import { DocumentFile } from './ExpedientView'
 import DocumentDetail from '../components/document/DocumentDetail'
 
@@ -29,7 +26,6 @@ const ExpedientsView: React.FC = () => {
     status: null,
     updatedByUser: null
   })
-  const navigate = useNavigate()
   const notify = useNotify()
   const [documentFile, setDocumentFile] = useState<DocumentFile>({
     id: '',
@@ -90,22 +86,6 @@ const ExpedientsView: React.FC = () => {
 
   return (
     <>
-      <div className='d-flex justify-content-between'>
-        <Title
-          className='mb-20'
-          level={ 4 }
-        >
-          Expedientes
-        </Title>
-
-        <Button
-          icon={ <PlusOutlined /> }
-          type='primary'
-          onClick={ () => navigate('/expedients/create') }
-        >
-          Crear expediente
-        </Button>
-      </div>
       <FilterExpedients
         loading={ isFetching }
         onSearch={ handleSearch }

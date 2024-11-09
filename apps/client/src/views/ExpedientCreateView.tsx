@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { Button, Card, Divider, Form, Input, Modal, theme } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import Title from 'antd/es/typography/Title'
 import { CloseOutlined, FolderAddOutlined } from '@ant-design/icons'
+
 import ExpedientStatusSelect from '../components/ExpedientStatusSelect'
 import PartsTypeSelect from '../components/PartsTypeSelect'
-import { useMutation } from '@tanstack/react-query'
 import { createExpedient } from '../services/api.service'
 import useNotify from '../composables/useNotification'
-import { useNavigate } from 'react-router-dom'
 import { Expedient } from '@expedients/shared'
-import { AxiosError } from 'axios'
 import UsersSelect from '../components/UsersSelect'
-
+import NavigationBackBtn from '../components/NavigationBackBtn'
 
 const ExpedientsCreateView: React.FC = () => {
   const { token: { colorBgContainer, borderRadiusLG, paddingMD, marginMD } } = theme.useToken()
@@ -43,12 +43,7 @@ const ExpedientsCreateView: React.FC = () => {
 
   return (
     <div style={ sectionStyle }>
-      <Title
-        className='mb-0'
-        level={ 5 }
-      >
-        Crear expediente
-      </Title>
+      <NavigationBackBtn to='/expedients' />
       <Divider className='my-12' />
 
       <div
@@ -64,7 +59,7 @@ const ExpedientsCreateView: React.FC = () => {
           onFinish={ mutate }
         >
           <Form.Item
-            label="Nº Expediente"
+            label="Expediente"
             name="code"
             rules={ [{ required: true, message: 'El campo es requerido' }] }
           >

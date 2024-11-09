@@ -1,0 +1,17 @@
+.header-user-info {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  border-radius: 32px;
+  padding-right: 8px;
+  background-color: var(--ant-color-bg-container);
+
+  &__name {
+    margin-inline: 4px;
+  }
+}
+
+.abc {
+  transition: all 1.5s ease-out, background-color 1.5s ease-in;
+}

@@ -22,7 +22,10 @@ export const SETTINGS = {
   FILE_SIZE_LIMIT: 10485760, // 10MB
 
   UPLOAD_PRESIGNED_URL_EXPIRATION: 120, // 2 min
-  GET_PRESIGNED_URL_EXPIRATION: 300 // 5 min
+  GET_PRESIGNED_URL_EXPIRATION: 300, // 5 min
+
+  MESSENGER_SERVICE: 'MESSENGER_SERVICE',
+  EVENT_MAIL_ACTIVATE_ACCOUNT: 'EVENT_MAIL_ACTIVATE_ACCOUNT'
 }
 
 export enum EXPEDIENT_STATUS {
@@ -53,7 +56,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  surname: string;
   role: USER_ROLES;
   createdExpedients?: Expedient[];
   updatedExpedients?: Expedient[];

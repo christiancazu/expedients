@@ -1,14 +1,14 @@
 services:
   app:
+    container_name: expedients-app
     build:
       context: .
       args:
         VITE_API_URL: ${VITE_API_URL}
-        PORT: ${PORT}
+        APP_PORT: ${APP_PORT}
     env_file: '.env'
     ports:
-      - ${PORT}:${PORT}
+      - ${APP_PORT}:${APP_PORT}
     environment:
       NODE_ENV: production-local
-    restart: on-failure
     network_mode: host # if database is in localhost

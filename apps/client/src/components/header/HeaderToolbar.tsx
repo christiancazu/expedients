@@ -63,7 +63,7 @@ export default function HeaderToolbar(): React.ReactNode {
           <span className='header-user-info__name'>
             {user?.firstName}
             {' '}
-            {user?.lastName}
+            {user?.surname}
           </span>
           <DownOutlined style={ { fontSize: 12 } } />
         </div>

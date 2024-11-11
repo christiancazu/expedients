@@ -116,7 +116,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
               createdByUser: {
                 id: user?.id,
                 firstName: user?.firstName,
-                lastName: user?.lastName
+                surname: user?.surname
               }
             },
             ...old.reviews

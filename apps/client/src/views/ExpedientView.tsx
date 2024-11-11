@@ -204,7 +204,7 @@ const ExpedientView: React.FC = () => {
 
                 <p className='mb-12'>
                   <strong>Creado por:</strong>
-                  {' ' + data.createdByUser?.firstName + ' ' + data.createdByUser?.lastName}
+                  {' ' + data.createdByUser?.firstName + ' ' + data.createdByUser?.surname}
                 </p>
 
                 <p className='mb-12'>
@@ -215,13 +215,13 @@ const ExpedientView: React.FC = () => {
                     {'ABOGADO: '}
                     {data.assignedLawyer?.firstName}
                     {' '}
-                    {data.assignedLawyer?.lastName}
+                    {data.assignedLawyer?.surname}
                   </p>
                   <p className='mb-8'>
                     {'ASISTENTE: '}
                     {data.assignedAssistant?.firstName}
                     {' '}
-                    {data.assignedAssistant?.lastName}
+                    {data.assignedAssistant?.surname}
                   </p>
                 </div>
               </Col>
@@ -257,7 +257,7 @@ const ExpedientView: React.FC = () => {
                 <Card
                   className='mb-20'
                   key={ review.id }
-                  title={ data.createdByUser?.firstName + ' ' + data.createdByUser?.lastName }
+                  title={ data.createdByUser?.firstName + ' ' + data.createdByUser?.surname }
                   extra={ <div
                     className='d-flex align-items-end flex-column'
                     style={ { color: colorTextSecondary } }

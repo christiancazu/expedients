@@ -67,7 +67,7 @@ const columns: TableColumnsType<DataType> = [
         </strong>
         {expedient.assignedLawyer?.firstName}
         {' '}
-        {expedient.assignedLawyer?.lastName}
+        {expedient.assignedLawyer?.surname}
       </div>
       }
       {expedient.assignedLawyer && <div>
@@ -76,7 +76,7 @@ const columns: TableColumnsType<DataType> = [
         </strong>
         {expedient.assignedAssistant?.firstName}
         {' '}
-        {expedient.assignedAssistant?.lastName}
+        {expedient.assignedAssistant?.surname}
       </div>
       }
     </>
@@ -86,7 +86,7 @@ const columns: TableColumnsType<DataType> = [
     render: (user: User) => <>
       {user.firstName}
       {' '}
-      {user.lastName}
+      {user.surname}
     </>
   },
   {

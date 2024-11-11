@@ -17,8 +17,10 @@ export default defineConfig({
       scopeBehaviour: 'global'
     },
     preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler'
+      },
       sass: {
-        api: 'modern-compiler',
         additionalData: '@use "./src/assets/styles/_variables.module.scss";'
       }
     }
@@ -26,6 +28,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0'
   },
-  base: './',
+  base: '/',
   ...(process.env.NODE_ENV === 'development' && { envDir: '../../' })
 })

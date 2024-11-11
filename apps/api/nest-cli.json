@@ -1,8 +1,37 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/expedients/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/expedients/tsconfig.app.json",
+    "assets": [
+      {
+        "include": "../../../**/assets/**/*.hbs",
+        "watchAssets": true
+      }
+    ]
+  },
+  "monorepo": true,
+  "root": "apps/expedients",
+  "projects": {
+    "expedients": {
+      "type": "application",
+      "root": "apps/expedients",
+      "entryFile": "main",
+      "sourceRoot": "apps/expedients/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/expedients/tsconfig.app.json"
+      }
+    },
+    "messenger": {
+      "type": "application",
+      "root": "apps/messenger",
+      "sourceRoot": "apps/messenger/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/messenger/tsconfig.app.json"
+      }
+    }
   }
 }

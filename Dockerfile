@@ -25,6 +25,6 @@ COPY --from=build /app/apps/client/dist /app/apps/api/client
 
 WORKDIR /app/apps/api
 
-EXPOSE $PORT
+EXPOSE $APP_PORT
 
-CMD [ "pnpm", "start:prod" ]
+CMD ["pnpm", "start:prod"]

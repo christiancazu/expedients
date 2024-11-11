@@ -23,7 +23,7 @@ const UsersSelect: React.FC<Props> = ({ ...props }) => {
         showSearch
         disabled={ isFetching }
         loading={ isFetching }
-        options={ data?.map(user => ({ value: user.id, label: `${user.firstName} ${user.lastName}` })) || [] }
+        options={ data?.map(user => ({ value: user.id, label: `${user.firstName} ${user.surname}` })) || [] }
         placeholder={ props.placeholder }
         style={ { width: '100%' } }
         filterOption={ (input, option) =>

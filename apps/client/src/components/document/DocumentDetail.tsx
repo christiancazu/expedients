@@ -120,7 +120,7 @@ export default function DocumentDetail({ documentFile, setDocumentFile }:Props):
           <strong>Creado por: </strong>
           {data?.createdByUser?.firstName}
           {' '}
-          {data?.createdByUser?.lastName}
+          {data?.createdByUser?.surname}
           <em>
             {' el: '}
             {dateUtil.formatDate(data?.createdAt as Date)}
@@ -131,7 +131,7 @@ export default function DocumentDetail({ documentFile, setDocumentFile }:Props):
           <strong>Actualizado por: </strong>
           {data?.createdByUser?.firstName}
           {' '}
-          {data?.createdByUser?.lastName}
+          {data?.createdByUser?.surname}
           <em>
             {' el: '}
             {dateUtil.formatDate(data?.updatedAt as Date)}

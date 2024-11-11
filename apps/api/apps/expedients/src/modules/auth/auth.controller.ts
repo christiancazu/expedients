@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common'
+import { Controller, Post, Body } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { SignInDto } from './dto/sign-in-auth.dto'
 import { Public } from './decorators/is-public.decorator'
@@ -23,10 +23,5 @@ export class AuthController {
   @Post('verify-create-account')
   verifyCreateAccount(@Body() verifyCreateAccountDto: VerifyCreateAccountDto) {
     return this.authService.verifyCreateAccount(verifyCreateAccountDto)
-  }
-
-  @Get('me')
-  me() {
-    return this.authService.me()
   }
 }

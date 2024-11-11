@@ -14,7 +14,7 @@ export class MessengerService {
     try {
       const send = await this._mailerService.sendMail({
         to: user.email,
-        from: 'contact@corporativokallpa.com',
+        from: 'CORPORATIVO KALLPA <contact@corporativokallpa.com>',
         subject: 'ACTIVACIÓN DE CUENTA',
         template: './email-confirmation',
         context: {
@@ -22,13 +22,14 @@ export class MessengerService {
           surname: user.surname,
           url: [
             this._configService.get('APP_DOMAIN'),
-            '/activate-account?token=',
+            '/auth/activate-account/?token=',
             token
           ].join('')
         }
       })
       return send
     } catch (error) {
+      console.error(error)
       throw new NotFoundException(error)
     }
   }

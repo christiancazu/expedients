@@ -73,10 +73,6 @@ export class UsersService {
     return `This action updates a #${id} user`
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`
-  }
-
   private sanitizeUser(user: User) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

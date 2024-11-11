@@ -1,25 +1,17 @@
-import { Inject, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
+import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
 import { User } from '../users/entities/user.entity'
 import { JwtService } from '@nestjs/jwt'
 import { SignInDto } from './dto/sign-in-auth.dto'
 import { UsersService } from '../users/users.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { VerifyCreateAccountDto } from './dto/verify-create-account.dto'
-import { SETTINGS } from '@expedients/shared'
-import { ClientProxy } from '@nestjs/microservices'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly _usersService: UsersService,
-    private readonly _jwtService: JwtService,
-    @Inject(SETTINGS.MESSENGER_SERVICE)
-    private readonly _clientProxy: ClientProxy
+    private readonly _jwtService: JwtService
   ) { }
-
-  async me() {
-    this._clientProxy.emit(SETTINGS.EVENT_MAIL_ACTIVATE_ACCOUNT, 'hola')
-  }
 
   async signIn({ email, password }: SignInDto) {
     const user = await this._usersService.findByEmailAndPassword({
@@ -54,14 +46,18 @@ export class AuthService {
     }
   }
 
+  async signToken(user: User) {
+    return this._jwtService.signAsync({
+      id: user.id,
+      email: user.email,
+      role: user.role
+    })
+  }
+
   private async provideSession(user: User): Promise<{ user: User; token: string }> {
     return {
       user,
-      token: await this._jwtService.signAsync({
-        id: user.id,
-        email: user.email,
-        role: user.role
-      })
+      token: await this.signToken(user)
     }
   }
 }

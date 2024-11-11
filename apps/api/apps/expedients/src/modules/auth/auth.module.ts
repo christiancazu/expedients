@@ -5,32 +5,18 @@ import { JwtModule } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
-import { ClientsModule, Transport } from '@nestjs/microservices'
-import { ConfigService } from '@nestjs/config'
-import { SETTINGS } from '@expedients/shared'
 
 @Module({
   imports: [
-    ClientsModule.registerAsync([
-      {
-        name: SETTINGS.MESSENGER_SERVICE,
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.TCP,
-          options: {
-            port: configService.get<number>('MESSENGER_PORT')
-          }
-        })
-      }
-    ]),
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1d' }
+      signOptions: { expiresIn: '7d' }
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService]
+  providers: [AuthService, UsersService],
+  exports: [AuthService]
 })
 export class AuthModule {}

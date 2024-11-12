@@ -3,7 +3,7 @@ import { AuthService } from './auth.service'
 import { SignInDto } from './dto/sign-in-auth.dto'
 import { Public } from './decorators/is-public.decorator'
 import { CreateUserDto } from '../users/dto/create-user.dto'
-import { VerifyCreateAccountDto } from './dto/verify-create-account.dto'
+import { verifyAccountDto } from './dto/verify-create-account.dto'
 
 @Public()
 @Controller('auth')
@@ -20,8 +20,8 @@ export class AuthController {
     return this.authService.signUp(signUpDto)
   }
 
-  @Post('verify-create-account')
-  verifyCreateAccount(@Body() verifyCreateAccountDto: VerifyCreateAccountDto) {
-    return this.authService.verifyCreateAccount(verifyCreateAccountDto)
+  @Post('verify-account')
+  verifyAccount(@Body() verifyAccountDto: verifyAccountDto) {
+    return this.authService.verifyAccount(verifyAccountDto)
   }
 }

@@ -13,6 +13,16 @@
 - use `node` major to 20
 - use `pnpm` as global(install it with `npm i -g pnpm`)
 
+## INIT
+- install dependencies
+```
+pnpm install
+```
+- build shared package
+```
+pnpm shared build
+```
+
 ## SETUP API & MICROSERVICES
 - run in dev mode
 ```

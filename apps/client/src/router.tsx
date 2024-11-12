@@ -1,7 +1,11 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
-import useUserState from './composables/useUserState'
+import { lazy, Suspense, useMemo } from 'react'
 import { Spin } from 'antd'
+import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
+
+import useUserState from './composables/useUserState'
+
+const VerifyAccount = lazy(() => import('./views/VerifyAccount'))
+const AuthLayout = lazy(() => import('./layouts/AuthLayout'))
 
 // const HomeView = lazy(() => import('./views/HomeView'))
 const ExpedientsView = lazy(() => import('./views/ExpedientsView'))
@@ -16,7 +20,6 @@ const SessionRoutes: React.FC = () => {
   const location = useLocation()
 
   if (!user) {
-    // TODO: excluded auth routes
     if (location.pathname === '/auth/sign-in') {
       return <Navigate to={ location } />
     }
@@ -36,14 +39,20 @@ const AuthRoutes: React.FC = () => {
   const { user } = useUserState()
   const location = useLocation()
 
-  if (user && location.pathname === '/auth/sign-in') {
+  const isValidRoute = useMemo(() =>
+    ['/auth/sign-in', '/auth/verify-account'].some((r) => location.pathname.includes(r)), [location]
+  )
+
+  if (user && isValidRoute) {
     return <Navigate
       replace
       to='/'
     />
   }
 
-  return <Outlet />
+  return <AuthLayout>
+    <Outlet />
+  </AuthLayout>
 }
 
 const router = createBrowserRouter([
@@ -80,8 +89,19 @@ const router = createBrowserRouter([
     element: <AuthRoutes />,
     children: [
       {
+        index: true,
+        element: <Navigate
+          replace
+          to="/auth/sign-in"
+        />
+      },
+      {
         path: 'sign-in',
         element: <SignInView />
+      },
+      {
+        path: 'verify-account',
+        element: <VerifyAccount />
       }
     ]
   },
@@ -89,7 +109,8 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundView />
   }
-], {
+],
+{
   future: {
     v7_fetcherPersist: true,
     v7_normalizeFormMethod: true,

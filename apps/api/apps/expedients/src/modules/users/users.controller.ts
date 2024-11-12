@@ -55,8 +55,7 @@ export class UsersController {
 
       return `user created successfully`
 
-    } catch (error) {
-      console.error({ error })
+    } catch {
       throw new BadRequestException('error sending email')
     }
   }

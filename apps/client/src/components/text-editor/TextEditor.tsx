@@ -3,7 +3,7 @@ import Mention from '@tiptap/extension-mention'
 
 import { EditorContent, useEditor, Extension, Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Button, DatePicker, GetProps, Modal, Tag } from 'antd'
+import { Alert, Button, DatePicker, GetProps, Modal } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Expedient } from '@expedients/shared'
@@ -201,10 +201,11 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         />
 
         <div className='d-flex my-8'>
-          <Tag color="cyan">
-            {' '}
-            usar @ para referenciar un documento
-          </Tag>
+          <Alert
+            showIcon
+            message="usar @ para referenciar un documento"
+            type="info"
+          />
         </div>
 
       </Modal>

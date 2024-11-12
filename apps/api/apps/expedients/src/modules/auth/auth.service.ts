@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt'
 import { SignInDto } from './dto/sign-in-auth.dto'
 import { UsersService } from '../users/users.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
-import { VerifyCreateAccountDto } from './dto/verify-create-account.dto'
+import { verifyAccountDto } from './dto/verify-create-account.dto'
 
 @Injectable()
 export class AuthService {
@@ -26,8 +26,8 @@ export class AuthService {
     return this._usersService.create(createUserDto)
   }
 
-  async verifyCreateAccount(verifyCreateAccountDto: VerifyCreateAccountDto) {
-    const { token, password } = verifyCreateAccountDto
+  async verifyAccount(verifyAccountDto: verifyAccountDto) {
+    const { token, password } = verifyAccountDto
 
     try {
       this._jwtService.verify(token)

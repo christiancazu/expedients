@@ -8,6 +8,8 @@ import { getExpedients } from '../services/api.service'
 import useNotify from '../composables/useNotification'
 import { DocumentFile } from './ExpedientView'
 import DocumentDetail from '../components/document/DocumentDetail'
+import ButtonBase from '../components/base/ButtonBase'
+import { useNavigate } from 'react-router-dom'
 
 interface SearchParams {
   byText?: string[];
@@ -20,6 +22,7 @@ const dom = document
 let mentions: HTMLElement[] | Element[] = []
 
 const ExpedientsView: React.FC = () => {
+  const navigate = useNavigate()
   const [params, setParams] = useState<SearchParams>({
     byText: [],
     text: null,
@@ -86,6 +89,14 @@ const ExpedientsView: React.FC = () => {
 
   return (
     <>
+      <ButtonBase
+        primary
+        className='mb-16'
+        onClick={ () => navigate('/expedients/create') }
+      >
+        Crear expediente
+      </ButtonBase>
+
       <FilterExpedients
         loading={ isFetching }
         onSearch={ handleSearch }

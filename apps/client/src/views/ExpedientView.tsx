@@ -63,7 +63,8 @@ const ExpedientView: React.FC = () => {
     select: (expedient: Expedient) => {
       expedient.documents = expedient.documents.map(document => ({
         ...document,
-        spritePositionX: getSpritePositionX(document.extension)
+        spritePositionX: getSpritePositionX(document.extension),
+        updatedAt: dateUtil.formatDate(document.updatedAt)
       }))
       return expedient
     }
@@ -125,12 +126,8 @@ const ExpedientView: React.FC = () => {
           tip="Consultando..."
         >
           <div style={ sectionStyle }>
-            <Row>
-              <Col
-                className='d-flex align-items-center'
-                md={ 12 }
-                sm={ 24 }
-              >
+            <div className='d-flex justify-content-between flex-wrap'>
+              <div className='d-flex align-items-center'>
                 <NavigationBackBtn to='/expedients' />
                 <Title
                   className='ml-12 mb-0'
@@ -138,25 +135,22 @@ const ExpedientView: React.FC = () => {
                 >
                   {data.code}
                 </Title>
-              </Col>
 
-              <Col
-                className='d-flex align-items-end flex-column'
-                md={ 12 }
-                sm={ 24 }
-                style={ { color: colorTextSecondary } }
-              >
-
-                {isWritableByUser && <TextEditor expedientId={ data.id } />}
-              </Col>
-            </Row>
+              </div>
+              {
+                isWritableByUser &&
+                  <div>
+                    <TextEditor expedientId={ data.id } />
+                  </div>
+              }
+            </div>
 
             <Divider className='my-12' />
 
             <Row className='mt-20'>
               <Col
                 md={ 16 }
-                sm={ 24 }
+                xs={ 24 }
               >
                 <p className='mb-12'>
                   <strong>Materia:</strong>
@@ -181,7 +175,7 @@ const ExpedientView: React.FC = () => {
                   <strong>
                     Última actualización:
                   </strong>
-                  {' ' + dateUtil.formatDate(data.updatedAt)}
+                  {' ' + data.updatedAt}
                 </p>
 
                 <p className='mb-12'>
@@ -229,7 +223,7 @@ const ExpedientView: React.FC = () => {
               <Col
                 className='d-flex align-items-end flex-column'
                 md={ 8 }
-                sm={ 24 }
+                xs={ 24 }
               >
                 <span className='mb-8'>
                   {data.status.replace('_', ' ')}
@@ -246,7 +240,7 @@ const ExpedientView: React.FC = () => {
             >
               <Col
                 md={ 12 }
-                sm={ 24 }
+                xs={ 24 }
               >
                 <strong>Informes:</strong>
               </Col>
@@ -264,7 +258,7 @@ const ExpedientView: React.FC = () => {
                   >
                     <div>
                       <em>
-                        {' ' + dateUtil.formatDate(review.createdAt)}
+                        {' ' + review.createdAt}
                       </em>
                       {
                         review.createdByUser?.id === user?.id &&
@@ -347,9 +341,14 @@ const ExpedientView: React.FC = () => {
                           <div
                             style={ { background: 'url(/docs.png) no-repeat', height: 32, width: 32, backgroundPositionX: document.spritePositionX, display: 'inline-block' } }
                           />
-                          <p className='ml-8'>
-                            {document.name}
-                          </p>
+                          <div className='ml-8'>
+                            <p>
+                              {document.name}
+                            </p>
+                            <p style={ { color: colorTextSecondary } }>
+                              {document.updatedAt as string}
+                            </p>
+                          </div>
                         </div>
                       </div>
                       {

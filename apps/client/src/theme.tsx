@@ -4,7 +4,7 @@ import useToogleTheme from './composables/useToogleTheme'
 import ConfirmModal from './components/ConfirmModal'
 import esEs from 'antd/locale/es_ES'
 
-import variables from './assets/styles/_variables.module.scss'
+import variables from './assets/styles/_export.module.scss'
 
 const { colorBgContainerDark, colorBgContainerLight, colorBgLayoutDark, colorBgLayoutLight } = variables
 interface Props {

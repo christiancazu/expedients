@@ -64,7 +64,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Document, (document) => document.updatedByUser)
   updatedDocuments: Document[]
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamptz', nullable: true })
   verifiedAt: Date
 
   @CreateDateColumn()

@@ -3,7 +3,7 @@ import Mention from '@tiptap/extension-mention'
 
 import { EditorContent, useEditor, Extension, Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Alert, Button, DatePicker, GetProps, Modal } from 'antd'
+import { Alert, Button, DatePicker, GetProps, Modal, Typography } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Expedient } from '@expedients/shared'
@@ -185,6 +185,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
         ] }
         onCancel={ handleCloseModal }
       >
+        <Typography.Text className='mr-8'>Estableza la fecha</Typography.Text>
         <DatePicker
           allowClear={ false }
           className='mb-20'

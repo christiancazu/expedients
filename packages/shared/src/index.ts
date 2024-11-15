@@ -60,8 +60,8 @@ export interface User {
   role: USER_ROLES;
   createdExpedients?: Expedient[];
   updatedExpedients?: Expedient[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface Expedient {
@@ -79,8 +79,8 @@ export interface Expedient {
   parts: Part[];
   reviews: Review[];
   documents: Document[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface Part {
@@ -95,7 +95,7 @@ export interface Review {
   description: string;
   expedient?: Expedient;
   createdByUser?: User;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 export interface Document {
@@ -107,6 +107,6 @@ export interface Document {
   expedient: Expedient;
   createdByUser: User;
   updatedByUser: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }

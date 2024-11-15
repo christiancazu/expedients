@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useMatches, useNavigate } from 'react-router-dom'
-import { Avatar, Button, Flex, Layout, Menu, theme, MenuProps } from 'antd'
+import { Avatar, Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
 import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
 import { Header } from 'antd/es/layout/layout'
 import Title from 'antd/es/typography/Title'
+import Text from 'antd/es/typography/Text'
 import HeaderToolbar from '../components/header/HeaderToolbar'
 
 const { Content, Sider } = Layout
+const { useBreakpoint } = Grid
 
 const siderStyle: React.CSSProperties = {
   overflow: 'auto',
@@ -15,6 +17,7 @@ const siderStyle: React.CSSProperties = {
   position: 'fixed',
   insetInlineStart: 0,
   top: 0,
+  zIndex: 1,
   bottom: 0,
   scrollbarWidth: 'thin',
   scrollbarGutter: 'stable',
@@ -24,6 +27,7 @@ const siderStyle: React.CSSProperties = {
 const MainLayout: React.FC = () => {
   const navigate = useNavigate()
   const matches = useMatches()
+  const screens = useBreakpoint()
 
   const { token: { borderRadiusLG, colorBgLayout } } = theme.useToken()
 
@@ -34,6 +38,12 @@ const MainLayout: React.FC = () => {
     const handle = matches[matches.length - 1]?.handle || ''
     setViewTitle(handle as string)
   }, [matches])
+
+  useEffect(() => {
+    if (screens.md === false) {
+      setCollapsed(true)
+    }
+  }, [screens.md])
 
   const items: MenuProps['items'] = [
     FolderOutlined
@@ -48,7 +58,6 @@ const MainLayout: React.FC = () => {
     <Layout style={ { minHeight: '100vh' } }>
       <Sider
         collapsible
-        breakpoint="lg"
         collapsed={ collapsed }
         collapsedWidth="0"
         style={ siderStyle }
@@ -57,7 +66,7 @@ const MainLayout: React.FC = () => {
         <Flex
           vertical
           justify="space-between"
-          style={ { height: '100%' } }
+          style={ { marginTop: 64 } }
         >
           <div>
             <div className='d-flex flex-column align-items-center justify-content-center my-20'>
@@ -77,7 +86,7 @@ const MainLayout: React.FC = () => {
           </div>
         </Flex>
       </Sider>
-      <Layout style={ { marginLeft: collapsed ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
+      <Layout style={ { marginLeft: collapsed || !screens.md ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
         <Header
           style={ {
             position: 'sticky',
@@ -106,12 +115,18 @@ const MainLayout: React.FC = () => {
                 } }
                 onClick={ () => setCollapsed(!collapsed) }
               />
-              <Title
-                className='mb-0'
-                level={ 3 }
-              >
-                {viewTitle}
-              </Title>
+              {
+                screens.md
+                  ? <Title
+                    className='mb-0'
+                    level={ 3 }
+                  >
+                    {viewTitle}
+                  </Title>
+                  : <Text className='mb-0'>
+                    {viewTitle}
+                  </Text>
+              }
             </Flex>
             <HeaderToolbar />
           </Flex>

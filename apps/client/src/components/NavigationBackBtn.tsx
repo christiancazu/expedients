@@ -1,4 +1,4 @@
-import { LeftCircleOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,7 +11,8 @@ export default function NavigationBackBtn({ to }: Props): React.ReactNode {
 
   return (
     <Button
-      icon={ <LeftCircleOutlined style={ { fontSize: '32px' } } /> }
+      icon={ <ArrowLeftOutlined style={ { fontSize: '16px' } } /> }
+      shape='circle'
       style={ { height: 32, width: 32 } }
       type="text"
       onClick={ () => navigate(to) }

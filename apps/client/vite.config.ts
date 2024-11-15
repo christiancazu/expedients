@@ -17,11 +17,11 @@ export default defineConfig({
       scopeBehaviour: 'global'
     },
     preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler'
-      },
       sass: {
-        additionalData: '@use "./src/assets/styles/_variables.module.scss";'
+      },
+      scss: {
+        silenceDeprecations: ['legacy-js-api'],
+        additionalData: '@use "./src/assets/styles/_variables.scss" as *;'
       }
     }
   },

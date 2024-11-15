@@ -1,10 +1,20 @@
-@use './_spacing.scss' as *;
-@use './_flex.scss' as *;
-@use './_login-view.scss' as *;
+@forward './_spacing';
+@forward './_flex';
+@forward './_login-view';
 
-@use 'antd/dist/reset.css' as *;
+@import 'antd/dist/reset.css';
 
 @import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap");
+
+:root {
+  --color-bg-layout: #{$colorBgLayoutLight};
+  --color-bg-container: #{$colorBgContainerLight};
+
+  &.dark {
+    --color-bg-layout: #{$colorBgLayoutDark};
+    --color-bg-container: #{$colorBgContainerDark};
+  }
+}
 
 h1,
 h2,
@@ -38,7 +48,7 @@ p {
   }
 
   &:hover {
-    background-color: whitesmoke;
+    background-color: var(--color-bg-layout) !important;
   }
 }
 

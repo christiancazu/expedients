@@ -70,7 +70,10 @@ export class DocumentsService {
         throw new UnprocessableEntityException('Document not found')
       }
 
-      return document
+      return {
+        ...document,
+        url: `/media/${document.key}.${document.extension}`
+      }
     } catch (error) {
       throw new UnprocessableEntityException(error)
     }
@@ -96,8 +99,6 @@ export class DocumentsService {
         if (err) {
           throw err
         }
-
-        console.log('Delete File successfully.')
       })
 
       const user = new User()

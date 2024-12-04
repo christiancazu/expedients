@@ -1,6 +1,6 @@
 import { Expedient, User } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
-import { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 export async function signIn(data: { email: string; password: string }): Promise<{ user: User; token: string }> {
   return await httpClient.post(`/auth/sign-in`, { ...data }).then(res => res.data)
@@ -47,5 +47,5 @@ export async function updateDocument(formData: FormData, config: AxiosRequestCon
 }
 
 export async function downloadDocument(url: string): Promise<Blob> {
-  return httpClient.get(url, { responseType: 'blob', headers: { 'Authorization': undefined } }).then(res => res.data)
+  return axios.get(url, { responseType: 'blob', headers: { 'Authorization': undefined } }).then(res => res.data)
 }

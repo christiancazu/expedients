@@ -10,7 +10,6 @@ import { DocumentsModule } from './modules/documents/documents.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from './modules/auth/guards/auth.guard'
-import { UploadModule } from './modules/upload/upload.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 
@@ -23,7 +22,7 @@ import { join } from 'path'
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../..', 'client'),
-      exclude: ['/api*']
+      exclude: ['/api*', '/media*']
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -35,8 +34,7 @@ import { join } from 'path'
     PartsModule,
     ReviewsModule,
     DocumentsModule,
-    AuthModule,
-    UploadModule
+    AuthModule
   ],
   providers: [
     {

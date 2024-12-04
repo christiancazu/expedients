@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import * as bcrypt from 'bcrypt'
+import { hash, compare } from 'bcryptjs'
 import { FIELD, USER_ROLES } from '@expedients/shared'
 import { Review } from '../../reviews/entities/review.entity'
 import { Expedient } from '../../expedients/entities/expedient.entity'
@@ -71,7 +71,7 @@ export class User extends BaseEntity {
   createdAt: Date
 
   async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, 10)
+    return await hash(password, 10)
   }
 
   @BeforeInsert()
@@ -80,11 +80,11 @@ export class User extends BaseEntity {
   }
 
   async validatePassword(password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password)
+    return await compare(password, this.password)
   }
 
   comparePassword(attempt: string): Promise<boolean> {
-    return bcrypt.compare(attempt, this.password)
+    return compare(attempt, this.password)
   }
 
   toJSON() {

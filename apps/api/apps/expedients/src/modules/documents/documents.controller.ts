@@ -6,42 +6,27 @@ import {
   Patch,
   Param,
   Delete,
-  UseInterceptors,
-  UploadedFile,
-  ParseFilePipeBuilder,
-  HttpStatus,
   Request,
   ParseUUIDPipe
 } from '@nestjs/common'
 import { DocumentsService } from './documents.service'
-import { FileInterceptor } from '@nestjs/platform-express'
 import { CreateDocumentDto } from './dto/create-document.dto'
 import { UpdateDocumentDto } from './dto/update-document.dto'
+import { FileUploadInterceptor } from '../storage/decorators/file-interceptor.decorator'
+import { UploadedFileParam } from '../storage/decorators/uploaded-file-param.decorator'
 
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @FileUploadInterceptor()
   create(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addMaxSizeValidator({ maxSize: 10485760 /* 10MB */ })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-        })
-    )
-    file: Express.Multer.File,
+    @UploadedFileParam() file: Express.Multer.File,
     @Body() createDocumentDto: CreateDocumentDto,
     @Request() req: any
   ) {
     return this.documentsService.create(file, createDocumentDto, req.user.id)
-  }
-
-  @Get()
-  findAll() {
-    return this.documentsService.findOne('asd')
   }
 
   @Get(':id')
@@ -50,17 +35,10 @@ export class DocumentsController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file'))
+  @FileUploadInterceptor()
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addMaxSizeValidator({ maxSize: 10485760 /* 10MB */ })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-        })
-    )
-    file: Express.Multer.File,
+    @UploadedFileParam() file: Express.Multer.File,
     @Request() req: any,
     @Body() updateDocumentDto: UpdateDocumentDto
   ) {

@@ -22,9 +22,6 @@ const config = {
   entities: [User, Document, Part, Review, Expedient],
   migrations: [`${__dirname}../../migrations/*{.ts,.js}`],
   synchronize: false,
-  ssl: {
-    rejectUnauthorized: false
-  },
   dialectOptions: {
     ssl: process.env.NODE_ENV === 'production'
   },

@@ -12,6 +12,8 @@ import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from './modules/auth/guards/auth.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { BullModule } from '@nestjs/bullmq'
+import { NotificationsModule } from './modules/notifications/notifications.module'
 
 @Module({
   imports: [
@@ -29,12 +31,23 @@ import { join } from 'path'
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm') as TypeOrmModuleOptions
     }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT')
+        }
+      })
+    }),
     UsersModule,
     ExpedientsModule,
     PartsModule,
     ReviewsModule,
     DocumentsModule,
-    AuthModule
+    AuthModule,
+    NotificationsModule
   ],
   providers: [
     {

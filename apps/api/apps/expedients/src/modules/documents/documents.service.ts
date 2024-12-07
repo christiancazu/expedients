@@ -95,7 +95,7 @@ export class DocumentsService {
         document.name = name
       }
 
-      unlink(`${this._mediaPath}/${document.key}.${document.extension}`, (err) => {
+      unlink(`${this._mediaPath + '/media'}/${document.key}.${document.extension}`, (err) => {
         if (err) {
           throw err
         }

@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -14,9 +13,10 @@ import { Part } from '../../parts/entities/part.entity'
 import { Review } from '../../reviews/entities/review.entity'
 import { Document } from '../../documents/entities/document.entity'
 import { FIELD, EXPEDIENT_STATUS } from '@expedients/shared'
+import { Notification } from '../../notifications/entities/notification.entity'
 
 @Entity('expedients')
-export class Expedient extends BaseEntity {
+export class Expedient {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -83,6 +83,9 @@ export class Expedient extends BaseEntity {
   @OneToMany(() => Document, (document) => document.expedient)
   documents: Document[]
 
+  @OneToMany(() => Notification, (notification) => notification.expedient)
+  notifications: Notification[]
+
   @CreateDateColumn()
   createdAt: Date
 
@@ -93,6 +96,12 @@ export class Expedient extends BaseEntity {
   async defaultStatus() {
     if (!this.status) {
       this.status = EXPEDIENT_STATUS.EN_EJECUCION
+    }
+  }
+
+  constructor(id?: string) {
+    if (id) {
+      this.id = id
     }
   }
 }

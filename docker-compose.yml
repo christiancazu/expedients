@@ -1,14 +1,36 @@
 services:
   app:
     container_name: expedients-app
+    depends_on: 
+      - db
     build:
       context: .
       args:
         VITE_API_URL: ${VITE_API_URL}
         APP_PORT: ${APP_PORT}
-    env_file: '.env'
+    env_file: ".env"
     ports:
       - ${APP_PORT}:${APP_PORT}
     environment:
-      NODE_ENV: production-local
-    network_mode: host # if database is in localhost
+      NODE_ENV: production
+    # network_mode: host # if database is in localhost
+    networks:
+      - expedients-net
+
+  db:
+    container_name: expedients-db
+    image: postgres:14-alpine
+    env_file: ".env"
+    ports:
+      - 5431:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - ./db:/var/lib/postgresql/data/
+    networks:
+      - expedients-net
+
+networks:
+  expedients-net:

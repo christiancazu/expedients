@@ -12,6 +12,7 @@ import { FIELD, USER_ROLES } from '@expedients/shared'
 import { Review } from '../../reviews/entities/review.entity'
 import { Expedient } from '../../expedients/entities/expedient.entity'
 import { Document } from '../../documents/entities/document.entity'
+import { Notification } from '../../notifications/entities/notification.entity'
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -63,6 +64,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Document, (document) => document.updatedByUser)
   updatedDocuments: Document[]
+
+  @OneToMany(() => Notification, (notification) => notification.createdByUser)
+  notifications: Notification[]
 
   @Column({ type: 'timestamptz', nullable: true })
   verifiedAt: Date

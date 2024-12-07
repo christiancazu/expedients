@@ -18,7 +18,7 @@ async function bootstrap() {
   const mediaPath = app.get(ConfigService).get('STORAGE_MEDIA_PATH')
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 
-  app.useStaticAssets(join(__dirname, '../../../' + mediaPath), {
+  app.useStaticAssets(join(__dirname, '../../../' + mediaPath + '/media'), {
     prefix: '/media',
     index: false
   })

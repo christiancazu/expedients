@@ -9,6 +9,7 @@
 :root {
   --color-bg-layout: #{$colorBgLayoutLight};
   --color-bg-container: #{$colorBgContainerLight};
+  --color-bg-app: #{$colorBgApp};
 
   &.dark {
     --color-bg-layout: #{$colorBgLayoutDark};

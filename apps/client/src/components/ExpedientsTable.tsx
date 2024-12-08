@@ -70,7 +70,7 @@ const columns: TableColumnsType<DataType> = [
         {expedient.assignedLawyer?.surname}
       </div>
       }
-      {expedient.assignedLawyer && <div>
+      {expedient.assignedAssistant && <div>
         <strong>
           {'Asistente: '}
         </strong>

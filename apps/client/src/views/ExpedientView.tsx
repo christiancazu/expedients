@@ -61,10 +61,15 @@ const ExpedientView: React.FC = () => {
     queryFn: (): Promise<Expedient> => getExpedient(id!),
     refetchOnMount: true,
     select: (expedient: Expedient) => {
+      expedient.updatedAt = dateUtil.formatDate(expedient.updatedAt)
       expedient.documents = expedient.documents.map(document => ({
         ...document,
         spritePositionX: getSpritePositionX(document.extension),
         updatedAt: dateUtil.formatDate(document.updatedAt)
+      }))
+      expedient.reviews = expedient.reviews.map(review => ({
+        ...review,
+        createdAt: dateUtil.formatDate(review.createdAt)
       }))
       return expedient
     }

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useMatches, useNavigate } from 'react-router-dom'
-import { Avatar, Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
+import { Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
 import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
 import { Header } from 'antd/es/layout/layout'
 import Title from 'antd/es/typography/Title'
 import Text from 'antd/es/typography/Text'
 import HeaderToolbar from '../components/header/HeaderToolbar'
+import { StyledAvatar } from '../components/styled/avatar.styled'
 
 const { Content, Sider } = Layout
 const { useBreakpoint } = Grid
@@ -70,10 +71,9 @@ const MainLayout: React.FC = () => {
         >
           <div>
             <div className='d-flex flex-column align-items-center justify-content-center my-20'>
-              <Avatar
+              <StyledAvatar
                 size={ 160 }
-                src="/kallpa-logo.png"
-                style={ { backgroundColor: 'whitesmoke' } }
+                src="https://corporativokallpa.com/images/logo.png"
               />
             </div>
 

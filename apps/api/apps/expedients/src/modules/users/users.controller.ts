@@ -18,6 +18,7 @@ import { ClientProxy } from '@nestjs/microservices'
 import { SETTINGS, USER_ROLES } from '@expedients/shared'
 import { firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth/auth.service'
+import { MailActivateAccountPayload } from 'apps/messenger/src/types'
 
 @Controller('users')
 export class UsersController {
@@ -47,7 +48,7 @@ export class UsersController {
     try {
       await firstValueFrom(
         this._clientProxy
-          .send(
+          .send<any , MailActivateAccountPayload>(
             SETTINGS.EVENT_MAIL_ACTIVATE_ACCOUNT,
             { user: userCreated, token }
           )

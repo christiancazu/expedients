@@ -140,6 +140,31 @@ export class ExpedientsService {
     return await qb.getMany()
   }
 
+  findOneWithUsers(id: string) {
+    return this._expedientRepository.findOne({
+      where: { id },
+      relations: {
+        assignedLawyer: true,
+        assignedAssistant: true
+      },
+      select: {
+        id: true,
+        assignedLawyer: {
+          id: true,
+          email: true,
+          firstName: true,
+          surname: true
+        },
+        assignedAssistant: {
+          id: true,
+          email: true,
+          firstName: true,
+          surname: true
+        }
+      }
+    })
+  }
+
   findOne(id: string) {
     return this._expedientRepository.findOne({
       where: { id },
@@ -218,8 +243,8 @@ export class ExpedientsService {
     })
   }
 
-  update(id: number) {
-    return `This action updates a #${id} expedient`
+  update(id: string, expedient: Partial<Expedient>) {
+    return this._expedientRepository.update(id, expedient)
   }
 
   remove(id: number) {

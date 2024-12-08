@@ -35,7 +35,7 @@ export class ExpedientsController {
 
   @Patch(':id')
   update(@Param('id') id: string) {
-    return this.expedientsService.update(+id)
+    //
   }
 
   @Delete(':id')

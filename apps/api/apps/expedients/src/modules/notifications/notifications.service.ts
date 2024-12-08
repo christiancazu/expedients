@@ -36,13 +36,24 @@ export class NotificationsService implements OnModuleInit {
     const notifications = await this._notificationRepository.find({
       where: {
         scheduledAt: Between(new Date(nowTime), new Date(nowTime + INTERVAL_SCHEDULED))
+      },
+      relations: {
+        expedient: true
+      },
+      select: {
+        id: true,
+        scheduledAt: true,
+        expedient: {
+          id: true
+        }
       }
     })
 
     const jobs: JobNotification[] = notifications.map((notification) => ({
       name: NOTIFICATION_QUEUE,
       data: {
-        id: notification.id
+        expedientId: notification.expedient.id,
+        notificationId: notification.id
       },
       opts: {
         removeOnComplete: true,
@@ -51,12 +62,12 @@ export class NotificationsService implements OnModuleInit {
       }
     }))
 
-    this._expedientsQueue.addBulk(jobs)
+    await this._expedientsQueue.addBulk(jobs)
   }
 
   async delete(id: string) {
     const jobs = await this._expedientsQueue.getJobs()
-    const existingJob = jobs.find((job) => job.data.id === id)
+    const existingJob = jobs.find((job) => job.data.expedientId === id)
 
     if (existingJob) {
       await this._expedientsQueue.remove(existingJob.id!)
@@ -75,14 +86,14 @@ export class NotificationsService implements OnModuleInit {
       scheduledAt: dto.scheduledAt
     })
 
-    const { id } = await this._notificationRepository.save(notification)
+    const notificationSaved = await this._notificationRepository.save(notification)
 
     const isAvailableForCurrentQueue = delay < INTERVAL_SCHEDULED
 
     if (isAvailableForCurrentQueue) {
       return this._expedientsQueue.add(
         NOTIFICATION_QUEUE,
-        { id },
+        { expedientId: dto.expedientId, notificationId: notificationSaved.id },
         { delay }
       )
     }
@@ -90,6 +101,18 @@ export class NotificationsService implements OnModuleInit {
 
   findAll() {
     return this._notificationRepository.find()
+  }
+
+  findOne(id: string) {
+    return this._notificationRepository.findOne({ where: { id } })
+  }
+
+  findAllPending() {
+    return this._expedientsQueue.getJobs()
+  }
+
+  update(id: string, notification: Partial<Notification>) {
+    return this._notificationRepository.update(id, notification)
   }
 
   private ensureAvailableDateNotification(date: string) {

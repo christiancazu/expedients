@@ -1,7 +1,8 @@
 import { BulkJobOptions } from 'bullmq'
 
 export interface JobNotificationData {
-  id: string;
+  expedientId: string;
+  notificationId: string;
 }
 
 export interface JobNotification {

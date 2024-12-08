@@ -16,7 +16,6 @@ export class ReviewsService {
     private readonly _expedientsService: ExpedientsService
   ) {}
 
-
   async create(user: User, createReviewDto: CreateReviewDto) {
     const existsUser = await this._expedientsService.getUserAssigned(user, createReviewDto.expedientId)
 
@@ -37,6 +36,10 @@ export class ReviewsService {
 
     try {
       const reviewSaved = await this._reviewsRepository.save(review)
+
+      await this._expedientsService.update(expedient.id, {
+        updatedAt: reviewSaved.createdAt
+      })
 
       return reviewSaved
     } catch (error) {

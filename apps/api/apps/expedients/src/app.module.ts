@@ -14,6 +14,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { BullModule } from '@nestjs/bullmq'
 import { NotificationsModule } from './modules/notifications/notifications.module'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
         }
       })
     }),
+    ScheduleModule.forRoot(),
     UsersModule,
     ExpedientsModule,
     PartsModule,

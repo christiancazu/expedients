@@ -18,8 +18,8 @@ export class NotificationsController {
   ) { }
 
   @Get()
-  findAll() {
-    return this._usersService.findAll()
+  findAllPending() {
+    return this._usersService.findAllPending()
   }
 
   @Post()

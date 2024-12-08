@@ -7,8 +7,7 @@ import { Part } from '../parts/entities/part.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Expedient]),
-    TypeOrmModule.forFeature([Part])
+    TypeOrmModule.forFeature([Expedient, Part])
   ],
   controllers: [ExpedientsController],
   providers: [ExpedientsService],

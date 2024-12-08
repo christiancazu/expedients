@@ -1,9 +1,10 @@
 {
   "apps": [
-      {
-          "name": "expedients",
-          "script": "pnpm",
-          "args": "api start:dev"
-      }
+    {
+      "name": "expedients",
+      "script": "pnpm",
+      "args": "api start:prod",
+      "interpreter": "/bin/bash"
+    }
   ]
 }

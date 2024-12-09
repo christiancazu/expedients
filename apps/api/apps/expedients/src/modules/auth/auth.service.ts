@@ -5,12 +5,15 @@ import { SignInDto } from './dto/sign-in-auth.dto'
 import { UsersService } from '../users/users.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { verifyAccountDto } from './dto/verify-create-account.dto'
+import { provideSessionPayload } from './types'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly _usersService: UsersService,
-    private readonly _jwtService: JwtService
+    private readonly _jwtService: JwtService,
+    private readonly _configService: ConfigService
   ) { }
 
   async signIn({ email, password }: SignInDto) {
@@ -54,10 +57,11 @@ export class AuthService {
     })
   }
 
-  private async provideSession(user: User): Promise<{ user: User; token: string }> {
+  private async provideSession(user: User): Promise<provideSessionPayload> {
     return {
       user,
-      token: await this.signToken(user)
+      token: await this.signToken(user),
+      vapidKey: this._configService.get('VAPID_PUBLIC_KEY')!
     }
   }
 }

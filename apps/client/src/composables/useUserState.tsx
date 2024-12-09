@@ -13,8 +13,9 @@ const useUserState = (user?: User) => {
   return {
     user: useQuery<User | null>({ queryKey: ['user'], enabled: false, initialData: user }).data,
     setUser,
-    setUserSession(data: { user: User; token: string }) {
+    setUserSession(data: { user: User; token: string; vapidKey: string }) {
       persisterUtil.setUser(data.user)
+      persisterUtil.setVapidKey(data.vapidKey)
       setUser(data.user)
       setToken(data.token)
     },

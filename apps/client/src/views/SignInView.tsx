@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import useNotify from '../composables/useNotification'
 
 interface FieldType {
-  email?: string;
-  password?: string;
+  email?: string
+  password?: string
 }
 
 const SignInView: React.FC = () => {

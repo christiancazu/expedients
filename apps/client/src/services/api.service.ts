@@ -2,7 +2,7 @@ import { Expedient, User } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
 import axios, { AxiosRequestConfig } from 'axios'
 
-export async function signIn(data: { email: string; password: string }): Promise<{ user: User; token: string }> {
+export async function signIn(data: { email: string; password: string }): Promise<{ user: User; token: string; vapidKey: string }> {
   return await httpClient.post(`/auth/sign-in`, { ...data }).then(res => res.data)
 }
 
@@ -48,4 +48,8 @@ export async function updateDocument(formData: FormData, config: AxiosRequestCon
 
 export async function downloadDocument(url: string): Promise<Blob> {
   return axios.get(url, { responseType: 'blob', headers: { 'Authorization': undefined } }).then(res => res.data)
+}
+
+export async function subscribeNotifications(subscription: any): Promise<any> {
+  return httpClient.post(`notifications/subscribe`, subscription).then(res => res.data)
 }

@@ -1,25 +1,36 @@
 import { MailerService } from '@nestjs-modules/mailer'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MailActivateAccountPayload, ScheduledEventPayload } from './types'
+import { setVapidDetails } from 'web-push'
 
 @Injectable()
-export class MessengerService {
+export class MessengerEmailService {
   app_domain: string
+  sender_email: string
+
+  private readonly logger = new Logger()
 
   constructor(
     private readonly _mailerService: MailerService,
     private readonly _configService: ConfigService
   ) {
     this.app_domain = this._configService.get('APP_DOMAIN')!
+    this.sender_email = this._configService.get('SENDER_EMAIL')!
+
+    setVapidDetails(
+      `mailto:${this.sender_email}`,
+      this._configService.get('VAPID_PUBLIC_KEY')!,
+      this._configService.get('VAPID_PRIVATE_KEY')!
+    )
   }
 
   async sendEmailToActivateAccount({ user, token }: MailActivateAccountPayload) {
     try {
       return this._mailerService.sendMail({
         to: user.email,
-        from: 'CORPORATIVO KALLPA <contact@corporativokallpa.com>',
-        subject: 'ACTIVACIÓN DE CUENTA',
+        from: `CORPORATIVO KALLPA <${this.sender_email}>`,
+        subject: 'Activación de cuenta',
         template: './email-confirmation',
         context: {
           firstName: user.firstName,
@@ -32,7 +43,7 @@ export class MessengerService {
         }
       })
     } catch (error) {
-      throw new BadRequestException(error)
+      this.logger.error(error)
     }
   }
 
@@ -44,8 +55,8 @@ export class MessengerService {
     try {
       Promise.all(users.map(user => this._mailerService.sendMail({
         to: user.email,
-        from: 'CORPORATIVO KALLPA <contact@corporativokallpa.com>',
-        subject: 'NOTIFICACIÓN PROGRAMADA',
+        from: `CORPORATIVO KALLPA <${this.sender_email}>`,
+        subject: 'Evento programado',
         template: './scheduled-event',
         context: {
           firstName: user.firstName,
@@ -59,7 +70,7 @@ export class MessengerService {
         }
       })))
     } catch (error) {
-      throw new BadRequestException(error)
+      this.logger.error(error)
     }
   }
 }

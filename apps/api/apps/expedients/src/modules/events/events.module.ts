@@ -13,10 +13,12 @@ import { EventsController } from './events.controller'
 import { EventsService } from './events.service'
 import { EventsSchedule } from './events.schedule'
 import { Event } from './entities/event.entity'
+import { Notification } from '../notifications/entities/notification.entity'
+import { NotificationsService } from '../notifications/notifications.service'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Event, Expedient, Part]),
+    TypeOrmModule.forFeature([Expedient, Part, Notification, Event]),
     BullModule.registerQueue({
       name: EVENT_QUEUE
     }),
@@ -38,7 +40,8 @@ import { Event } from './entities/event.entity'
     EventsService,
     EventsConsumer,
     EventsSchedule,
-    ExpedientsService
+    ExpedientsService,
+    NotificationsService
   ]
 })
 export class EventsModule {}

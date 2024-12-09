@@ -13,6 +13,7 @@ import { Review } from '../../reviews/entities/review.entity'
 import { Expedient } from '../../expedients/entities/expedient.entity'
 import { Document } from '../../documents/entities/document.entity'
 import { Event } from '../../events/entities/event.entity'
+import { Notification } from '../../notifications/entities/notification.entity'
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -26,7 +27,7 @@ export class User extends BaseEntity {
   })
   email: string
 
-  @Column({ type: 'varchar', length: 200, nullable: true  })
+  @Column({ type: 'varchar', length: 200, nullable: true })
   password: string
 
   @Column({ type: 'varchar', length: FIELD.USER_FIRST_NAME_MAX_LENGTH })
@@ -67,6 +68,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Event, (event) => event.createdByUser)
   events: Event[]
+
+  @OneToMany(() => Notification, (notification) => notification.registerFor)
+  notifications: Notification[]
 
   @Column({ type: 'timestamptz', nullable: true })
   verifiedAt: Date

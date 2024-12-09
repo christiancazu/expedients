@@ -1,13 +1,15 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Job } from 'bullmq'
 import { JobEventData, EVENT_QUEUE } from './types'
-import { BadRequestException, Inject } from '@nestjs/common'
+import { BadRequestException, Inject, Logger } from '@nestjs/common'
 import { SETTINGS } from '@expedients/shared'
 import { ClientProxy } from '@nestjs/microservices'
 import { firstValueFrom } from 'rxjs'
 import { ExpedientsService } from '../expedients/expedients.service'
 import { ScheduledEventPayload } from 'apps/messenger/src/types'
 import { EventsService } from './events.service'
+import { NotificationsService } from '../notifications/notifications.service'
+import { SubscriptionNotificationDto } from '../notifications/dto/subscription-notification.dto'
 
 @Processor(EVENT_QUEUE)
 export class EventsConsumer extends WorkerHost {
@@ -17,11 +19,15 @@ export class EventsConsumer extends WorkerHost {
   @Inject(EventsService)
   private readonly _eventsService: EventsService
 
+  @Inject(NotificationsService)
+  private readonly _notificationsService: NotificationsService
+
   @Inject(SETTINGS.MESSENGER_SERVICE)
   private readonly _clientProxy: ClientProxy
 
-  async process({ data: { expedientId, eventId } }: Job<Pick<JobEventData, 'expedientId'|'eventId'>, any, string>): Promise<any> {
+  private _logger = new Logger()
 
+  async process({ data: { expedientId, eventId } }: Job<Pick<JobEventData, 'expedientId' | 'eventId'>, any, string>): Promise<any> {
     const expedient = await this._expedientsService.findOneWithUsers(expedientId)
     const event = await this._eventsService.findOne(eventId)
 
@@ -33,7 +39,7 @@ export class EventsConsumer extends WorkerHost {
       await firstValueFrom(
         this._clientProxy
           .send<any, ScheduledEventPayload>(
-            SETTINGS.EVENT_SCHEDULED_EVENT,
+            SETTINGS.EVENT_SCHEDULED,
             {
               assignedLawyer: expedient.assignedLawyer,
               assignedAssistant: expedient.assignedAssistant,
@@ -46,11 +52,33 @@ export class EventsConsumer extends WorkerHost {
       this._eventsService.update(eventId, {
         isSent: true
       })
-
-      return `user notified successfully`
-    } catch {
-      throw new BadRequestException('error sending event')
+    } catch (error) {
+      this._logger.error('error sending event: ', error)
     }
 
+    try {
+      const notifications = await this._notificationsService.findSubscriptionByUser(
+        {
+          assignedAssistant: expedient.assignedAssistant,
+          assignedLawyer: expedient.assignedLawyer
+        }
+      )
+
+      await firstValueFrom(
+        this._clientProxy.send<any, SubscriptionNotificationDto[]>(
+          SETTINGS.NOTIFICATION_SCHEDULED,
+          notifications.map((notification) => ({
+            endpoint: notification.endpoint,
+            keys: {
+              p256dh: notification.p256dh,
+              auth: notification.auth
+            }
+          }))
+        ))
+
+    } catch (error) {
+      this._logger.error('error sending notification: ', error)
+
+    }
   }
 }

@@ -13,8 +13,9 @@ import { AuthGuard } from './modules/auth/guards/auth.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { BullModule } from '@nestjs/bullmq'
-import { NotificationsModule } from './modules/notifications/notifications.module'
 import { ScheduleModule } from '@nestjs/schedule'
+import { EventsModule } from './modules/events/events.module'
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { ScheduleModule } from '@nestjs/schedule'
     ReviewsModule,
     DocumentsModule,
     AuthModule,
+    EventsModule,
     NotificationsModule
   ],
   providers: [

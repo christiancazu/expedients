@@ -72,7 +72,7 @@ export class DocumentsService {
 
       return {
         ...document,
-        url: `/media/${document.key}.${document.extension}`
+        url: `/media/documents/${document.key}.${document.extension}`
       }
     } catch (error) {
       throw new UnprocessableEntityException(error)
@@ -95,7 +95,7 @@ export class DocumentsService {
         document.name = name
       }
 
-      unlink(`${this._mediaPath + '/media'}/${document.key}.${document.extension}`, (err) => {
+      unlink(`${this._mediaPath + '/media/documents'}/${document.key}.${document.extension}`, (err) => {
         if (err) {
           throw err
         }

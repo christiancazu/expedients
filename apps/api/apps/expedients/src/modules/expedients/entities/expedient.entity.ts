@@ -13,7 +13,7 @@ import { Part } from '../../parts/entities/part.entity'
 import { Review } from '../../reviews/entities/review.entity'
 import { Document } from '../../documents/entities/document.entity'
 import { FIELD, EXPEDIENT_STATUS } from '@expedients/shared'
-import { Notification } from '../../notifications/entities/notification.entity'
+import { Event } from '../../events/entities/event.entity'
 
 @Entity('expedients')
 export class Expedient {
@@ -83,8 +83,8 @@ export class Expedient {
   @OneToMany(() => Document, (document) => document.expedient)
   documents: Document[]
 
-  @OneToMany(() => Notification, (notification) => notification.expedient)
-  notifications: Notification[]
+  @OneToMany(() => Event, (event) => event.expedient)
+  events: Event[]
 
   @CreateDateColumn()
   createdAt: Date

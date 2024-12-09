@@ -1,6 +1,6 @@
 import { IsDateString, IsString, IsUUID } from 'class-validator'
 
-export class CreateNotificationDto {
+export class CreateEventDto {
   @IsString()
   message: string
 

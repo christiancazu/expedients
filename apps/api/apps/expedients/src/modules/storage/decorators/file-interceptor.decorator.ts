@@ -7,7 +7,7 @@ export function FileUploadInterceptor() {
   return applyDecorators(
     UseInterceptors(FileInterceptor('file', {
       storage: diskStorage({
-        destination: process.env.STORAGE_MEDIA_PATH + '/media',
+        destination: process.env.STORAGE_MEDIA_PATH + '/media/documents',
         filename: (req, file, cb) => {
           const extension = file.mimetype.split('/').pop()
           cb(null, `${uuidv4()}.${extension}`)

@@ -5,9 +5,9 @@ export interface MailActivateAccountPayload {
   token: string;
 }
 
-export interface ScheduledNotificationPayload {
+export interface ScheduledEventPayload {
   assignedLawyer: User;
   assignedAssistant: User;
-  notificationMessage: string;
+  eventMessage: string;
   expedientId: string;
 }

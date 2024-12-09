@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common'
 import { MessengerService } from './messenger.service'
 import { SETTINGS } from '@expedients/shared'
 import { MessagePattern, Payload } from '@nestjs/microservices'
-import { MailActivateAccountPayload, ScheduledNotificationPayload } from './types'
+import { MailActivateAccountPayload, ScheduledEventPayload } from './types'
 
 @Controller()
 export class MessengerController {
@@ -13,9 +13,9 @@ export class MessengerController {
     return this.messengerService.sendEmailToActivateAccount(payload)
   }
 
-  @MessagePattern(SETTINGS.EVENT_SCHEDULED_NOTIFICATION)
-  sendScheduledNotification(@Payload() payload: ScheduledNotificationPayload)
+  @MessagePattern(SETTINGS.EVENT_SCHEDULED_EVENT)
+  sendScheduledEvent(@Payload() payload: ScheduledEventPayload)
   {
-    return this.messengerService.sendScheduledNotification(payload)
+    return this.messengerService.sendScheduledEvent(payload)
   }
 }

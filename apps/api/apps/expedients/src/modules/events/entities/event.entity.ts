@@ -2,8 +2,8 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 import { Expedient } from '../../expedients/entities/expedient.entity'
 import { User } from '../../users/entities/user.entity'
 
-@Entity('notifications')
-export class Notification {
+@Entity('events')
+export class Event {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -16,12 +16,12 @@ export class Notification {
   @CreateDateColumn()
   createdAt: Date
 
-  @ManyToOne(() => User, (user) => user.notifications)
+  @ManyToOne(() => User, (user) => user.events)
   createdByUser: User
 
   @Column({ type: 'timestamptz' })
   scheduledAt: Date
 
-  @ManyToOne(() => Expedient, (expedient) => expedient.notifications)
+  @ManyToOne(() => Expedient, (expedient) => expedient.events)
   expedient: Expedient
 }

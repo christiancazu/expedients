@@ -6,7 +6,7 @@ import { Document } from '../modules/documents/entities/document.entity'
 import { Part } from '../modules/parts/entities/part.entity'
 import { Review } from '../modules/reviews/entities/review.entity'
 import { Expedient } from '../modules/expedients/entities/expedient.entity'
-import { Notification } from '../modules/notifications/entities/notification.entity'
+import { Event } from '../modules/events/entities/event.entity'
 
 dotenvConfig({
   path: '../../.env'
@@ -20,7 +20,7 @@ const config = {
   username: `${process.env.POSTGRES_USERNAME}`,
   password: `${process.env.POSTGRES_PASSWORD}`,
   database: `${process.env.POSTGRES_DATABASE}`,
-  entities: [User, Document, Part, Review, Expedient, Notification],
+  entities: [User, Document, Part, Review, Expedient, Event],
   migrations: [`${__dirname}../../migrations/*{.ts,.js}`],
   synchronize: false,
   dialectOptions: {

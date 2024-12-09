@@ -1,7 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { MailActivateAccountPayload, ScheduledNotificationPayload } from './types'
+import { MailActivateAccountPayload, ScheduledEventPayload } from './types'
 
 @Injectable()
 export class MessengerService {
@@ -36,9 +36,9 @@ export class MessengerService {
     }
   }
 
-  async sendScheduledNotification({
-    assignedAssistant, assignedLawyer, notificationMessage, expedientId
-  }: ScheduledNotificationPayload) {
+  async sendScheduledEvent({
+    assignedAssistant, assignedLawyer, eventMessage, expedientId
+  }: ScheduledEventPayload) {
     const users = [assignedAssistant, assignedLawyer].filter(u => !!u)
 
     try {
@@ -46,11 +46,11 @@ export class MessengerService {
         to: user.email,
         from: 'CORPORATIVO KALLPA <contact@corporativokallpa.com>',
         subject: 'NOTIFICACIÓN PROGRAMADA',
-        template: './scheduled-notification',
+        template: './scheduled-event',
         context: {
           firstName: user.firstName,
           surname: user.surname,
-          message: notificationMessage,
+          message: eventMessage,
           url: [
             this.app_domain,
             `/expedients/`,

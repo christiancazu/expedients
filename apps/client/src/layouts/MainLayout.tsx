@@ -3,27 +3,14 @@ import { Outlet, useMatches, useNavigate } from 'react-router-dom'
 import { Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
 import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
-import { Header } from 'antd/es/layout/layout'
 import Title from 'antd/es/typography/Title'
 import Text from 'antd/es/typography/Text'
 import HeaderToolbar from '../components/header/HeaderToolbar'
 import { StyledAvatar } from '../components/styled/avatar.styled'
+import { StyledHeader, StyledSider } from './styled'
 
-const { Content, Sider } = Layout
+const { Content } = Layout
 const { useBreakpoint } = Grid
-
-const siderStyle: React.CSSProperties = {
-  overflow: 'auto',
-  height: '100vh',
-  position: 'fixed',
-  insetInlineStart: 0,
-  top: 0,
-  zIndex: 1,
-  bottom: 0,
-  scrollbarWidth: 'thin',
-  scrollbarGutter: 'stable',
-  transition: 'min-width .2s ease-in-out, width .2s ease-in-out, max-width .2s ease-in-out'
-}
 
 const MainLayout: React.FC = () => {
   const navigate = useNavigate()
@@ -57,11 +44,10 @@ const MainLayout: React.FC = () => {
 
   return (
     <Layout style={ { minHeight: '100vh' } }>
-      <Sider
+      <StyledSider
         collapsible
         collapsed={ collapsed }
         collapsedWidth="0"
-        style={ siderStyle }
         trigger={ null }
       >
         <Flex
@@ -85,20 +71,9 @@ const MainLayout: React.FC = () => {
             />
           </div>
         </Flex>
-      </Sider>
+      </StyledSider>
       <Layout style={ { marginLeft: collapsed || !screens.md ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
-        <Header
-          style={ {
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            background: colorBgLayout,
-            padding: 0
-          } }
-        >
+        <StyledHeader $colorBgLayout={ colorBgLayout }>
           <Flex
             align='center'
             className='w-100'
@@ -130,7 +105,7 @@ const MainLayout: React.FC = () => {
             </Flex>
             <HeaderToolbar />
           </Flex>
-        </Header>
+        </StyledHeader>
         <Content
           style={ {
             margin: '16px',

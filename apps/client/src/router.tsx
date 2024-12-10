@@ -2,7 +2,7 @@ import { lazy, Suspense, useMemo } from 'react'
 import { Spin } from 'antd'
 import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 
-import useUserState from './composables/useUserState'
+import useUserState from './hooks/useUserState'
 
 const VerifyAccount = lazy(() => import('./views/VerifyAccount'))
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'))

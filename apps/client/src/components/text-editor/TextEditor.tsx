@@ -13,8 +13,8 @@ import dayjs from 'dayjs'
 import { createExpedientReview } from '../../services/api.service.ts'
 import { queryClient } from '../../config/queryClient.ts'
 import suggestion from './suggestion.ts'
-import useNotify from '../../composables/useNotification'
-import useUserState from '../../composables/useUserState.tsx'
+import useNotify from '../../hooks/useNotification.tsx'
+import useUserState from '../../hooks/useUserState.tsx'
 
 import './text-editor.scss'
 

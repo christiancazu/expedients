@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { ConfigProvider, theme } from 'antd'
-import useToogleTheme from './composables/useToogleTheme'
+import useToogleTheme from './hooks/useToogleTheme'
 import ConfirmModal from './components/ConfirmModal'
 import esEs from 'antd/locale/es_ES'
 

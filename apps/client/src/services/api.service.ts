@@ -1,4 +1,4 @@
-import { Expedient, User } from '@expedients/shared'
+import { Expedient, User, IEvent } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
 import axios, { AxiosRequestConfig } from 'axios'
 
@@ -20,6 +20,14 @@ export async function getExpedient(id: string) {
 
 export async function createExpedient(data: Expedient) {
   return httpClient.post(`/expedients`, { ...data }).then(res => res.data)
+}
+
+export async function getExpedientsEvents(): Promise<Expedient[]> {
+  return httpClient.get(`/expedients/events`).then(res => res.data)
+}
+
+export async function getExpedientEvents(expedientId: string): Promise<IEvent[]> {
+  return httpClient.get(`/expedients/${expedientId}/events`).then(res => res.data)
 }
 
 export async function createExpedientReview(data: { description: string; createdAt: string; expedientId: string }) {

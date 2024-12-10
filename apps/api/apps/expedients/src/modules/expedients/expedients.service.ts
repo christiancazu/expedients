@@ -249,6 +249,7 @@ export class ExpedientsService {
       },
       select: {
         id: true,
+        code: true,
         events: {
           id: true,
           message: true,

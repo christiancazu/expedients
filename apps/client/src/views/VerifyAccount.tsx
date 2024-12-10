@@ -3,10 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import ButtonBase from '../components/base/ButtonBase'
 import { ArrowLeftOutlined, SendOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/es/form/Form'
-import useNotify from '../composables/useNotification'
+import useNotify from '../hooks/useNotification'
 import { useMutation } from '@tanstack/react-query'
 import { verifyAccount } from '../services/api.service'
-import useUserState from '../composables/useUserState'
+import useUserState from '../hooks/useUserState'
 import { AxiosError } from 'axios'
 
 interface FieldType {

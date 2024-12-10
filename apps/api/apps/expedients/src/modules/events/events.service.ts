@@ -110,11 +110,6 @@ export class EventsService implements OnModuleInit {
   findAllPending() {
     return this._expedientsQueue.getJobs()
   }
-
-  // findAllByUser(user: User) {
-  //   return this.
-  // }
-
   update(id: string, Event: Partial<Event>) {
     return this._eventsRepository.update(id, Event)
   }

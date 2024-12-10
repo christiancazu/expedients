@@ -84,6 +84,7 @@ export interface Expedient {
   updatedByUser: User
   parts: Part[]
   reviews: Review[]
+  events: IEvent[]
   documents: Document[]
   createdAt: Date | string
   updatedAt: Date | string
@@ -115,4 +116,16 @@ export interface Document {
   updatedByUser: User
   createdAt: Date | string
   updatedAt: Date | string
+}
+
+export interface IEvent {
+  id: string
+  message: string
+  isSent: boolean
+  isSeenByLawyer: boolean
+  isSeenByAssistant: boolean
+  createdAt: Date | string
+  createdByUser: User
+  scheduledAt: Date | string
+  expedient: Expedient
 }

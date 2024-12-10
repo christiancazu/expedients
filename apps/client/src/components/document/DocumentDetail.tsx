@@ -9,7 +9,7 @@ import { DocumentFile } from '../../views/ExpedientView'
 import { Grid } from 'antd'
 
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer'
-import useNotify from '../../composables/useNotification'
+import useNotify from '../../hooks/useNotification'
 import '@cyntler/react-doc-viewer/dist/index.css'
 import ButtonBase from '../base/ButtonBase'
 

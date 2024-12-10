@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { Modal } from 'antd'
-import { useConfirmModal } from '../composables/useConfirmModal'
+import { useConfirmModal } from '../hooks/useConfirmModal'
 import ButtonBase from './base/ButtonBase'
 
 export default function ConfirmModal(): React.ReactNode {

@@ -6,17 +6,17 @@ self.addEventListener('install', () => {
 
 self.addEventListener('push', (e) => {
   console.log('push notification')
-  const{ title, body, redirectUrl } = e.data.json()
+  const { title, body, redirectUrl } = e.data.json()
 
   self.registration.showNotification(title, {
     body,
     data: { redirectUrl },
-    icon: 'https://corporativokallpa.com/favicon.ico',
-    badge: 'https://corporativokallpa.com/favicon.ico'
+    icon: 'https://corporativokallpa.com/favicon.svg',
+    badge: 'https://corporativokallpa.com/favicon.svg'
   })
 })
 
-self.addEventListener('notificationclick', function(event){
+self.addEventListener('notificationclick', function (event) {
   console.log('on notification click: ', event.notification.data)
   event.notification.close()
 

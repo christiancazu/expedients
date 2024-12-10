@@ -34,9 +34,9 @@ export class ExpedientsController {
     return this.expedientsService.findEvents(user)
   }
 
-  @Get('events/:id')
+  @Get(':id/events')
   findByIdEvents(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.expedientsService.findEvents(id)
+    return this.expedientsService.findByIdEvents(id)
   }
 
   @Get(':id')

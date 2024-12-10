@@ -18,7 +18,7 @@ export default function HeaderToolbar(): React.ReactNode {
   const { isDarkTheme, toggleTheme } = useToogleTheme()
 
   const { user, purgeUserSession } = useUserState()
-  const [drawer, setDrawer] = useState(true)
+  const [drawer, setDrawer] = useState(false)
 
   const items: MenuProps['items'] = useMemo(() => ([
     {

@@ -21,8 +21,8 @@ httpClient.interceptors.response.use((response) => {
     window.location.href = '/auth/sign-in'
   }
 
-  if (error.status === 422) {
-    message.error('Ha sucedido un error al procesar la petición')
+  if ([422, 400].some(status => status === error.status)) {
+    message.error(error?.response?.data?.message ?? 'Ha ocurrido un error al procesar la solicitud')
   }
 
   return Promise.reject(error)

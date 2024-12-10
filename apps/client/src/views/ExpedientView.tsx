@@ -19,24 +19,25 @@ import { deleteExpedientReview, getExpedient } from '../services/api.service'
 import { Expedient as ExpedientType, Document as DocumentType } from '@expedients/shared'
 import { dateUtil, getSpritePositionX } from '../utils'
 import { queryClient } from '../config/queryClient'
+import ScheduleEvent, { ScheduleEventProps } from '../components/ScheduleEvent'
 
 const dom = document
 let mentions: HTMLElement[] | Element[] = []
 
 export interface DocumentFile extends Partial<Document> {
-  showDetail: boolean;
-  showUpload: boolean;
-  isLoading: boolean;
-  action: 'create' | 'edit';
-  id: string;
+  showDetail: boolean
+  showUpload: boolean
+  isLoading: boolean
+  action: 'create' | 'edit'
+  id: string
 }
 
 interface Document extends DocumentType {
-  spritePositionX: number;
+  spritePositionX: number
 }
 
 interface Expedient extends ExpedientType {
-  documents: Document[];
+  documents: Document[]
 }
 
 const ExpedientView: React.FC = () => {
@@ -49,6 +50,11 @@ const ExpedientView: React.FC = () => {
     showUpload: false,
     isLoading: false,
     action: 'create'
+  })
+  const [scheduledEvent, setScheduledEvent] = useState<ScheduleEventProps>({
+    expedientId: '',
+    code: '',
+    show: false
   })
 
   const { token: { colorBgContainer, borderRadiusLG, paddingMD, marginMD, colorTextSecondary } } = theme.useToken()
@@ -292,9 +298,7 @@ const ExpedientView: React.FC = () => {
         md={ { span: 8, order: 2 } }
         xs={ { span: 24, order: 1 } }
       >
-        <div
-          style={ sectionStyle }
-        >
+        <div style={ sectionStyle } >
           <div className='d-flex justify-content-between flex-wrap'>
             <Title
               className='mb-0'
@@ -379,6 +383,91 @@ const ExpedientView: React.FC = () => {
             </Flex>
           </Spin>
         </div>
+        <div style={ sectionStyle } >
+          <div className='d-flex justify-content-between flex-wrap'>
+            <Title
+              className='mb-0'
+              level={ 5 }
+            >
+              Eventos
+            </Title>
+            {
+              isWritableByUser &&
+                <Button
+                  icon={ <PlusOutlined /> }
+                  type='primary'
+                  onClick={ () => setScheduledEvent(() => ({ expedientId: data.id, code: data.code, show: true })) }
+                >
+                  Programar evento
+                </Button>
+            }
+          </div>
+
+          <Divider className='my-12' />
+
+          <Spin
+            spinning={ documentFile.isLoading }
+            tip="Consultando..."
+          >
+            <Flex
+              vertical
+              wrap
+              align='start'
+            >
+              {
+                data.documents.map(document =>
+                  <div
+                    className='text-link w-100'
+                    key={ document.id }
+                  >
+                    <div className='d-flex justify-content-between align-items-center'>
+                      <div
+                        className='mr-16'
+                        style={ { wordBreak: 'break-all' } }
+                        onClick={ () => setDocumentFile((prev) => ({
+                          ...prev,
+                          showDetail: true,
+                          action: 'create',
+                          id: document.id
+                        })) }
+                      >
+                        <div className='d-flex align-items-center'>
+                          <div
+                            style={ { background: 'url(/docs.png) no-repeat', height: 32, width: 32, backgroundPositionX: document.spritePositionX, display: 'inline-block' } }
+                          />
+                          <div className='ml-8'>
+                            <p>
+                              {document.name}
+                            </p>
+                            <p style={ { color: colorTextSecondary } }>
+                              {document.updatedAt as string}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      {
+                        isWritableByUser &&
+                          <Tooltip title="Reemplazar">
+                            <Button
+                              icon={ <EditOutlined /> }
+                              shape="circle"
+                              onClick={ () => (setDocumentFile((prev) => ({
+                                ...prev,
+                                showUpload: true,
+                                action: 'edit',
+                                ...document
+                              }))) }
+                            >
+                            </Button>
+                          </Tooltip>
+                      }
+                    </div>
+                  </div>
+                )
+              }
+            </Flex>
+          </Spin>
+        </div>
       </Col>
       {
         documentFile.showDetail &&
@@ -393,7 +482,12 @@ const ExpedientView: React.FC = () => {
             documentFile={ documentFile }
             setDocumentFile={ setDocumentFile }
           />
+
       }
+      <ScheduleEvent
+        event={ scheduledEvent }
+        setEvent={ setScheduledEvent }
+      />
     </Row>
   )
 }

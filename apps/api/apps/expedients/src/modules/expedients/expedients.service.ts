@@ -234,6 +234,59 @@ export class ExpedientsService {
     })
   }
 
+  findEvents(user: User) {
+    return this._expedientRepository.find({
+      where: [
+        {
+          assignedAssistant: user
+        },
+        {
+          assignedLawyer: user
+        }
+      ],
+      relations: {
+        events: true
+      },
+      select: {
+        id: true,
+        events: {
+          id: true,
+          message: true,
+          scheduledAt: true,
+          isSent: true
+        }
+      },
+      order: {
+        events: {
+          scheduledAt: 'DESC'
+        }
+      }
+    })
+  }
+
+  findByIdEvents(id: string) {
+    return this._expedientRepository.findOne({
+      where: { id },
+      relations: {
+        events: true
+      },
+      select: {
+        id: true,
+        events: {
+          id: true,
+          message: true,
+          scheduledAt: true,
+          isSent: true
+        }
+      },
+      order: {
+        events: {
+          scheduledAt: 'DESC'
+        }
+      }
+    })
+  }
+
   getUserAssigned(assignedUser: User, id: string) {
     return this._expedientRepository.findOne({
       where: [

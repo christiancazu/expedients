@@ -31,7 +31,7 @@ const config = {
     Notification
   ],
   migrations: [`${__dirname}../../migrations/*{.ts,.js}`],
-  synchronize: true,
+  synchronize: false,
   dialectOptions: {
     ssl: process.env.NODE_ENV === 'production'
   },

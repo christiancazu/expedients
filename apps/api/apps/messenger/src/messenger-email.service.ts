@@ -53,7 +53,7 @@ export class MessengerEmailService {
     const users = [assignedAssistant, assignedLawyer].filter(u => !!u)
 
     try {
-      Promise.all(users.map(user => this._mailerService.sendMail({
+      return Promise.all(users.map(user => this._mailerService.sendMail({
         to: user.email,
         from: `CORPORATIVO KALLPA <${this.sender_email}>`,
         subject: 'Evento programado',

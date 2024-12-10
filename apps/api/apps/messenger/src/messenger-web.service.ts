@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { sendNotification, setVapidDetails } from 'web-push'
-import { SubscriptionNotificationDto } from 'apps/expedients/src/modules/notifications/dto/subscription-notification.dto'
+import { PushNotification } from 'apps/expedients/src/modules/notifications/types'
 
 @Injectable()
 export class MessengerWebService {
@@ -21,9 +21,18 @@ export class MessengerWebService {
     )
   }
 
-  async sendScheduledNotification(notifications: SubscriptionNotificationDto[]) {
+  async sendScheduledNotification(notifications: PushNotification[]) {
     try {
-      await Promise.all(notifications.map(notification => sendNotification(notification, JSON.stringify({ title: `expedients` }))))
+      await Promise.all(notifications
+        .map(notification => {
+          const { pushSubscription, ...rest } = notification
+
+          return sendNotification(
+            pushSubscription,
+            JSON.stringify({ ...rest })
+          )
+        })
+      )
     } catch (error) {
       this.logger.error(error)
     }

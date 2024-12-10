@@ -17,7 +17,7 @@ export class EventsController {
     private readonly _usersService: EventsService
   ) { }
 
-  @Get()
+  @Get('pending')
   findAllPending() {
     return this._usersService.findAllPending()
   }

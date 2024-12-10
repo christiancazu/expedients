@@ -15,7 +15,7 @@ import { join } from 'path'
 import { BullModule } from '@nestjs/bullmq'
 import { ScheduleModule } from '@nestjs/schedule'
 import { EventsModule } from './modules/events/events.module'
-import { NotificationsModule } from './modules/notifications/notifications.module';
+import { NotificationsModule } from './modules/notifications/notifications.module'
 
 @Module({
   imports: [

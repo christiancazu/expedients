@@ -9,7 +9,7 @@ import { ExpedientsService } from '../expedients/expedients.service'
 import { ScheduledEventPayload } from 'apps/messenger/src/types'
 import { EventsService } from './events.service'
 import { NotificationsService } from '../notifications/notifications.service'
-import { SubscriptionNotificationDto } from '../notifications/dto/subscription-notification.dto'
+import { PushNotification } from '../notifications/types'
 
 @Processor(EVENT_QUEUE)
 export class EventsConsumer extends WorkerHost {
@@ -53,7 +53,7 @@ export class EventsConsumer extends WorkerHost {
         isSent: true
       })
     } catch (error) {
-      this._logger.error('error sending event: ', error)
+      this._logger.error('error sending email: ', error)
     }
 
     try {
@@ -65,20 +65,24 @@ export class EventsConsumer extends WorkerHost {
       )
 
       await firstValueFrom(
-        this._clientProxy.send<any, SubscriptionNotificationDto[]>(
+        this._clientProxy.send<any, PushNotification[]>(
           SETTINGS.NOTIFICATION_SCHEDULED,
           notifications.map((notification) => ({
-            endpoint: notification.endpoint,
-            keys: {
-              p256dh: notification.p256dh,
-              auth: notification.auth
-            }
+            pushSubscription: {
+              endpoint: notification.endpoint,
+              keys: {
+                p256dh: notification.p256dh,
+                auth: notification.auth
+              }
+            },
+            title: `Recordatorio`,
+            body: event!.message,
+            redirectUrl: `/expedients/${expedient.id}`
           }))
         ))
 
     } catch (error) {
       this._logger.error('error sending notification: ', error)
-
     }
   }
 }

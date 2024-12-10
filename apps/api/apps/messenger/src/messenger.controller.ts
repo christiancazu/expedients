@@ -4,7 +4,7 @@ import { SETTINGS } from '@expedients/shared'
 import { MessagePattern, Payload } from '@nestjs/microservices'
 import { MailActivateAccountPayload, ScheduledEventPayload } from './types'
 import { MessengerWebService } from './messenger-web.service'
-import { SubscriptionNotificationDto } from 'apps/expedients/src/modules/notifications/dto/subscription-notification.dto'
+import { PushNotification } from 'apps/expedients/src/modules/notifications/types'
 
 @Controller()
 export class MessengerController {
@@ -14,18 +14,21 @@ export class MessengerController {
   ) { }
 
   @MessagePattern(SETTINGS.EVENT_MAIL_ACTIVATE_ACCOUNT)
-  sendEmailToActivateAccount(@Payload() payload: MailActivateAccountPayload) {
-    return this._messengerEmailService.sendEmailToActivateAccount(payload)
+  async sendEmailToActivateAccount(@Payload() payload: MailActivateAccountPayload) {
+    await this._messengerEmailService.sendEmailToActivateAccount(payload)
+    return `OK`
   }
 
   @MessagePattern(SETTINGS.EVENT_SCHEDULED)
-  sendScheduledEvent(@Payload() payload: ScheduledEventPayload)
+  async sendScheduledEvent(@Payload() payload: ScheduledEventPayload)
   {
-    this._messengerEmailService.sendScheduledEvent(payload)
+    await this._messengerEmailService.sendScheduledEvent(payload)
+    return `OK`
   }
 
   @MessagePattern(SETTINGS.NOTIFICATION_SCHEDULED)
-  sendScheduledNotification(@Payload() payload: SubscriptionNotificationDto[]) {
-    this._messengerWebService.sendScheduledNotification(payload)
+  async sendScheduledNotification(@Payload() payload: PushNotification[]) {
+    await this._messengerWebService.sendScheduledNotification(payload)
+    return `OK`
   }
 }

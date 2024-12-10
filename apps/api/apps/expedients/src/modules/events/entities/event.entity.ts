@@ -13,6 +13,13 @@ export class Event {
   @Column({ type: 'boolean', default: false })
   isSent: boolean
 
+  @Column({ type: 'boolean', default: false })
+  isSeenByLawyer: boolean
+
+
+  @Column({ type: 'boolean', default: false })
+  isSeenByAssistant: boolean
+
   @CreateDateColumn()
   createdAt: Date
 

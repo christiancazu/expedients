@@ -6,7 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  ParseUUIDPipe
 } from '@nestjs/common'
 import { ExpedientsService } from './expedients.service'
 import { CreateExpedientDto } from './dto/create-expedient.dto'
@@ -26,6 +27,16 @@ export class ExpedientsController {
   @Get()
   findAll(@Query() query: FindExpedientDto) {
     return this.expedientsService.findAll(query)
+  }
+
+  @Get('events')
+  findEvents(@UserRequest() user: User) {
+    return this.expedientsService.findEvents(user)
+  }
+
+  @Get('events/:id')
+  findByIdEvents(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.expedientsService.findEvents(id)
   }
 
   @Get(':id')

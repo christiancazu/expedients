@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Modal } from 'antd'
 import { NotificationOutlined } from '@ant-design/icons'
 import setupNotificationPermission from '../notifications'
@@ -20,15 +20,20 @@ export default function NotificationModal(): React.ReactNode {
     mutationFn: subscribeNotifications
   })
 
+  const isFirstTime = useRef(false)
+
   useEffect(() => {
     const setupServiceWorker = async () => {
+      isFirstTime.current = true
+
       setShowModal(Notification.permission === 'default')
 
       if ('serviceWorker' in navigator) {
-        sw = await navigator.serviceWorker.register('/service-worker.js', {
+        sw = await navigator.serviceWorker.register('service-worker.js', {
           scope: '/'
         })
       }
+
       addEventListener('message', async (event: MessageEvent<NotificationPermission>) => {
         setShowModal(false)
 
@@ -45,7 +50,7 @@ export default function NotificationModal(): React.ReactNode {
       })
     }
 
-    if (user) {
+    if (user && !isFirstTime.current) {
       setupServiceWorker()
     }
   }, [user])

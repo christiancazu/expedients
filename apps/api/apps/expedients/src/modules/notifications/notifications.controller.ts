@@ -6,7 +6,7 @@ import { User } from '../users/entities/user.entity'
 
 @Controller('notifications')
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(private readonly notificationsService: NotificationsService) { }
 
   @Post('subscribe')
   subscribe(

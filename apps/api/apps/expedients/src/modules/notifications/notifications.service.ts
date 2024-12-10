@@ -9,8 +9,7 @@ import { Notification } from './entities/notification.entity'
 export class NotificationsService {
   constructor(
     @InjectRepository(Notification)
-    private readonly _notificationsRepository: Repository<Notification>
-  ) {}
+    private readonly _notificationsRepository: Repository<Notification>) { }
 
   findSubscriptionByUser({ assignedLawyer, assignedAssistant }: {assignedLawyer: User; assignedAssistant: User}) {
     return this._notificationsRepository.find({

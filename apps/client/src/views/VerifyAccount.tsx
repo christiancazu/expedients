@@ -10,8 +10,8 @@ import useUserState from '../hooks/useUserState'
 import { AxiosError } from 'axios'
 
 interface FieldType {
-  confirmPassword?: string;
-  password?: string;
+  confirmPassword?: string
+  password?: string
 }
 export default function VerifyAccount(): React.ReactNode {
   const [form] = useForm()

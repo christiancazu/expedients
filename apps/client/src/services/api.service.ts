@@ -1,13 +1,13 @@
-import { Expedient, User, IEvent } from '@expedients/shared'
+import { Expedient, IEvent } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
 import axios, { AxiosRequestConfig } from 'axios'
-import { CreateEvent } from '../types'
+import { CreateEvent, UserSession } from '../types'
 
-export async function signIn(data: { email: string; password: string }): Promise<{ user: User; token: string; vapidKey: string }> {
+export async function signIn(data: { email: string; password: string }): Promise<UserSession> {
   return await httpClient.post(`/auth/sign-in`, { ...data }).then(res => res.data)
 }
 
-export async function verifyAccount(data: { password: string; token: string }): Promise<{ user: User; token: string }> {
+export async function verifyAccount(data: { password: string; token: string }): Promise<UserSession> {
   return await httpClient.post(`/auth/verify-account`, { ...data }).then(res => res.data)
 }
 

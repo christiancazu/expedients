@@ -2,7 +2,7 @@ import { SetStateAction } from 'react'
 import { Button, DatePicker, Form, Input, Modal } from 'antd'
 import Title from 'antd/es/typography/Title'
 import { useForm } from 'antd/es/form/Form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
@@ -29,13 +29,16 @@ const minDate = dayjs(new Date().toISOString()).format(dateFormat)
 
 export default function ScheduleEvent({ event, setEvent }: Props): React.ReactNode {
   const notify= useNotify()
+  const queryClient = useQueryClient()
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['create-event'],
     mutationFn: createEvent,
-    onSuccess: () => {
+    onSuccess: async () => {
       notify({ message: 'Evento programado con éxito' })
       setEvent((prev) => ({ ...prev, show: false }))
+      await queryClient.invalidateQueries({ queryKey: ['expedients-events' + event.expedientId] })
+      form.resetFields()
     }
   })
 

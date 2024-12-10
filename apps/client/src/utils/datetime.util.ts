@@ -1,7 +1,12 @@
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+dayjs.extend(customParseFormat)
+const dateFormat = 'YYYY-MM-DD HH:mm'
+
 export const dateUtil = {
   formatDate: (_date: Date | string) => {
     const date = new Date(_date)
-
-    return `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)}`
+    return `${dayjs(date).format(dateFormat)}`
   }
 }

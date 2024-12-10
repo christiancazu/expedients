@@ -1,4 +1,4 @@
-import { Expedient, IEvent } from '@expedients/shared'
+import { Expedient } from '@expedients/shared'
 import { httpClient } from '../config/httpClient'
 import axios, { AxiosRequestConfig } from 'axios'
 import { CreateEvent, UserSession } from '../types'
@@ -27,7 +27,7 @@ export async function getExpedientsEvents(): Promise<Expedient[]> {
   return httpClient.get(`/expedients/events`).then(res => res.data)
 }
 
-export async function getExpedientEvents(expedientId: string): Promise<IEvent[]> {
+export async function getExpedientEvents(expedientId: string): Promise<Expedient> {
   return httpClient.get(`/expedients/${expedientId}/events`).then(res => res.data)
 }
 

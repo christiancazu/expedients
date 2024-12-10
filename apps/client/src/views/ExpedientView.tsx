@@ -3,8 +3,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import htmlReactParser from 'html-react-parser'
 
-import { Button, Card, Col, Divider, Flex, Row, Spin, theme, Tooltip } from 'antd'
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import { Avatar, Button, Card, Col, Divider, Flex, Row, Spin, theme, Tooltip, Typography } from 'antd'
+import { DeleteOutlined, EditOutlined, NotificationOutlined, PlusOutlined } from '@ant-design/icons'
 
 import Title from 'antd/es/typography/Title'
 import TextEditor from '../components/text-editor/TextEditor'
@@ -15,11 +15,14 @@ import NavigationBackBtn from '../components/NavigationBackBtn'
 
 import useUserState from '../hooks/useUserState'
 import useNotify from '../hooks/useNotification'
-import { deleteExpedientReview, getExpedient } from '../services/api.service'
+import { deleteExpedientReview, getExpedient, getExpedientEvents } from '../services/api.service'
 import { Expedient as ExpedientType, Document as DocumentType } from '@expedients/shared'
 import { dateUtil, getSpritePositionX } from '../utils'
 import { queryClient } from '../config/queryClient'
 import ScheduleEvent, { ScheduleEventProps } from '../components/ScheduleEvent'
+import { StyledCardNotification, StyledCardNotificationText } from '../components/header/styled'
+
+const { Text } = Typography
 
 const dom = document
 let mentions: HTMLElement[] | Element[] = []
@@ -76,6 +79,19 @@ const ExpedientView: React.FC = () => {
       expedient.reviews = expedient.reviews.map(review => ({
         ...review,
         createdAt: dateUtil.formatDate(review.createdAt)
+      }))
+      return expedient
+    }
+  })
+
+  const { data: expedientEvents } = useQuery({
+    queryKey: ['expedients-events' + id],
+    queryFn: () => getExpedientEvents(id!),
+    refetchOnMount: true,
+    select: (expedient) => {
+      expedient.events = expedient.events.map(event => ({
+        ...event,
+        scheduledAt: dateUtil.formatDate(event.scheduledAt)
       }))
       return expedient
     }
@@ -415,54 +431,38 @@ const ExpedientView: React.FC = () => {
               align='start'
             >
               {
-                data.documents.map(document =>
-                  <div
-                    className='text-link w-100'
-                    key={ document.id }
+                expedientEvents?.events.map(event =>
+                  <StyledCardNotification
+                    className='mb-12'
+                    key={ event.id }
                   >
-                    <div className='d-flex justify-content-between align-items-center'>
-                      <div
-                        className='mr-16'
-                        style={ { wordBreak: 'break-all' } }
-                        onClick={ () => setDocumentFile((prev) => ({
-                          ...prev,
-                          showDetail: true,
-                          action: 'create',
-                          id: document.id
-                        })) }
+                    <Flex >
+                      <Flex>
+                        <Avatar
+                          icon={ <NotificationOutlined /> }
+                          size={ 32 }
+                          style={ { width: 32, backgroundColor: 'var(--ant-color-warning)' } }
+                        />
+                      </Flex>
+                      <Flex
+                        vertical
+                        className='ml-12 w-100'
+                        justify='space-between'
                       >
-                        <div className='d-flex align-items-center'>
-                          <div
-                            style={ { background: 'url(/docs.png) no-repeat', height: 32, width: 32, backgroundPositionX: document.spritePositionX, display: 'inline-block' } }
-                          />
-                          <div className='ml-8'>
-                            <p>
-                              {document.name}
-                            </p>
-                            <p style={ { color: colorTextSecondary } }>
-                              {document.updatedAt as string}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      {
-                        isWritableByUser &&
-                          <Tooltip title="Reemplazar">
-                            <Button
-                              icon={ <EditOutlined /> }
-                              shape="circle"
-                              onClick={ () => (setDocumentFile((prev) => ({
-                                ...prev,
-                                showUpload: true,
-                                action: 'edit',
-                                ...document
-                              }))) }
-                            >
-                            </Button>
-                          </Tooltip>
-                      }
-                    </div>
-                  </div>
+                        <StyledCardNotificationText lineclamp='0'>
+                          {event.message}
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab hic, optio itaque corporis amet, aliquam nulla neque doloremque deserunt tenetur error molestias dolor dolorem, earum voluptate omnis laudantium iusto iure.
+                        </StyledCardNotificationText>
+                        <Text
+                          className='d-flex justify-content-end'
+                          type='secondary'
+                        >
+                          {event.scheduledAt as string}
+                        </Text>
+                      </Flex>
+                    </Flex>
+
+                  </StyledCardNotification>
                 )
               }
             </Flex>

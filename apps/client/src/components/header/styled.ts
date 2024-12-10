@@ -10,6 +10,7 @@ export const StyledDrawer = styled(Drawer)`
 `
 
 export const StyledCardNotification = styled(Card)`
+  width: 100%;
   & .ant-card-body {
     padding: var(--ant-padding-sm);
   }

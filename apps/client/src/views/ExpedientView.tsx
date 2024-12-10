@@ -451,7 +451,6 @@ const ExpedientView: React.FC = () => {
                       >
                         <StyledCardNotificationText lineclamp='0'>
                           {event.message}
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab hic, optio itaque corporis amet, aliquam nulla neque doloremque deserunt tenetur error molestias dolor dolorem, earum voluptate omnis laudantium iusto iure.
                         </StyledCardNotificationText>
                         <Text
                           className='d-flex justify-content-end'

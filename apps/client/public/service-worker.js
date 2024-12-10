@@ -3,7 +3,6 @@ self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
-
 self.addEventListener('push', (e) => {
   console.log('push notification')
   const { title, body, redirectUrl } = e.data.json()

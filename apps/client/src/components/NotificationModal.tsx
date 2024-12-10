@@ -12,7 +12,7 @@ import ButtonBase from './base/ButtonBase'
 let sw: ServiceWorkerRegistration
 
 export default function NotificationModal(): React.ReactNode {
-  const [showModal, setShowModal] = useState(Notification.permission === 'default')
+  const [showModal, setShowModal] = useState(false)
   const { user } = useUserState()
 
   const { mutate } = useMutation({
@@ -22,6 +22,8 @@ export default function NotificationModal(): React.ReactNode {
 
   useEffect(() => {
     const setupServiceWorker = async () => {
+      setShowModal(Notification.permission === 'default')
+
       if ('serviceWorker' in navigator) {
         sw = await navigator.serviceWorker.register('/service-worker.js', {
           scope: '/'
@@ -39,14 +41,14 @@ export default function NotificationModal(): React.ReactNode {
           applicationServerKey: persisterUtil.getVapidKey()
         })
 
-        if (user) {
-          mutate(subscription)
-        }
+        mutate(subscription)
       })
     }
 
-    setupServiceWorker()
-  }, [])
+    if (user) {
+      setupServiceWorker()
+    }
+  }, [user])
 
   return (
     <Modal

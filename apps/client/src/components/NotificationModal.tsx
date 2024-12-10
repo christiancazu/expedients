@@ -29,7 +29,7 @@ export default function NotificationModal(): React.ReactNode {
       setShowModal(Notification.permission === 'default')
 
       if ('serviceWorker' in navigator) {
-        sw = await navigator.serviceWorker.register('service-worker.js', {
+        sw = await navigator.serviceWorker.register('/service-worker.js', {
           scope: '/'
         })
       }

@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button, Card, Col, Form, Input, Row } from 'antd'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
+
 import { signIn } from '../services/api.service'
 import { useForm } from 'antd/es/form/Form'
 import useUserState from '../hooks/useUserState'
-import { useNavigate } from 'react-router-dom'
 import useNotify from '../hooks/useNotification'
 
 interface FieldType {
@@ -16,6 +17,8 @@ const SignInView: React.FC = () => {
   const [form] = useForm()
   const { setUserSession } = useUserState()
   const navigate = useNavigate()
+  const [params, setParams] = useSearchParams()
+
   const notify = useNotify()
 
   const { mutate, isPending } = useMutation({
@@ -23,8 +26,12 @@ const SignInView: React.FC = () => {
     mutationFn: () => signIn({ email: form.getFieldValue('email'), password: form.getFieldValue('password') }),
     onSuccess: (data) => {
       setUserSession(data)
-      navigate('/')
-      notify({ message: 'La sessión ha sido iniciada con éxito' })
+
+      setTimeout(() => {
+        notify({ message: 'La sessión ha sido iniciada con éxito' })
+        navigate(params.get('redirect') ?? '/')
+        setParams(params => { params.delete('redirect'); return params })
+      }, 1)
     },
     onError: () => {
       notify({ message: 'El usuario o la contraseña son incorrectos', type: 'error' })

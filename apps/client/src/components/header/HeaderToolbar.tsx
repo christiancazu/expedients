@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Avatar, Badge, Dropdown, MenuProps, Space, Switch, Grid, Tooltip } from 'antd'
 import { DownOutlined, LogoutOutlined, MoonOutlined, NotificationOutlined, ProfileOutlined, SettingOutlined, SunOutlined, UserOutlined } from '@ant-design/icons'
 
@@ -12,6 +13,8 @@ import './header-toolbar.scss'
 const { useBreakpoint } = Grid
 
 export default function HeaderToolbar(): React.ReactNode {
+  const [_, setParams] = useSearchParams()
+
   const notify = useNotify()
 
   const screens = useBreakpoint()
@@ -52,6 +55,7 @@ export default function HeaderToolbar(): React.ReactNode {
       key: 'logout',
       icon: <LogoutOutlined style={ { fontSize: 16 } } />,
       onClick: () => {
+        setParams({ logout: 'true' })
         purgeUserSession()
         notify({ message: 'La sesión ha sido finalizada', type: 'info' })
       }

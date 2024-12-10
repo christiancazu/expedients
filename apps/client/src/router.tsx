@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo } from 'react'
 import { Spin } from 'antd'
-import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation, useSearchParams } from 'react-router-dom'
 
 import useUserState from './hooks/useUserState'
 
@@ -16,19 +16,33 @@ const MainLayout = lazy(() => import('./layouts/MainLayout'))
 const ExpedientsCreateView = lazy(() => import('./views/ExpedientCreateView'))
 
 const SessionRoutes: React.FC = () => {
-  const { user, purgeUserSession } = useUserState()
+  const { user } = useUserState()
   const location = useLocation()
+  const [params, setParams] = useSearchParams()
+
 
   if (!user) {
     if (location.pathname === '/auth/sign-in') {
       return <Navigate to={ location } />
     }
 
-    purgeUserSession()
+    let redirect = ``
+
+    const isFromLogout = params.get('logout')
+
+    if (isFromLogout === 'true') {
+      setParams(prev => {
+        prev.delete('logout')
+        return prev
+      })
+      window.location.replace('/auth/sign-in')
+    } else {
+      redirect = `?redirect=${ location.pathname }`
+    }
 
     return <Navigate
       replace
-      to='/auth/sign-in'
+      to={ `/auth/sign-in` + redirect }
     />
   }
 

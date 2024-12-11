@@ -25,7 +25,7 @@ export class Expedient {
     type: 'varchar',
     length: FIELD.EXPEDIENT_CODE_MAX_LENGTH
   })
-  code: string
+  code?: string
 
   @Column({
     type: 'varchar',
@@ -74,7 +74,7 @@ export class Expedient {
   @ManyToOne(() => User, (user) => user.updatedExpedients)
   updatedByUser: User
 
-  @OneToMany(() => Part, (part) => part.expedient)
+  @OneToMany(() => Part, (part) => part.expedient, { cascade: true })
   parts: Part[]
 
   @OneToMany(() => Review, (review) => review.expedient)

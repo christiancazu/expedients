@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, MaxLength } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsOptional, IsUUID, MaxLength } from 'class-validator'
 import { FIELD, PART_TYPES } from '@expedients/shared'
 
 export class CreatePartDto {
@@ -8,4 +8,8 @@ export class CreatePartDto {
 
   @IsEnum(PART_TYPES)
   type: PART_TYPES
+
+  @IsOptional()
+  @IsUUID()
+  id: string
 }

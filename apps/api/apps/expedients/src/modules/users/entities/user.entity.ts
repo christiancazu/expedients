@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -16,7 +15,7 @@ import { Event } from '../../events/entities/event.entity'
 import { Notification } from '../../notifications/entities/notification.entity'
 
 @Entity('users')
-export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -100,5 +99,11 @@ export class User extends BaseEntity {
     //@ts-ignore
     delete this.password
     return this
+  }
+
+  constructor(id?: string) {
+    if (id) {
+      this.id = id
+    }
   }
 }

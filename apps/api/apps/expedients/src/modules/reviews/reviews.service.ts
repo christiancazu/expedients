@@ -37,7 +37,7 @@ export class ReviewsService {
     try {
       const reviewSaved = await this._reviewsRepository.save(review)
 
-      await this._expedientsService.update(expedient.id, {
+      await this._expedientsService.updateDate(expedient.id, {
         updatedAt: reviewSaved.createdAt
       })
 

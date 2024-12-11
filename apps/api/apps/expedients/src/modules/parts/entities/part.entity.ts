@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -9,7 +8,7 @@ import { Expedient } from '../../expedients/entities/expedient.entity'
 import { FIELD, PART_TYPES } from '@expedients/shared'
 
 @Entity('parts')
-export class Part extends BaseEntity {
+export class Part {
   @PrimaryGeneratedColumn('uuid')
   id: string
 

@@ -7,6 +7,7 @@ import { User } from '../users/entities/user.entity'
 import { Review } from '../reviews/entities/review.entity'
 import { FindExpedientDto } from './dto/find-expedient.dto'
 import { Part } from '../parts/entities/part.entity'
+import { UpdateExpedientDto } from './dto/update-expedient.dto'
 
 @Injectable()
 export class ExpedientsService {
@@ -16,29 +17,44 @@ export class ExpedientsService {
   @InjectRepository(Part)
   private readonly _partsRepository: Repository<Part>
 
-  async create(userId: string, createExpedientDto: CreateExpedientDto) {
-    const { parts, ...restExpedient } = createExpedientDto
+  async create(user: User, dto: CreateExpedientDto, expedient?: Expedient) {
+    const { parts, ...restExpedient } = dto
 
-    const expedient = this._expedientRepository.create(restExpedient)
+    const expedientCreated = this._expedientRepository.create(
+      { ...restExpedient, id: expedient?.id }
+    )
 
-    const user = new User()
-    user.id = userId
-    expedient.createdByUser = expedient.updatedByUser = user
-
-    if (createExpedientDto.assignedLawyerId) {
-      const assignedLawyer = new User()
-      assignedLawyer.id = createExpedientDto.assignedLawyerId
-      expedient.assignedLawyer = assignedLawyer
+    if (!expedient) {
+      expedientCreated.createdByUser = user
     }
 
-    if (createExpedientDto.assignedAssistantId) {
-      const assignedAssistant = new User()
-      assignedAssistant.id = createExpedientDto.assignedAssistantId
-      expedient.assignedAssistant = assignedAssistant
+    expedientCreated.updatedByUser = user
+
+    if (dto.assignedLawyerId) {
+      const assignedLawyer = new User(dto.assignedLawyerId)
+      expedientCreated.assignedLawyer = assignedLawyer
+    }
+
+    if (dto.assignedAssistantId) {
+      const assignedAssistant = new User(dto.assignedAssistantId)
+      expedientCreated.assignedAssistant = assignedAssistant
+    }
+
+    let deletedParts: Part[] = []
+
+    if (expedient) {
+      deletedParts = expedient?.parts.reduce<Part[]>((acc, part) => {
+        const existsPart = parts.find((p) => p.id === part.id)
+
+        if (!existsPart) {
+          acc.push(part)
+        }
+        return acc
+      }, [])
     }
 
     try {
-      const expedientSaved = await this._expedientRepository.save(expedient)
+      const expedientSaved = await this._expedientRepository.save(expedientCreated)
 
       if (parts?.length) {
         const result = this._partsRepository.create(
@@ -48,7 +64,9 @@ export class ExpedientsService {
         await this._partsRepository.save(result)
       }
 
-      return expedientSaved
+      if (deletedParts.length) {
+        await this._partsRepository.remove(deletedParts)
+      }
     } catch (error) {
       throw new UnprocessableEntityException(
         error?.driverError?.detail ?? error
@@ -297,7 +315,51 @@ export class ExpedientsService {
     })
   }
 
-  update(id: string, expedient: Partial<Expedient>) {
+  async update(user: User, dto: UpdateExpedientDto, id: string) {
+    const expedient = await this._expedientRepository
+      .findOne({
+        where: { id },
+        relations:{
+          assignedAssistant: true,
+          assignedLawyer: true,
+          parts: true
+        },
+        select: {
+          assignedAssistant: {
+            id: true
+          },
+          assignedLawyer: {
+            id: true
+          },
+          parts: {
+            id: true,
+            name: true,
+            type: true
+          }
+        }
+      })
+
+    if (!expedient) {
+      throw new UnprocessableEntityException('Expedient not found')
+    }
+
+    if (expedient.code === dto.code) {
+      delete expedient.code
+      delete dto.code
+    }
+
+    if (expedient.assignedAssistant?.id === dto.assignedAssistantId) {
+      delete dto.assignedAssistantId
+    }
+
+    if (expedient.assignedLawyer?.id === dto.assignedLawyerId) {
+      delete dto.assignedLawyerId
+    }
+
+    return this.create(user, dto as CreateExpedientDto, expedient)
+  }
+
+  async updateDate(id: string, expedient: Partial<Expedient>) {
     return this._expedientRepository.update(id, expedient)
   }
 

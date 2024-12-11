@@ -10,6 +10,15 @@ const useUserState = (user?: User) => {
     queryClient.setQueryData(['user'], (prevState: User) => ({ ...prevState, ...value }))
   }
 
+  const isUserNotificationEnabled = useQuery({
+    queryKey: ['notifications-enabled'],
+    initialData: Notification.permission === 'granted'
+  }).data
+
+  const setUserNotificationEnabled = (value: boolean) => {
+    queryClient.setQueryData(['notifications-enabled'], value)
+  }
+
   return {
     user: useQuery<User | null>({ queryKey: ['user'], enabled: false, initialData: user }).data,
     setUser,
@@ -22,7 +31,9 @@ const useUserState = (user?: User) => {
     purgeUserSession() {
       queryClient.setQueryData(['user'], null)
       persisterUtil.purgeSession()
-    }
+    },
+    isUserNotificationEnabled,
+    setUserNotificationEnabled
   }
 }
 

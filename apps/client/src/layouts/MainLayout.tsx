@@ -8,6 +8,7 @@ import Text from 'antd/es/typography/Text'
 import HeaderToolbar from '../components/header/HeaderToolbar'
 import { StyledAvatar } from '../components/styled/avatar.styled'
 import { StyledHeader, StyledSider } from './styled'
+import NotificationModal from '../components/NotificationModal'
 
 const { Content } = Layout
 const { useBreakpoint } = Grid
@@ -43,79 +44,83 @@ const MainLayout: React.FC = () => {
   }))
 
   return (
-    <Layout style={ { minHeight: '100vh' } }>
-      <StyledSider
-        collapsible
-        collapsed={ collapsed }
-        collapsedWidth="0"
-        trigger={ null }
-      >
-        <Flex
-          vertical
-          justify="space-between"
-          style={ { marginTop: 64 } }
+    <>
+      <Layout style={ { minHeight: '100vh' } }>
+        <StyledSider
+          collapsible
+          collapsed={ collapsed }
+          collapsedWidth="0"
+          trigger={ null }
         >
-          <div>
-            <div className='d-flex flex-column align-items-center justify-content-center my-20'>
-              <StyledAvatar
-                size={ 160 }
-                src="https://corporativokallpa.com/images/logo.png"
+          <Flex
+            vertical
+            justify="space-between"
+            style={ { marginTop: 64 } }
+          >
+            <div>
+              <div className='d-flex flex-column align-items-center justify-content-center my-20'>
+                <StyledAvatar
+                  size={ 160 }
+                  src="https://corporativokallpa.com/images/logo.png"
+                />
+              </div>
+
+              <Menu
+                defaultSelectedKeys={ ['1'] }
+                items={ items }
+                mode="inline"
+                theme="dark"
               />
             </div>
-
-            <Menu
-              defaultSelectedKeys={ ['1'] }
-              items={ items }
-              mode="inline"
-              theme="dark"
-            />
-          </div>
-        </Flex>
-      </StyledSider>
-      <Layout style={ { marginLeft: collapsed || !screens.md ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
-        <StyledHeader $colorBgLayout={ colorBgLayout }>
-          <Flex
-            align='center'
-            className='w-100'
-            justify="space-between"
-          >
-            <Flex align='center'>
-              <Button
-                icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
-                type="text"
-                style={ {
-                  fontSize: '16px',
-                  width: 64,
-                  height: 64
-                } }
-                onClick={ () => setCollapsed(!collapsed) }
-              />
-              {
-                screens.md
-                  ? <Title
-                    className='mb-0'
-                    level={ 3 }
-                  >
-                    {viewTitle}
-                  </Title>
-                  : <Text className='mb-0'>
-                    {viewTitle}
-                  </Text>
-              }
-            </Flex>
-            <HeaderToolbar />
           </Flex>
-        </StyledHeader>
-        <Content
-          style={ {
-            margin: '16px',
-            borderRadius: borderRadiusLG
-          } }
-        >
-          <Outlet />
-        </Content>
+        </StyledSider>
+        <Layout style={ { marginLeft: collapsed || !screens.md ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
+          <StyledHeader $colorBgLayout={ colorBgLayout }>
+            <Flex
+              align='center'
+              className='w-100'
+              justify="space-between"
+            >
+              <Flex align='center'>
+                <Button
+                  icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
+                  type="text"
+                  style={ {
+                    fontSize: '16px',
+                    width: 64,
+                    height: 64
+                  } }
+                  onClick={ () => setCollapsed(!collapsed) }
+                />
+                {
+                  screens.md
+                    ? <Title
+                      className='mb-0'
+                      level={ 3 }
+                    >
+                      {viewTitle}
+                    </Title>
+                    : <Text className='mb-0'>
+                      {viewTitle}
+                    </Text>
+                }
+              </Flex>
+              <HeaderToolbar />
+            </Flex>
+          </StyledHeader>
+          <Content
+            style={ {
+              margin: '16px',
+              borderRadius: borderRadiusLG
+            } }
+          >
+            <Outlet />
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+
+      <NotificationModal />
+    </>
   )
 }
 

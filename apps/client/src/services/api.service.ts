@@ -67,6 +67,10 @@ export async function subscribeNotifications(subscription: any): Promise<any> {
   return httpClient.post(`notifications/subscribe`, subscription).then(res => res.data)
 }
 
+export async function unsubscribeNotifications(): Promise<any> {
+  return httpClient.post(`notifications/unsubscribe`).then(res => res.data)
+}
+
 export async function createEvent(payload: CreateEvent): Promise<any> {
   return httpClient.post(`events`, payload).then(res => res.data)
 }

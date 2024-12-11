@@ -1,59 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal } from 'antd'
-import { NotificationOutlined } from '@ant-design/icons'
-import setupNotificationPermission from '../notifications'
-import { useMutation } from '@tanstack/react-query'
-import { subscribeNotifications } from '../services/api.service'
-import useUserState from '../hooks/useUserState'
-import persisterUtil from '../utils/persister.util'
 import Title from 'antd/es/typography/Title'
-import ButtonBase from './base/ButtonBase'
+import { NotificationOutlined } from '@ant-design/icons'
 
-let sw: ServiceWorkerRegistration
+import setupNotificationPermission from '../notifications'
+import ButtonBase from './base/ButtonBase'
+import usePushNotifications from '../modules/shared/hooks/usePushNotifications'
 
 export default function NotificationModal(): React.ReactNode {
-  const [showModal, setShowModal] = useState(false)
-  const { user } = useUserState()
+  const [showModal, setShowModal] = useState(Notification.permission === 'default')
 
-  const { mutate } = useMutation({
-    mutationKey: ['subscribe-notification'],
-    mutationFn: subscribeNotifications
-  })
-
-  const isFirstTime = useRef(false)
+  usePushNotifications()
 
   useEffect(() => {
-    const setupServiceWorker = async () => {
-      isFirstTime.current = true
-
-      setShowModal(Notification.permission === 'default')
-
-      if ('serviceWorker' in navigator) {
-        sw = await navigator.serviceWorker.register('/service-worker.js', {
-          scope: '/'
-        })
-      }
-
-      addEventListener('message', async (event: MessageEvent<NotificationPermission>) => {
-        setShowModal(false)
-
-        if (event.data === 'denied') {
-          return
-        }
-
-        const subscription = await sw.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: persisterUtil.getVapidKey()
-        })
-
-        mutate(subscription)
-      })
-    }
-
-    if (user && !isFirstTime.current) {
-      setupServiceWorker()
-    }
-  }, [user])
+    addEventListener('message', () => {
+      setShowModal(false)
+    })
+  }, [])
 
   return (
     <Modal

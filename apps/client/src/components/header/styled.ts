@@ -1,4 +1,4 @@
-import { Card, Drawer, Typography } from 'antd'
+import { Avatar, Card, Drawer, Typography } from 'antd'
 import styled from 'styled-components'
 
 const { Text } = Typography
@@ -22,4 +22,8 @@ export const StyledCardNotificationText = styled(Text)<{ lineclamp?: string }>`
   display: -webkit-box;
   -webkit-line-clamp: ${({ lineclamp }) => lineclamp ?? '1'};
   -webkit-box-orient: vertical;
+`
+
+export const StyledNotificationAvatar = styled(Avatar)<{ $colorPrimary?: string }>`
+  background-color: ${p => p.$colorPrimary};
 `

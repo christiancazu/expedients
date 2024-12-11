@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Avatar, Badge, Dropdown, MenuProps, Space, Switch, Grid, Tooltip } from 'antd'
+import { Avatar, Badge, Dropdown, MenuProps, Space, Switch, Grid, Tooltip, theme } from 'antd'
 import { DownOutlined, LogoutOutlined, MoonOutlined, NotificationOutlined, ProfileOutlined, SettingOutlined, SunOutlined, UserOutlined } from '@ant-design/icons'
 
 import useUserState from '../../hooks/useUserState'
@@ -9,10 +9,17 @@ import useNotify from '../../hooks/useNotification'
 import DrawerEvents from './DrawerEvents'
 
 import './header-toolbar.scss'
+import { StyledNotificationAvatar } from './styled'
+
 
 const { useBreakpoint } = Grid
 
 export default function HeaderToolbar(): React.ReactNode {
+  const { colorPrimary } = theme.useToken().token
+
+  const { isUserNotificationEnabled } = useUserState()
+
+
   const [_, setParams] = useSearchParams()
 
   const notify = useNotify()
@@ -27,7 +34,7 @@ export default function HeaderToolbar(): React.ReactNode {
     {
       label: 'Mi perfil',
       key: 'settings',
-      icon: <ProfileOutlined style={ { fontSize: 16 } } />
+      icon: <ProfileOutlined style={ { fontSize: 16, color: colorPrimary } } />
     },
     ...!screens.md ? [
       {
@@ -37,13 +44,15 @@ export default function HeaderToolbar(): React.ReactNode {
         icon: <Badge
           size='small'
         >
-          <NotificationOutlined style={ { fontSize: 16 } } />
+          <NotificationOutlined style={ { fontSize: 16, color: isUserNotificationEnabled ? colorPrimary : undefined } } />
         </Badge>
       },
       {
         label: isDarkTheme ? 'Tema claro' : 'Tema oscuro',
         key: 'darkTheme',
-        icon: isDarkTheme ? <SunOutlined style={ { fontSize: 16 } } /> : <MoonOutlined style={ { fontSize: 16 } } />,
+        icon: isDarkTheme ?
+          <SunOutlined style={ { fontSize: 16, color: colorPrimary } } />
+          : <MoonOutlined style={ { fontSize: 16, color: colorPrimary } } />,
         onClick: toggleTheme
       }
     ] : [],
@@ -53,7 +62,7 @@ export default function HeaderToolbar(): React.ReactNode {
     {
       label: 'Cerrar sesión',
       key: 'logout',
-      icon: <LogoutOutlined style={ { fontSize: 16 } } />,
+      icon: <LogoutOutlined style={ { fontSize: 16, color: colorPrimary } } />,
       onClick: () => {
         setParams({ logout: 'true' })
         purgeUserSession()
@@ -84,7 +93,10 @@ export default function HeaderToolbar(): React.ReactNode {
                   className='cursor-pointer'
                   onClick={ () => setDrawer(true) }
                 >
-                  <Avatar icon={ <NotificationOutlined /> } />
+                  <StyledNotificationAvatar
+                    $colorPrimary={ isUserNotificationEnabled ? colorPrimary : undefined }
+                    icon={ <NotificationOutlined /> }
+                  />
                 </Badge>
               </Tooltip>
             </div>

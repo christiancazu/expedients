@@ -5,7 +5,6 @@ export default function setupNotificationPermission() {
     console.log('request notification')
     Notification.requestPermission().then((permission) => {
       console.log(`notification ${permission}`)
-      window.parent.postMessage(permission)
     })
   }
 }

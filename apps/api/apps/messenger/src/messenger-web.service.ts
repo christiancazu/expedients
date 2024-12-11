@@ -22,19 +22,17 @@ export class MessengerWebService {
   }
 
   async sendScheduledNotification(notifications: PushNotification[]) {
-    try {
-      await Promise.all(notifications
-        .map(notification => {
-          const { pushSubscription, ...rest } = notification
+    const result = await Promise.all(notifications
+      .map(notification => {
+        const { pushSubscription, ...rest } = notification
 
-          return sendNotification(
-            pushSubscription,
-            JSON.stringify({ ...rest })
-          )
-        })
-      )
-    } catch (error) {
-      this.logger.error(error)
-    }
+        return sendNotification(
+          pushSubscription,
+          JSON.stringify({ ...rest })
+        )
+      })
+    )
+
+    this.logger.error(result)
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useMatches, useNavigate } from 'react-router-dom'
-import { Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
+import { Button, Flex, Layout, Menu, theme, MenuProps, Grid, Drawer } from 'antd'
 import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
 import Title from 'antd/es/typography/Title'
@@ -20,7 +20,10 @@ const MainLayout: React.FC = () => {
 
   const { token: { borderRadiusLG, colorBgLayout } } = theme.useToken()
 
-  const [collapsed, setCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarDrawerAvailabled, setSidebarDrawerAvailabled] = useState(false)
+  const [sidebarDrawerOpen, setSidebarDrawerOpen] = useState(false)
+
   const [viewTitle, setViewTitle] = useState('')
 
   useEffect(() => {
@@ -30,7 +33,10 @@ const MainLayout: React.FC = () => {
 
   useEffect(() => {
     if (screens.md === false) {
-      setCollapsed(true)
+      setSidebarCollapsed(true)
+      setSidebarDrawerAvailabled(true)
+    } else {
+      setSidebarDrawerAvailabled(false)
     }
   }, [screens.md])
 
@@ -46,35 +52,73 @@ const MainLayout: React.FC = () => {
   return (
     <>
       <Layout style={ { minHeight: '100vh' } }>
-        <StyledSider
-          collapsible
-          collapsed={ collapsed }
-          collapsedWidth="0"
-          trigger={ null }
-        >
-          <Flex
-            vertical
-            justify="space-between"
-            style={ { marginTop: 64 } }
-          >
-            <div>
-              <div className='d-flex flex-column align-items-center justify-content-center my-20'>
-                <StyledAvatar
-                  size={ 160 }
-                  src="https://corporativokallpa.com/images/logo.png"
-                />
-              </div>
+        {
+          !sidebarDrawerAvailabled
+            ? <StyledSider
+              collapsible
+              collapsed={ sidebarCollapsed }
+              collapsedWidth="0"
+              trigger={ null }
+            >
+              <Flex
+                vertical
+                justify="space-between"
+                style={ { marginTop: 64 } }
+              >
+                <div>
+                  <div className='d-flex flex-column align-items-center justify-content-center my-20'>
+                    <StyledAvatar
+                      size={ 160 }
+                      src="https://corporativokallpa.com/images/logo.png"
+                    />
+                  </div>
 
-              <Menu
-                defaultSelectedKeys={ ['1'] }
-                items={ items }
-                mode="inline"
-                theme="dark"
-              />
-            </div>
-          </Flex>
-        </StyledSider>
-        <Layout style={ { marginLeft: collapsed || !screens.md ? 0 : 200, transition: 'all .2s ease-in-out, background-color 0s' } }>
+                  <Menu
+                    defaultSelectedKeys={ ['1'] }
+                    items={ items }
+                    mode="inline"
+                    theme="dark"
+                  />
+                </div>
+              </Flex>
+            </StyledSider>
+
+            : <Drawer
+              open={ sidebarDrawerOpen }
+              placement='left'
+              style={ { width: 288 } }
+              onClose={ () => setSidebarDrawerOpen(false) }
+            >
+              <Flex
+                vertical
+                justify="space-between"
+              >
+                <div>
+                  <div className='d-flex flex-column align-items-center justify-content-center my-20'>
+                    <StyledAvatar
+                      size={ 160 }
+                      src="https://corporativokallpa.com/images/logo.png"
+                    />
+                  </div>
+
+                  <Menu
+                    defaultSelectedKeys={ ['1'] }
+                    items={ items }
+                    mode="inline"
+                    style={ { backgroundColor: 'transparent' } }
+                    theme="dark"
+                    onClick={ () => setSidebarDrawerOpen(false) }
+                  />
+                </div>
+              </Flex>
+            </Drawer>
+        }
+        <Layout
+          style={ {
+            marginLeft: sidebarCollapsed || !screens.md || sidebarDrawerAvailabled ? 0 : 200,
+            transition: 'all .2s ease-in-out, background-color 0s'
+          } }
+        >
           <StyledHeader $colorBgLayout={ colorBgLayout }>
             <Flex
               align='center'
@@ -83,14 +127,21 @@ const MainLayout: React.FC = () => {
             >
               <Flex align='center'>
                 <Button
-                  icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
+                  icon={ sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
                   type="text"
                   style={ {
                     fontSize: '16px',
                     width: 64,
                     height: 64
                   } }
-                  onClick={ () => setCollapsed(!collapsed) }
+                  onClick={ () => {
+                    if (sidebarDrawerAvailabled) {
+                      setSidebarCollapsed(false)
+                      setSidebarDrawerOpen(true)
+                    } else {
+                      setSidebarCollapsed(!sidebarCollapsed)
+                    }
+                  } }
                 />
                 {
                   screens.md

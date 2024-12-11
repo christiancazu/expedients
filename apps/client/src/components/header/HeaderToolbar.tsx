@@ -11,7 +11,6 @@ import DrawerEvents from './DrawerEvents'
 import './header-toolbar.scss'
 import { StyledNotificationAvatar } from './styled'
 
-
 const { useBreakpoint } = Grid
 
 export default function HeaderToolbar(): React.ReactNode {

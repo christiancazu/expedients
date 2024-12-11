@@ -8,7 +8,7 @@ self.addEventListener('push', (e) => {
   const { title, body, redirectUrl } = e.data.json()
 
   self.registration.showNotification(title, {
-    body,
+    body: `🗂️ ${body}`,
     data: { redirectUrl },
     icon: 'https://corporativokallpa.com/favicon.svg',
     badge: 'https://corporativokallpa.com/favicon.svg'

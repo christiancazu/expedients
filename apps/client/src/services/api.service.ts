@@ -15,12 +15,16 @@ export async function getExpedients(params: any = {}) {
   return httpClient.get(`/expedients`, { params }).then(res => res.data)
 }
 
-export async function getExpedient(id: string) {
+export async function getExpedient(id: string): Promise<Expedient> {
   return httpClient.get(`/expedients/${id}`).then(res => res.data)
 }
 
-export async function createExpedient(data: Expedient) {
-  return httpClient.post(`/expedients`, { ...data }).then(res => res.data)
+export async function createExpedient(expedient: Expedient) {
+  return httpClient.post(`/expedients`, expedient).then(res => res.data)
+}
+
+export async function updateExpedient({ id, expedient }: {id: string; expedient: Expedient}): Promise<any> {
+  return httpClient.patch(`/expedients/${id}`, expedient).then(res => res.data)
 }
 
 export async function getExpedientsEvents(): Promise<Expedient[]> {

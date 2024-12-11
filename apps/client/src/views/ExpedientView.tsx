@@ -67,7 +67,7 @@ const ExpedientView: React.FC = () => {
 
   const { data, error } = useQuery({
     queryKey: ['expedient', id],
-    queryFn: (): Promise<Expedient> => getExpedient(id!),
+    queryFn: () => getExpedient(id!) as any,
     refetchOnMount: true,
     select: (expedient: Expedient) => {
       expedient.updatedAt = dateUtil.formatDate(expedient.updatedAt)

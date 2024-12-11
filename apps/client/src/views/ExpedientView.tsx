@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import htmlReactParser from 'html-react-parser'
 
 import { Avatar, Button, Card, Col, Divider, Flex, Row, Spin, theme, Tooltip, Typography } from 'antd'
-import { DeleteOutlined, EditOutlined, NotificationOutlined, PlusOutlined } from '@ant-design/icons'
+import { CloseOutlined, DeleteOutlined, EditOutlined, NotificationOutlined, PlusOutlined } from '@ant-design/icons'
 
 import Title from 'antd/es/typography/Title'
 import TextEditor from '../components/text-editor/TextEditor'
@@ -15,12 +15,14 @@ import NavigationBackBtn from '../components/NavigationBackBtn'
 
 import useUserState from '../hooks/useUserState'
 import useNotify from '../hooks/useNotification'
-import { deleteExpedientReview, getExpedient, getExpedientEvents } from '../services/api.service'
-import { Expedient as ExpedientType, Document as DocumentType } from '@expedients/shared'
+import { deleteEvent, deleteExpedientReview, getExpedient, getExpedientEvents } from '../services/api.service'
+import { Expedient as ExpedientType, Document as DocumentType, IEvent } from '@expedients/shared'
 import { dateUtil, getSpritePositionX } from '../utils'
 import { queryClient } from '../config/queryClient'
 import ScheduleEvent, { ScheduleEventProps } from '../components/ScheduleEvent'
 import { StyledCardNotification, StyledCardNotificationText } from '../components/header/styled'
+import { StyledScrollbar } from '../components/StyledScrollbar'
+import PopconfirmDelete from '../components/PopconfirmDelete'
 
 const { Text } = Typography
 
@@ -135,6 +137,19 @@ const ExpedientView: React.FC = () => {
 
     setDocumentFile(prev => ({ ...prev, showDetail: true, action: 'create', id: event.target.dataset['id'] }))
   }
+
+  const { mutate: mutateDeleteEvent } = useMutation({
+    mutationKey: ['expedient-review-delete'],
+    mutationFn: deleteEvent,
+    onSuccess: (_, eventId) => {
+      notify({ message: 'Evento eliminado con éxito' })
+
+      queryClient.setQueryData(['expedients-events' + id], (expedient: any) => ({
+        ...expedient,
+        events: expedient.events.filter((event: IEvent) => event.id !== eventId)
+      }))
+    }
+  })
 
   if (!data) {
     return <div>
@@ -340,63 +355,65 @@ const ExpedientView: React.FC = () => {
             spinning={ documentFile.isLoading }
             tip="Consultando..."
           >
-            <Flex
-              vertical
-              wrap
-              align='start'
-            >
-              {
-                data.documents.map(document =>
-                  <div
-                    className='text-link w-100'
-                    key={ document.id }
-                  >
-                    <div className='d-flex justify-content-between align-items-center'>
-                      <div
-                        className='mr-16'
-                        style={ { wordBreak: 'break-all' } }
-                        onClick={ () => setDocumentFile((prev) => ({
-                          ...prev,
-                          showDetail: true,
-                          action: 'create',
-                          id: document.id
-                        })) }
-                      >
-                        <div className='d-flex align-items-center'>
-                          <div
-                            style={ { background: 'url(/docs.png) no-repeat', height: 32, width: 32, backgroundPositionX: document.spritePositionX, display: 'inline-block' } }
-                          />
-                          <div className='ml-8'>
-                            <p>
-                              {document.name}
-                            </p>
-                            <p style={ { color: colorTextSecondary } }>
-                              {document.updatedAt as string}
-                            </p>
+            <StyledScrollbar style={ { height: data?.documents.length ? 250 : 0 } }>
+              <Flex
+                vertical
+                wrap
+                align='start'
+              >
+                {
+                  data.documents.map(document =>
+                    <div
+                      className='text-link w-100'
+                      key={ document.id }
+                    >
+                      <div className='d-flex justify-content-between align-items-center'>
+                        <div
+                          className='mr-16'
+                          style={ { wordBreak: 'break-all' } }
+                          onClick={ () => setDocumentFile((prev) => ({
+                            ...prev,
+                            showDetail: true,
+                            action: 'create',
+                            id: document.id
+                          })) }
+                        >
+                          <div className='d-flex align-items-center'>
+                            <div
+                              style={ { background: 'url(/docs.png) no-repeat', height: 32, width: 32, backgroundPositionX: document.spritePositionX, display: 'inline-block' } }
+                            />
+                            <div className='ml-8'>
+                              <p>
+                                {document.name}
+                              </p>
+                              <p style={ { color: colorTextSecondary } }>
+                                {document.updatedAt as string}
+                              </p>
+                            </div>
                           </div>
                         </div>
+                        {
+                          isWritableByUser &&
+                            <Tooltip title="Reemplazar">
+                              <Button
+                                icon={ <EditOutlined /> }
+                                shape="circle"
+                                onClick={ () => (setDocumentFile((prev) => ({
+                                  ...prev,
+                                  showUpload: true,
+                                  action: 'edit',
+                                  ...document
+                                }))) }
+                              >
+                              </Button>
+                            </Tooltip>
+                        }
                       </div>
-                      {
-                        isWritableByUser &&
-                          <Tooltip title="Reemplazar">
-                            <Button
-                              icon={ <EditOutlined /> }
-                              shape="circle"
-                              onClick={ () => (setDocumentFile((prev) => ({
-                                ...prev,
-                                showUpload: true,
-                                action: 'edit',
-                                ...document
-                              }))) }
-                            >
-                            </Button>
-                          </Tooltip>
-                      }
                     </div>
-                  </div>
-                )
-              }
-            </Flex>
+                  )
+                }
+              </Flex>
+            </StyledScrollbar>
           </Spin>
         </div>
         <div style={ sectionStyle } >
@@ -425,46 +442,63 @@ const ExpedientView: React.FC = () => {
             spinning={ documentFile.isLoading }
             tip="Consultando..."
           >
-            <Flex
-              vertical
-              wrap
-              align='start'
-            >
-              {
-                expedientEvents?.events.map(event =>
-                  <StyledCardNotification
-                    className='mb-12'
-                    key={ event.id }
-                  >
-                    <Flex >
-                      <Flex>
-                        <Avatar
-                          icon={ <NotificationOutlined /> }
-                          size={ 32 }
-                          style={ { width: 32, backgroundColor: 'var(--ant-color-warning)' } }
-                        />
-                      </Flex>
-                      <Flex
-                        vertical
-                        className='ml-12 w-100'
-                        justify='space-between'
-                      >
-                        <StyledCardNotificationText lineclamp='0'>
-                          {event.message}
-                        </StyledCardNotificationText>
-                        <Text
-                          className='d-flex justify-content-end'
-                          type='secondary'
+            <StyledScrollbar style={ { height: expedientEvents?.events.length ? 250 : 0 } }>
+              <Flex
+                vertical
+                wrap
+                align='start'
+              >
+                {
+                  expedientEvents?.events.map(event =>
+                    <StyledCardNotification
+                      className='mb-12'
+                      key={ event.id }
+                    >
+                      <Flex >
+                        <Flex>
+                          <Avatar
+                            icon={ <NotificationOutlined /> }
+                            size={ 32 }
+                            style={ { width: 32, backgroundColor: 'var(--ant-color-warning)' } }
+                          />
+                        </Flex>
+                        <Flex
+                          vertical
+                          className='ml-12 w-100'
+                          justify='space-between'
                         >
-                          {event.scheduledAt as string}
-                        </Text>
+                          <Flex justify='space-between'>
+                            <StyledCardNotificationText lineclamp='0'>
+                              {event.message}
+                              {' '}
+                              {event.message}
+                              {' '}
+                              {event.message}
+                            </StyledCardNotificationText>
+                            <PopconfirmDelete onConfirm={ () => mutateDeleteEvent(event.id) }>
+                              <Button
+                                danger
+                                color='danger'
+                                icon={ <CloseOutlined /> }
+                                shape='circle'
+                                size='small'
+                              />
+                            </PopconfirmDelete>
+                          </Flex>
+                          <Text
+                            className='d-flex justify-content-end'
+                            type='secondary'
+                          >
+                            {event.scheduledAt as string}
+                          </Text>
+                        </Flex>
                       </Flex>
-                    </Flex>
 
-                  </StyledCardNotification>
-                )
-              }
-            </Flex>
+                    </StyledCardNotification>
+                  )
+                }
+              </Flex>
+            </StyledScrollbar>
           </Spin>
         </div>
       </Col>

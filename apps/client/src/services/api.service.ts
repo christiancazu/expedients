@@ -70,3 +70,7 @@ export async function subscribeNotifications(subscription: any): Promise<any> {
 export async function createEvent(payload: CreateEvent): Promise<any> {
   return httpClient.post(`events`, payload).then(res => res.data)
 }
+
+export async function deleteEvent(id: string): Promise<any> {
+  return httpClient.delete(`events/${id}`).then(res => res.data)
+}

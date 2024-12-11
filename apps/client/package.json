@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:remote": "export NODE_OPTIONS=\"--max-old-space-size=4096\" build",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -27,6 +28,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
+    "react-scrollbars-custom": "^4.1.1",
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {

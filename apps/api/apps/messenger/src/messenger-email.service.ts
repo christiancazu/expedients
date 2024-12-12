@@ -44,6 +44,7 @@ export class MessengerEmailService {
       })
     } catch (error) {
       this.logger.error(error)
+      return Promise.reject()
     }
   }
 
@@ -71,6 +72,7 @@ export class MessengerEmailService {
       })))
     } catch (error) {
       this.logger.error(error)
+      return Promise.reject()
     }
   }
 }

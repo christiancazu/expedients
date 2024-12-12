@@ -56,33 +56,30 @@ export class EventsConsumer extends WorkerHost {
       this._logger.error('error sending email: ', error)
     }
 
-    try {
-      const notifications = await this._notificationsService.findSubscriptionByUser(
-        {
-          assignedAssistant: expedient.assignedAssistant,
-          assignedLawyer: expedient.assignedLawyer
-        }
-      )
+    const notifications = await this._notificationsService.findSubscriptionByUser(
+      {
+        assignedAssistant: expedient.assignedAssistant,
+        assignedLawyer: expedient.assignedLawyer
+      }
+    )
 
-      await firstValueFrom(
-        this._clientProxy.send<any, PushNotification[]>(
-          SETTINGS.NOTIFICATION_SCHEDULED,
-          notifications.map((notification) => ({
-            pushSubscription: {
-              endpoint: notification.endpoint,
-              keys: {
-                p256dh: notification.p256dh,
-                auth: notification.auth
-              }
-            },
-            title: `Recordatorio`,
-            body: event!.message,
-            redirectUrl: `/expedients/${expedient.id}`
-          }))
-        ))
+    const toDeleteEndpoints = await firstValueFrom(
+      this._clientProxy.send<any, PushNotification[]>(
+        SETTINGS.NOTIFICATION_SCHEDULED,
+        notifications.map((notification) => ({
+          pushSubscription: {
+            endpoint: notification.endpoint,
+            keys: {
+              p256dh: notification.p256dh,
+              auth: notification.auth
+            }
+          },
+          title: `Recordatorio`,
+          body: event!.message,
+          redirectUrl: `/expedients/${expedient.id}`
+        }))
+      ))
 
-    } catch (error) {
-      this._logger.error('error sending notification: ', error)
-    }
+    return this._notificationsService.removeSubscriptionEndpoints(toDeleteEndpoints)
   }
 }

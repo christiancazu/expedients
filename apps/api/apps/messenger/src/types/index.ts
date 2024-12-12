@@ -1,4 +1,5 @@
 import { User } from 'apps/expedients/src/modules/users/entities/user.entity'
+import { WebPushError } from 'web-push'
 
 export interface MailActivateAccountPayload {
   user: User
@@ -10,4 +11,9 @@ export interface ScheduledEventPayload {
   assignedAssistant: User
   eventMessage: string
   expedientId: string
+}
+
+export interface ErrorPushNotification {
+  status: number
+  reason?: WebPushError
 }

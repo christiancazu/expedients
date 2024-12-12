@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { sendNotification, setVapidDetails } from 'web-push'
 import { PushNotification } from 'apps/expedients/src/modules/notifications/types'
+import { ErrorPushNotification } from './types'
 
 @Injectable()
 export class MessengerWebService {
@@ -22,7 +23,7 @@ export class MessengerWebService {
   }
 
   async sendScheduledNotification(notifications: PushNotification[]) {
-    const result = await Promise.all(notifications
+    const results = await Promise.allSettled(notifications
       .map(notification => {
         const { pushSubscription, ...rest } = notification
 
@@ -33,6 +34,11 @@ export class MessengerWebService {
       })
     )
 
-    this.logger.error(result)
+    return (results as unknown as ErrorPushNotification[]).reduce<string[]>((acc, result) => {
+      if (result?.reason?.statusCode === 410) {
+        acc.push(result?.reason?.endpoint)
+      }
+      return acc
+    }, [])
   }
 }

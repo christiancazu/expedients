@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { SubscriptionNotificationDto } from './dto/subscription-notification.dto'
 import { User } from '../users/entities/user.entity'
 import { Notification } from './entities/notification.entity'
@@ -35,5 +35,13 @@ export class NotificationsService {
 
   unsubscribe(user: User) {
     return this._notificationsRepository.delete({ registerFor: user })
+  }
+
+  removeSubscriptionEndpoints(endpoints: string[]) {
+    if (!endpoints.length) {
+      return Promise.resolve()
+    }
+
+    return this._notificationsRepository.delete({ endpoint: In(endpoints) })
   }
 }

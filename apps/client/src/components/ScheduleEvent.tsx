@@ -99,7 +99,6 @@ export default function ScheduleEvent({ event, setEvent }: Props): React.ReactNo
             minDate={ dayjs(minDate) }
             showTime={ { format: 'HH:mm' } }
             style={ { width: '100%' } }
-
           />
         </Form.Item>
 

@@ -32,4 +32,8 @@ export class NotificationsService {
       registerFor: user
     })
   }
+
+  unsubscribe(user: User) {
+    return this._notificationsRepository.delete({ registerFor: user })
+  }
 }

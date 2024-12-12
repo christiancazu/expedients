@@ -470,10 +470,6 @@ const ExpedientView: React.FC = () => {
                           <Flex justify='space-between'>
                             <StyledCardNotificationText lineclamp='0'>
                               {event.message}
-                              {' '}
-                              {event.message}
-                              {' '}
-                              {event.message}
                             </StyledCardNotificationText>
                             <PopconfirmDelete onConfirm={ () => mutateDeleteEvent(event.id) }>
                               <Button

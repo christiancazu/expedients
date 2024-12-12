@@ -15,4 +15,9 @@ export class NotificationsController {
   ) {
     return this.notificationsService.subscribe(user, dto)
   }
+
+  @Post('unsubscribe')
+  unsubscribe(@UserRequest() user: User) {
+    return this.notificationsService.unsubscribe(user)
+  }
 }

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useMatches, useNavigate } from 'react-router-dom'
-import { Button, Flex, Layout, Menu, theme, MenuProps, Grid, Drawer } from 'antd'
+import { Button, Flex, Layout, Menu, theme, MenuProps, Grid } from 'antd'
 import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
 import Title from 'antd/es/typography/Title'
 import Text from 'antd/es/typography/Text'
 import HeaderToolbar from '../components/header/HeaderToolbar'
 import { StyledAvatar } from '../components/styled/avatar.styled'
-import { StyledHeader, StyledSider } from './styled'
+import { StyledHeader, StyledSider, StyledSiderDrawer } from './styled'
 import NotificationModal from '../components/NotificationModal'
 
 const { Content } = Layout
@@ -20,7 +20,7 @@ const MainLayout: React.FC = () => {
 
   const { token: { borderRadiusLG, colorBgLayout } } = theme.useToken()
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
   const [sidebarDrawerAvailabled, setSidebarDrawerAvailabled] = useState(false)
   const [sidebarDrawerOpen, setSidebarDrawerOpen] = useState(false)
 
@@ -39,6 +39,12 @@ const MainLayout: React.FC = () => {
       setSidebarDrawerAvailabled(false)
     }
   }, [screens.md])
+
+  useEffect(() => {
+    if (!screens.md) {
+      setSidebarCollapsed(false)
+    }
+  }, [])
 
   const items: MenuProps['items'] = [
     FolderOutlined
@@ -74,19 +80,22 @@ const MainLayout: React.FC = () => {
                   </div>
 
                   <Menu
+                    className='px-8'
                     defaultSelectedKeys={ ['1'] }
                     items={ items }
                     mode="inline"
+                    style={ { backgroundColor: 'transparent' } }
                     theme="dark"
                   />
                 </div>
               </Flex>
             </StyledSider>
 
-            : <Drawer
+            : <StyledSiderDrawer
+              closeIcon={ <MenuFoldOutlined /> }
               open={ sidebarDrawerOpen }
               placement='left'
-              style={ { width: 288 } }
+              width={ 288 }
               onClose={ () => setSidebarDrawerOpen(false) }
             >
               <Flex
@@ -111,7 +120,7 @@ const MainLayout: React.FC = () => {
                   />
                 </div>
               </Flex>
-            </Drawer>
+            </StyledSiderDrawer>
         }
         <Layout
           style={ {

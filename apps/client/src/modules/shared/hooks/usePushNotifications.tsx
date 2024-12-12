@@ -1,20 +1,23 @@
+import { useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
+
 import { subscribeNotifications, unsubscribeNotifications } from '../../../services/api.service'
 import useUserState from '../../../hooks/useUserState'
 import useNotify from '../../../hooks/useNotification'
 import persisterUtil from '../../../utils/persister.util'
-import { useEffect } from 'react'
 
 let sw: ServiceWorkerRegistration
 
-if ('serviceWorker' in navigator) {
-  sw = await navigator.serviceWorker.register('/service-worker.js', {
-    scope: '/'
-  })
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    sw = await navigator.serviceWorker.register('/service-worker.js', {
+      scope: '/'
+    })
+  }
 }
 
-navigator.permissions.query({ name: 'notifications' }).then(function(status) {
-  status.onchange = function(e) {
+navigator.permissions.query({ name: 'notifications' }).then(function (status) {
+  status.onchange = function (e) {
     const eventName = (e.currentTarget as PermissionStatus).state
     postMessage(eventName)
   }
@@ -33,6 +36,12 @@ export default function usePushNotifications() {
     onSuccess: () => {
       notify({ message: 'las Notificaciones han sido desactivadas' })
       setUserNotificationEnabled(false)
+
+      navigator.serviceWorker.ready.then(reg => {
+        reg.pushManager.getSubscription().then(subscription => {
+          subscription?.unsubscribe()
+        })
+      })
     }
   })
 
@@ -57,6 +66,8 @@ export default function usePushNotifications() {
 
   useEffect(() => {
     if (user && !isFirstTime) {
+      registerServiceWorker()
+
       isFirstTime = true
 
       addEventListener('message', (event: MessageEvent<NotificationPermission>) => {

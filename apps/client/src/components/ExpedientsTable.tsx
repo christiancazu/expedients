@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { Button, Space, Table, TableProps, Tooltip, type TableColumnsType } from 'antd'
+import { Button, Space, TableProps, Tooltip, type TableColumnsType } from 'antd'
 import { Expedient, EXPEDIENT_STATUS, Review, User } from '@expedients/shared'
 import { dateUtil } from '../utils'
 import { EditOutlined, SearchOutlined } from '@ant-design/icons'
 import { TableBase } from './base/TableBase'
 import { Link } from 'react-router-dom'
 import htmlReactParser from 'html-react-parser'
+import { StyledTable } from './styled/table.styled'
 
 type DataType = {
-  key: React.Key;
   dataIndex?: string;
 } & Expedient
 
@@ -102,7 +102,7 @@ const columns: TableColumnsType<DataType> = [
     </>
   },
   {
-    title: 'Acciones', key: 'actions', align: 'center', width: 100,
+    title: 'Acciones', key: 'actions', align: 'center', width: 100, fixed: 'right',
     render: (_, expedient) => <Space>
       <Link to={ `/expedients/${expedient.id}/edit` }>
         <Tooltip title="Editar expediente">
@@ -129,7 +129,7 @@ const columns: TableColumnsType<DataType> = [
 const TableExpedients: React.FC<Props> = ({ expedients, loading, onChangePagination }) => {
   return (
     <TableBase>
-      <Table<DataType & {key: React.Key}>
+      <StyledTable<DataType>
         columns={ columns }
         dataSource={ expedients }
         loading={ loading }

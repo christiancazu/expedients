@@ -36,12 +36,6 @@ export default function usePushNotifications() {
     onSuccess: () => {
       notify({ message: 'las Notificaciones han sido desactivadas' })
       setUserNotificationEnabled(false)
-
-      navigator.serviceWorker.ready.then(reg => {
-        reg.pushManager.getSubscription().then(subscription => {
-          subscription?.unsubscribe()
-        })
-      })
     }
   })
 

@@ -16,11 +16,11 @@ export const StyledCardNotification = styled(Card)`
   }
 `
 
-export const StyledCardNotificationText = styled(Text)<{ lineclamp?: string }>`
+export const StyledCardNotificationText = styled(Text)<{ $lineClamp?: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: ${({ lineclamp }) => lineclamp ?? '1'};
+  -webkit-line-clamp: ${p => p.$lineClamp ?? '1'};
   -webkit-box-orient: vertical;
 `
 

@@ -69,7 +69,7 @@ export default function DrawerEvents({ drawer, setDrawer }: Props): React.ReactN
                   </StyledCardNotificationText>
                   <StyledCardNotificationText
                     code
-                    lineclamp='2'
+                    $lineClamp='2'
                   >
                     exp:
                     {' '}

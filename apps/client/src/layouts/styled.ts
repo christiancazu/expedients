@@ -11,7 +11,7 @@ export const StyledSider = styled(Sider)`
   top: 0;
   z-index: 1;
   bottom: 0;
-  background-color: var(--ant-blue-2);
+  background-color: #112545;
   scrollbar-width: 'thin';
   scrollbar-gutter: 'stable';
   transition: min-width .2s ease-in-out, width .2s ease-in-out, max-width .2s ease-in-out;
@@ -28,7 +28,7 @@ export const StyledHeader = styled(Header)<{$colorBgLayout: string}>`
   padding: 0;
 `
 export const StyledSiderDrawer = styled(Drawer)`
-  background: var(--ant-blue-2) !important;
+  background: #112545 !important;
   
   & .ant-drawer-header-title {
     justify-content: end;

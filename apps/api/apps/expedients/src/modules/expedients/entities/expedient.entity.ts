@@ -1,107 +1,132 @@
+import { EXPEDIENT_STATUS, FIELD } from '@expedients/shared'
 import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+	BeforeInsert,
+	Column,
+	CreateDateColumn,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm'
-import { User } from '../../users/entities/user.entity'
+import { Document } from '../../documents/entities/document.entity'
+import { Event } from '../../events/entities/event.entity'
 import { Part } from '../../parts/entities/part.entity'
 import { Review } from '../../reviews/entities/review.entity'
-import { Document } from '../../documents/entities/document.entity'
-import { FIELD, EXPEDIENT_STATUS } from '@expedients/shared'
-import { Event } from '../../events/entities/event.entity'
+import { User } from '../../users/entities/user.entity'
 
 @Entity('expedients')
 export class Expedient {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
+	@PrimaryGeneratedColumn('uuid')
+	id: string
 
-  @Column({
-    unique: true,
-    type: 'varchar',
-    length: FIELD.EXPEDIENT_CODE_MAX_LENGTH
-  })
-  code?: string
+	@Column({
+		unique: true,
+		type: 'varchar',
+		length: FIELD.EXPEDIENT_CODE_MAX_LENGTH,
+	})
+	code?: string
 
-  @Column({
-    type: 'varchar',
-    length: FIELD.EXPEDIENT_SUBJECT_MAX_LENGTH
-  })
-  subject: string
+	@Column({
+		type: 'varchar',
+		length: FIELD.EXPEDIENT_SUBJECT_MAX_LENGTH,
+	})
+	subject: string
 
-  @Column({
-    type: 'varchar',
-    length: FIELD.EXPEDIENT_PROCESS_MAX_LENGTH,
-    nullable: true
-  })
-  process: string
+	@Column({
+		type: 'varchar',
+		length: FIELD.EXPEDIENT_PROCESS_MAX_LENGTH,
+		nullable: true,
+	})
+	process: string
 
-  @Column({
-    type: 'varchar',
-    length: FIELD.EXPEDIENT_COURT_MAX_LENGTH
-  })
-  court: string
+	@Column({
+		type: 'varchar',
+		length: FIELD.EXPEDIENT_COURT_MAX_LENGTH,
+	})
+	court: string
 
-  @Column({
-    type: 'enum',
-    name: 'status',
-    enumName: 'status',
-    enum: EXPEDIENT_STATUS,
-    default: EXPEDIENT_STATUS.EN_EJECUCION
-  })
-  status: EXPEDIENT_STATUS
+	@Column({
+		type: 'enum',
+		name: 'status',
+		enumName: 'status',
+		enum: EXPEDIENT_STATUS,
+		default: EXPEDIENT_STATUS.EN_EJECUCION,
+	})
+	status: EXPEDIENT_STATUS
 
-  @Column({
-    type: 'varchar',
-    length: FIELD.EXPEDIENT_STATUS_DESCRIPTION_MAX_LENGTH,
-    nullable: true
-  })
-  statusDescription: string
+	@Column({
+		type: 'varchar',
+		length: FIELD.EXPEDIENT_STATUS_DESCRIPTION_MAX_LENGTH,
+		nullable: true,
+	})
+	statusDescription: string
 
-  @ManyToOne(() => User, (user) => user.assignedLawyerExpedients)
-  assignedLawyer: User
+	@ManyToOne(
+		() => User,
+		(user) => user.assignedLawyerExpedients,
+	)
+	assignedLawyer: User
 
-  @ManyToOne(() => User, (user) => user.assignedAssistantExpedients)
-  assignedAssistant: User
+	@ManyToOne(
+		() => User,
+		(user) => user.assignedAssistantExpedients,
+	)
+	assignedAssistant: User
 
-  @ManyToOne(() => User, (user) => user.createdExpedients)
-  createdByUser: User
+	@ManyToOne(
+		() => User,
+		(user) => user.createdExpedients,
+	)
+	createdByUser: User
 
-  @ManyToOne(() => User, (user) => user.updatedExpedients)
-  updatedByUser: User
+	@ManyToOne(
+		() => User,
+		(user) => user.updatedExpedients,
+	)
+	updatedByUser: User
 
-  @OneToMany(() => Part, (part) => part.expedient, { cascade: true })
-  parts: Part[]
+	@OneToMany(
+		() => Part,
+		(part) => part.expedient,
+		{ cascade: true },
+	)
+	parts: Part[]
 
-  @OneToMany(() => Review, (review) => review.expedient)
-  reviews: Review[]
+	@OneToMany(
+		() => Review,
+		(review) => review.expedient,
+	)
+	reviews: Review[]
 
-  @OneToMany(() => Document, (document) => document.expedient)
-  documents: Document[]
+	@OneToMany(
+		() => Document,
+		(document) => document.expedient,
+	)
+	documents: Document[]
 
-  @OneToMany(() => Event, (event) => event.expedient)
-  events: Event[]
+	@OneToMany(
+		() => Event,
+		(event) => event.expedient,
+	)
+	events: Event[]
 
-  @CreateDateColumn()
-  createdAt: Date
+	@CreateDateColumn()
+	createdAt: Date
 
-  @UpdateDateColumn()
-  updatedAt: Date
+	@UpdateDateColumn()
+	updatedAt: Date
 
-  @BeforeInsert()
-  async defaultStatus() {
-    if (!this.status) {
-      this.status = EXPEDIENT_STATUS.EN_EJECUCION
-    }
-  }
+	@BeforeInsert()
+	async defaultStatus() {
+		if (!this.status) {
+			this.status = EXPEDIENT_STATUS.EN_EJECUCION
+		}
+	}
 
-  constructor(id?: string) {
-    if (id) {
-      this.id = id
-    }
-  }
+	constructor(id?: string) {
+		if (id) {
+			this.id = id
+		}
+	}
 }

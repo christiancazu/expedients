@@ -1,83 +1,83 @@
 import {
-  BadRequestException,
-  Injectable,
-  UnprocessableEntityException
+	BadRequestException,
+	Injectable,
+	UnprocessableEntityException,
 } from '@nestjs/common'
-import { CreateUserDto } from './dto/create-user.dto'
-import { User } from './entities/user.entity'
-import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import type { Repository } from 'typeorm'
+import type { CreateUserDto } from './dto/create-user.dto'
+import { User } from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  @InjectRepository(User)
-  private readonly _userRepository: Repository<User>
+	@InjectRepository(User)
+	private readonly _userRepository: Repository<User>
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this._userRepository.findOne({
-      where: { email: createUserDto.email }
-    })
+	async create(createUserDto: CreateUserDto): Promise<User> {
+		const user = await this._userRepository.findOne({
+			where: { email: createUserDto.email },
+		})
 
-    if (user) throw new UnprocessableEntityException('auth.errors.exists.email')
+		if (user) throw new UnprocessableEntityException('auth.errors.exists.email')
 
-    const createUser = this._userRepository.create(createUserDto)
-    const registeredUser = await this._userRepository.save(createUser)
+		const createUser = this._userRepository.create(createUserDto)
+		const registeredUser = await this._userRepository.save(createUser)
 
-    return this.sanitizeUser(registeredUser)
-  }
+		return this.sanitizeUser(registeredUser)
+	}
 
-  async updatePassword(email: string, password: string) {
-    const user = await this.findUser({ email })
+	async updatePassword(email: string, password: string) {
+		const user = await this.findUser({ email })
 
-    if (user.verifiedAt) {
-      throw new BadRequestException('El usuario ya fue verificado')
-    }
+		if (user.verifiedAt) {
+			throw new BadRequestException('El usuario ya fue verificado')
+		}
 
-    user.password = await user.hashPassword(password)
-    user.verifiedAt = new Date()
+		user.password = await user.hashPassword(password)
+		user.verifiedAt = new Date()
 
-    return this._userRepository.save(user)
-  }
+		return this._userRepository.save(user)
+	}
 
-  findAll() {
-    return this._userRepository.find({
-      select: ['id', 'firstName', 'surname']
-    })
-  }
+	findAll() {
+		return this._userRepository.find({
+			select: ['id', 'firstName', 'surname'],
+		})
+	}
 
-  async findByEmailAndPassword({ email, password }: Partial<User>) {
-    const user = await this._userRepository.findOne({ where: { email } })
+	async findByEmailAndPassword({ email, password }: Partial<User>) {
+		const user = await this._userRepository.findOne({ where: { email } })
 
-    if (!user) throw new UnprocessableEntityException('not found')
+		const isMatch = await user?.comparePassword(password!)
 
-    const isMatch = await user.comparePassword(password!)
+		if (!user || !isMatch)
+			throw new UnprocessableEntityException(
+				'El usuario o la  contraseña son incorrectos',
+			)
 
-    if (!isMatch) throw new BadRequestException('Password does not match')
+		return this.sanitizeUser(user)
+	}
 
-    return this.sanitizeUser(user)
-  }
+	private async findUser(payload: Partial<User>) {
+		const [key, value] = Object.entries(payload)[0]
 
-  private async findUser(payload: Partial<User>) {
-    const [key, value] = Object.entries(payload)[0]
+		const user = await this._userRepository.findOne({
+			where: { [key as string]: value },
+		})
 
-    const user = await this._userRepository.findOne({
-      where: { [key as string]: value }
-    })
+		if (!user)
+			throw new UnprocessableEntityException('El usuario no ha sido encontrado')
 
-    if (!user) throw new UnprocessableEntityException('user not found')
+		return user
+	}
 
-    return user
-  }
+	update(id: string) {
+		return `This action updates a #${id} user`
+	}
 
-  update(id: string) {
-    return `This action updates a #${id} user`
-  }
+	private sanitizeUser(user: User) {
+		user.password = undefined
 
-  private sanitizeUser(user: User) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    delete user.password
-
-    return user
-  }
+		return user
+	}
 }

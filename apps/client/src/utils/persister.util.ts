@@ -1,32 +1,32 @@
-import { User } from '@expedients/shared'
+import type { User } from '@expedients/shared'
 
 export default {
-  set: (key: string, value: any) => localStorage.setItem(key, value),
+	set: (key: string, value: any) => localStorage.setItem(key, value),
 
-  remove: (key: string) => localStorage.removeItem(key),
+	remove: (key: string) => localStorage.removeItem(key),
 
-  get: (key: string) => localStorage.getItem(key) ?? null,
+	get: (key: string) => localStorage.getItem(key) ?? null,
 
-  setUser: (user: User) => localStorage.setItem('user', JSON.stringify(user)),
+	setUser: (user: User) => localStorage.setItem('user', JSON.stringify(user)),
 
-  purgeUser: () => localStorage.removeItem('user'),
+	purgeUser: () => localStorage.removeItem('user'),
 
-  getUser: (): User | undefined => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
+	getUser: (): User | undefined => {
+		const user = JSON.parse(localStorage.getItem('user') || '{}')
 
-    if (!user?.id) {
-      return undefined
-    }
+		if (!user?.id) {
+			return undefined
+		}
 
-    return user as User
-  },
+		return user as User
+	},
 
-  setVapidKey: (key: string) => localStorage.setItem('vapidKey', key),
+	setVapidKey: (key: string) => localStorage.setItem('vapidKey', key),
 
-  getVapidKey: () => localStorage.getItem('vapidKey') ?? null,
+	getVapidKey: () => localStorage.getItem('vapidKey') ?? null,
 
-  purgeSession: () => {
-    localStorage.removeItem('user')
-    localStorage.removeItem('token')
-  }
+	purgeSession: () => {
+		localStorage.removeItem('user')
+		localStorage.removeItem('token')
+	},
 }

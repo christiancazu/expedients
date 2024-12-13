@@ -1,9 +1,11 @@
 .document-detail {
+
   & #proxy-renderer,
   & #msdoc-renderer {
     height: 100%;
     overflow: scroll;
   }
+
   & #header-bar {
     display: none;
   }

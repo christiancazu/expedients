@@ -1,41 +1,43 @@
-import React, { PropsWithChildren, useMemo } from 'react'
+import React, { type PropsWithChildren, useMemo } from 'react'
 
-import { notification, NotificationArgsProps } from 'antd'
+import { type NotificationArgsProps, notification } from 'antd'
 
 type NotificationPlacement = NotificationArgsProps['placement']
 type NotificationType = 'success' | 'info' | 'warning' | 'error'
 interface Notify {
-  message: string;
-  type?: NotificationType;
-  description?: string;
-  placement?: NotificationPlacement;
+	message: string
+	type?: NotificationType
+	description?: string
+	placement?: NotificationPlacement
 }
 type NotifyFnType = (data: Notify) => void
 
 export const ContextNotify = React.createContext<NotifyFnType>(() => ({}))
 
 const NotifyProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [api, contextHolder] = notification.useNotification()
+	const [api, contextHolder] = notification.useNotification()
 
-  const openNotification = ({
-    message, placement = 'bottomRight', type = 'success', description
-  }: Notify) => {
-    api[type]({
-      message,
-      description,
-      placement
-    })
-  }
+	const openNotification = ({
+		message,
+		placement = 'bottomRight',
+		type = 'success',
+		description,
+	}: Notify) => {
+		api[type]({
+			message,
+			description,
+			placement,
+		})
+	}
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const contextValue = useMemo(() => openNotification, [])
+	const contextValue = useMemo(() => openNotification, [])
 
-  return (
-    <ContextNotify.Provider value={ contextValue }>
-      {contextHolder}
-      {children}
-    </ContextNotify.Provider>
-  )
+	return (
+		<ContextNotify.Provider value={contextValue}>
+			{contextHolder}
+			{children}
+		</ContextNotify.Provider>
+	)
 }
 
 export default NotifyProvider

@@ -1,12 +1,12 @@
 import { Table } from 'antd'
-import styled, { WebTarget } from 'styled-components'
-import { Styled } from 'styled-components/dist/constructors/constructWithOptions'
+import styled, { type WebTarget } from 'styled-components'
+import type { Styled } from 'styled-components/dist/constructors/constructWithOptions'
 
 type StyledComponent = Styled<
-  'web',
-  WebTarget,
-  Record<never, never>,
-  Record<never, never>
+	'web',
+	WebTarget,
+	Record<never, never>,
+	Record<never, never>
 >
 
 export const StyledTable = styled(Table)`

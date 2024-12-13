@@ -20,10 +20,12 @@ export const StyledCardNotificationText = styled(Text)<{ $lineClamp?: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: ${p => p.$lineClamp ?? '1'};
+  -webkit-line-clamp: ${(p) => p.$lineClamp ?? '1'};
   -webkit-box-orient: vertical;
 `
 
-export const StyledNotificationAvatar = styled(Avatar)<{ $colorPrimary?: string }>`
-  background-color: ${p => p.$colorPrimary};
+export const StyledNotificationAvatar = styled(Avatar)<{
+	$colorPrimary?: string
+}>`
+  background-color: ${(p) => p.$colorPrimary};
 `

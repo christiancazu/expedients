@@ -1,10 +1,10 @@
+import type { Document } from '@expedients/shared'
 import { IsOptional, IsUUID } from 'class-validator'
-import { Document } from '@expedients/shared'
 
 export class CreateDocumentDto implements Partial<Document> {
-  @IsUUID()
-  expedientId: string
+	@IsUUID()
+	expedientId: string
 
-  @IsOptional()
-  name: string
+	@IsOptional()
+	name: string
 }

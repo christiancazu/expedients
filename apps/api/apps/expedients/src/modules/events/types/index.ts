@@ -1,14 +1,14 @@
-import { BulkJobOptions } from 'bullmq'
+import type { BulkJobOptions } from 'bullmq'
 
 export interface JobEventData {
-  expedientId: string;
-  eventId: string;
+	expedientId: string
+	eventId: string
 }
 
 export interface JobEvent {
-  name: string;
-  data: JobEventData;
-  opts: BulkJobOptions;
+	name: string
+	data: JobEventData
+	opts: BulkJobOptions
 }
 
 export const EVENT_QUEUE = 'EVENT_QUEUE'

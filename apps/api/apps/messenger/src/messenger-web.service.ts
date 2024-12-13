@@ -6,39 +6,37 @@ import { ErrorPushNotification } from './types'
 
 @Injectable()
 export class MessengerWebService {
-  sender_email: string
+	sender_email: string
 
-  private readonly logger = new Logger()
+	private readonly logger = new Logger()
 
-  constructor(
-    private readonly _configService: ConfigService
-  ) {
-    this.sender_email = this._configService.get('SENDER_EMAIL')!
+	constructor(private readonly _configService: ConfigService) {
+		this.sender_email = this._configService.get('SENDER_EMAIL')!
 
-    setVapidDetails(
-      `mailto:${this.sender_email}`,
-      this._configService.get('VAPID_PUBLIC_KEY')!,
-      this._configService.get('VAPID_PRIVATE_KEY')!
-    )
-  }
+		setVapidDetails(
+			`mailto:${this.sender_email}`,
+			this._configService.get('VAPID_PUBLIC_KEY')!,
+			this._configService.get('VAPID_PRIVATE_KEY')!,
+		)
+	}
 
-  async sendScheduledNotification(notifications: PushNotification[]) {
-    const results = await Promise.allSettled(notifications
-      .map(notification => {
-        const { pushSubscription, ...rest } = notification
+	async sendScheduledNotification(notifications: PushNotification[]) {
+		const results = await Promise.allSettled(
+			notifications.map((notification) => {
+				const { pushSubscription, ...rest } = notification
 
-        return sendNotification(
-          pushSubscription,
-          JSON.stringify({ ...rest })
-        )
-      })
-    )
+				return sendNotification(pushSubscription, JSON.stringify({ ...rest }))
+			}),
+		)
 
-    return (results as unknown as ErrorPushNotification[]).reduce<string[]>((acc, result) => {
-      if (result?.reason?.statusCode === 410) {
-        acc.push(result?.reason?.endpoint)
-      }
-      return acc
-    }, [])
-  }
+		return (results as unknown as ErrorPushNotification[]).reduce<string[]>(
+			(acc, result) => {
+				if (result?.reason?.statusCode === 410) {
+					acc.push(result?.reason?.endpoint)
+				}
+				return acc
+			},
+			[],
+		)
+	}
 }

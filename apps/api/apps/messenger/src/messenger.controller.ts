@@ -8,24 +8,25 @@ import { PushNotification } from 'apps/expedients/src/modules/notifications/type
 
 @Controller()
 export class MessengerController {
-  constructor(
-    private readonly _messengerEmailService: MessengerEmailService,
-    private readonly _messengerWebService: MessengerWebService
-  ) { }
+	constructor(
+		private readonly _messengerEmailService: MessengerEmailService,
+		private readonly _messengerWebService: MessengerWebService,
+	) {}
 
-  @MessagePattern(SETTINGS.EVENT_MAIL_ACTIVATE_ACCOUNT)
-  async sendEmailToActivateAccount(@Payload() payload: MailActivateAccountPayload) {
-    return this._messengerEmailService.sendEmailToActivateAccount(payload)
-  }
+	@MessagePattern(SETTINGS.EVENT_MAIL_ACTIVATE_ACCOUNT)
+	async sendEmailToActivateAccount(
+		@Payload() payload: MailActivateAccountPayload,
+	) {
+		return this._messengerEmailService.sendEmailToActivateAccount(payload)
+	}
 
-  @MessagePattern(SETTINGS.EVENT_SCHEDULED)
-  async sendScheduledEvent(@Payload() payload: ScheduledEventPayload)
-  {
-    return this._messengerEmailService.sendScheduledEvent(payload)
-  }
+	@MessagePattern(SETTINGS.EVENT_SCHEDULED)
+	async sendScheduledEvent(@Payload() payload: ScheduledEventPayload) {
+		return this._messengerEmailService.sendScheduledEvent(payload)
+	}
 
-  @MessagePattern(SETTINGS.NOTIFICATION_SCHEDULED)
-  async sendScheduledNotification(@Payload() payload: PushNotification[]) {
-    return this._messengerWebService.sendScheduledNotification(payload)
-  }
+	@MessagePattern(SETTINGS.NOTIFICATION_SCHEDULED)
+	async sendScheduledNotification(@Payload() payload: PushNotification[]) {
+		return this._messengerWebService.sendScheduledNotification(payload)
+	}
 }

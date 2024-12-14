@@ -14,4 +14,8 @@
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "scss.lint.unknownAtRules": "ignore"
 }

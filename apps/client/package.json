@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@ant-design/icons": "^5.5.1",
-		"@cyntler/react-doc-viewer": "^1.17.0",
+		"@cyntler/react-doc-viewer": "christiancazu/react-doc-viewer",
 		"@expedients/shared": "workspace:*",
 		"@tanstack/react-query": "^5.59.13",
 		"@tiptap/extension-mention": "^2.8.0",
@@ -27,7 +27,7 @@
 		"html-react-parser": "^5.1.18",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-router-dom": "^6.27.0",
+		"react-router": "^7.0.2",
 		"react-scrollbars-custom": "^4.1.1",
 		"tippy.js": "^6.3.7"
 	},
@@ -35,8 +35,11 @@
 		"@types/react": "^18.3.10",
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react-swc": "^3.5.0",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.49",
 		"sass-embedded": "^1.80.5",
-		"styled-components": "^6.1.13"
+		"styled-components": "^6.1.13",
+		"tailwindcss": "^3.4.16"
 	},
 	"keywords": [
 		"pnpm",

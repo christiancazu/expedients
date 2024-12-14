@@ -10,8 +10,8 @@ self.addEventListener('push', (e) => {
 	self.registration.showNotification(title, {
 		body: `🗂️ ${body}`,
 		data: { redirectUrl },
-		icon: 'https://corporativokallpa.com/favicon.svg',
-		badge: 'https://corporativokallpa.com/favicon.svg',
+		icon: 'https://corporativokallpa.com/favicon.png',
+		badge: 'https://corporativokallpa.com/favicon.png',
 	})
 })
 

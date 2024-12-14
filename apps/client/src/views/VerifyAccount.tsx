@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Alert, Card, Flex, Form, Input } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import type { AxiosError } from 'axios'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router'
 import ButtonBase from '../components/base/ButtonBase'
 import useNotify from '../hooks/useNotification'
 import useUserState from '../hooks/useUserState'
@@ -71,7 +71,7 @@ export default function VerifyAccount(): React.ReactNode {
 							<ButtonBase
 								block
 								primary
-								className="mt-16"
+								className="mt-1"
 								icon={<SendOutlined />}
 								onClick={() => handleJoin()}
 							>
@@ -119,7 +119,7 @@ export default function VerifyAccount(): React.ReactNode {
 								<ButtonBase
 									block
 									primary
-									className="mt-16"
+									className="mt-1"
 									htmlType="submit"
 									loading={isPending}
 								>
@@ -128,7 +128,7 @@ export default function VerifyAccount(): React.ReactNode {
 								<ButtonBase
 									block
 									secondary
-									className="mt-20"
+									className="mt-5"
 									icon={<ArrowLeftOutlined />}
 									onClick={() => navigate('/')}
 								>

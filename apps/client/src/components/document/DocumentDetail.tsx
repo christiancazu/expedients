@@ -111,7 +111,7 @@ export default function DocumentDetail({
 								display: 'inline-block',
 							}}
 						/>
-						<Title className="text-primary ml-8" level={3}>
+						<Title className="text-primary ml-2" level={3}>
 							{data?.name}
 						</Title>
 					</div>
@@ -119,8 +119,8 @@ export default function DocumentDetail({
 			}
 			onCancel={handleClose}
 		>
-			<div className="mb-20">
-				<p className="mb-12">
+			<div className="mb-5">
+				<p className="mb-3">
 					<strong>Creado por: </strong>
 					{data?.createdByUser?.firstName} {data?.createdByUser?.surname}
 					<em>
@@ -129,7 +129,7 @@ export default function DocumentDetail({
 					</em>
 				</p>
 
-				<p className="mb-12">
+				<p className="mb-3">
 					<strong>Actualizado por: </strong>
 					{data?.createdByUser?.firstName} {data?.createdByUser?.surname}
 					<em>

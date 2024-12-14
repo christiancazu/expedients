@@ -33,7 +33,7 @@ const UsersSelect: React.FC<Props> = ({ ...props }) => {
 					})) || []
 				}
 				placeholder={props.placeholder}
-				style={{ width: '100%' }}
+				className="w-full"
 				filterOption={(input, option) =>
 					(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
 				}

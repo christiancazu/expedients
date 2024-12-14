@@ -5,10 +5,9 @@ import {
 } from '@ant-design/icons'
 import { Button, Flex, Grid, Layout, Menu, type MenuProps, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { Outlet, useMatches, useNavigate } from 'react-router-dom'
+import { Outlet, useMatches, useNavigate } from 'react-router'
 
 import Text from 'antd/es/typography/Text'
-import Title from 'antd/es/typography/Title'
 import NotificationModal from '../components/NotificationModal'
 import HeaderToolbar from '../components/header/HeaderToolbar'
 import { StyledAvatar } from '../components/styled/avatar.styled'
@@ -22,9 +21,7 @@ const MainLayout: React.FC = () => {
 	const matches = useMatches()
 	const screens = useBreakpoint()
 
-	const {
-		token: { borderRadiusLG, colorBgLayout },
-	} = theme.useToken()
+	const { colorBgLayout } = theme.useToken().token
 
 	const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
 	const [sidebarDrawerAvailabled, setSidebarDrawerAvailabled] = useState(false)
@@ -61,7 +58,7 @@ const MainLayout: React.FC = () => {
 
 	return (
 		<>
-			<Layout style={{ minHeight: '100vh' }}>
+			<Layout className="min-h-screen">
 				{!sidebarDrawerAvailabled ? (
 					<StyledSider
 						collapsible
@@ -69,24 +66,21 @@ const MainLayout: React.FC = () => {
 						collapsedWidth="0"
 						trigger={null}
 					>
-						<Flex vertical justify="space-between" style={{ marginTop: 64 }}>
-							<div>
-								<div className="d-flex flex-column align-items-center justify-content-center my-20">
-									<StyledAvatar
-										size={160}
-										src="https://corporativokallpa.com/images/logo.png"
-									/>
-								</div>
-
-								<Menu
-									className="px-8"
-									defaultSelectedKeys={['1']}
-									items={items}
-									mode="inline"
-									style={{ backgroundColor: 'transparent' }}
-									theme="dark"
+						<Flex vertical justify="space-between" className="mt-16 px-4">
+							<div className="d-flex flex-column align-items-center justify-content-center my-5">
+								<StyledAvatar
+									size={160}
+									src="https://corporativokallpa.com/images/logo.png"
 								/>
 							</div>
+
+							<Menu
+								defaultSelectedKeys={['1']}
+								items={items}
+								mode="inline"
+								style={{ backgroundColor: 'transparent' }}
+								theme="dark"
+							/>
 						</Flex>
 					</StyledSider>
 				) : (
@@ -99,7 +93,7 @@ const MainLayout: React.FC = () => {
 					>
 						<Flex vertical justify="space-between">
 							<div>
-								<div className="d-flex flex-column align-items-center justify-content-center my-20">
+								<div className="d-flex flex-column align-items-center justify-content-center my-5">
 									<StyledAvatar
 										size={160}
 										src="https://corporativokallpa.com/images/logo.png"
@@ -128,9 +122,10 @@ const MainLayout: React.FC = () => {
 					}}
 				>
 					<StyledHeader $colorBgLayout={colorBgLayout}>
-						<Flex align="center" className="w-100" justify="space-between">
+						<Flex align="center" className="w-full" justify="space-between">
 							<Flex align="center">
 								<Button
+									size="large"
 									icon={
 										sidebarCollapsed ? (
 											<MenuUnfoldOutlined />
@@ -139,11 +134,7 @@ const MainLayout: React.FC = () => {
 										)
 									}
 									type="text"
-									style={{
-										fontSize: '16px',
-										width: 64,
-										height: 64,
-									}}
+									className="mx-1"
 									onClick={() => {
 										if (sidebarDrawerAvailabled) {
 											setSidebarCollapsed(false)
@@ -153,23 +144,14 @@ const MainLayout: React.FC = () => {
 										}
 									}}
 								/>
-								{screens.md ? (
-									<Title className="mb-0" level={3}>
-										{viewTitle}
-									</Title>
-								) : (
-									<Text className="mb-0">{viewTitle}</Text>
-								)}
+								<Text className={screens.md ? 'text-2xl' : 'text-base'}>
+									{viewTitle}
+								</Text>
 							</Flex>
 							<HeaderToolbar />
 						</Flex>
 					</StyledHeader>
-					<Content
-						style={{
-							margin: '16px',
-							borderRadius: borderRadiusLG,
-						}}
-					>
+					<Content className="m-4">
 						<Outlet />
 					</Content>
 				</Layout>

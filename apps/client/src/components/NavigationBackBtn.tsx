@@ -1,6 +1,6 @@
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 interface Props {
 	to: string
@@ -11,9 +11,9 @@ export default function NavigationBackBtn({ to }: Props): React.ReactNode {
 
 	return (
 		<Button
-			icon={<ArrowLeftOutlined style={{ fontSize: '16px' }} />}
+			icon={<ArrowLeftOutlined />}
 			shape="circle"
-			style={{ height: 32, width: 32 }}
+			style={{ transform: 'translateY(.1rem)' }}
 			type="text"
 			onClick={() => navigate(to)}
 		/>

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import htmlReactParser from 'html-react-parser'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 
 import {
 	CloseOutlined,
@@ -19,13 +19,13 @@ import {
 	Divider,
 	Flex,
 	Row,
+	Space,
 	Spin,
 	Tooltip,
 	Typography,
 	theme,
 } from 'antd'
 
-import Title from 'antd/es/typography/Title'
 import DocumentUpload from '../components/DocumentUpload'
 import NavigationBackBtn from '../components/NavigationBackBtn'
 import DocumentDetail from '../components/document/DocumentDetail'
@@ -79,7 +79,8 @@ interface Expedient extends ExpedientType {
 }
 
 const ExpedientView: React.FC = () => {
-	const { id } = useParams()
+	const { id } = useParams<{ id: string }>()
+	const navigate = useNavigate()
 	const notify = useNotify()
 	const { user } = useUserState()
 	const [documentFile, setDocumentFile] = useState<DocumentFile>({
@@ -211,47 +212,52 @@ const ExpedientView: React.FC = () => {
 			<Col md={{ span: 16, order: 1 }} xs={{ span: 24, order: 2 }}>
 				<Spin spinning={documentFile.isLoading} tip="Consultando...">
 					<div style={sectionStyle}>
-						<div className="d-flex justify-content-between flex-wrap">
-							<div className="d-flex align-items-center">
+						<Flex className="flex justify-between flex-wrap">
+							<Flex align="center">
 								<NavigationBackBtn to="/expedients" />
-								<Title className="ml-12 mb-0" level={5}>
-									{data.code}
-								</Title>
-							</div>
+								<Text className="ml-1 text-lg">{data.code}</Text>
+							</Flex>
 							{isWritableByUser && (
-								<div>
+								<Space>
+									<Button
+										onClick={() => navigate(`/expedients/${data.id}/edit`)}
+										variant="outlined"
+										icon={<EditOutlined />}
+									>
+										Editar
+									</Button>
 									<TextEditor expedientId={data.id} />
-								</div>
+								</Space>
 							)}
-						</div>
+						</Flex>
 
-						<Divider className="my-12" />
+						<Divider className="my-3" />
 
-						<Row className="mt-20">
+						<Row className="mt-5">
 							<Col md={16} xs={24}>
-								<p className="mb-12">
+								<p className="mb-3">
 									<strong>Materia:</strong> {data.subject}
 								</p>
 
-								<p className="mb-12">
+								<p className="mb-3">
 									<strong>Proceso:</strong> {data.process}
 								</p>
 
-								<p className="mb-12">
+								<p className="mb-3">
 									<strong>Juzgado:</strong> {data.court}
 								</p>
 
-								<p className="mb-12">
+								<p className="mb-3">
 									<strong>Última actualización:</strong>
 									{` ${data.updatedAt}`}
 								</p>
 
-								<p className="mb-12">
-									<strong className="mb-12">Partes:</strong>
+								<p className="mb-3">
+									<strong className="mb-3">Partes:</strong>
 								</p>
-								<div className="mb-12">
+								<div className="mb-3">
 									{data.parts.map((part) => (
-										<p className="mb-8" key={part.id}>
+										<p className="mb-2" key={part.id}>
 											{part.type}
 											{': '}
 											{part.name}
@@ -259,21 +265,21 @@ const ExpedientView: React.FC = () => {
 									))}
 								</div>
 
-								<p className="mb-12">
+								<p className="mb-3">
 									<strong>Creado por:</strong>
 									{` ${data.createdByUser?.firstName} ${data.createdByUser?.surname}`}
 								</p>
 
-								<p className="mb-12">
-									<strong className="mb-12">Asignados:</strong>
+								<p className="mb-3">
+									<strong className="mb-3">Asignados:</strong>
 								</p>
-								<div className="mb-12">
-									<p className="mb-8">
+								<div className="mb-3">
+									<p className="mb-2">
 										{'ABOGADO: '}
 										{data.assignedLawyer?.firstName}{' '}
 										{data.assignedLawyer?.surname}
 									</p>
-									<p className="mb-8">
+									<p className="mb-2">
 										{'ASISTENTE: '}
 										{data.assignedAssistant?.firstName}{' '}
 										{data.assignedAssistant?.surname}
@@ -286,14 +292,14 @@ const ExpedientView: React.FC = () => {
 								md={8}
 								xs={24}
 							>
-								<span className="mb-8">{data.status.replace('_', ' ')}</span>
+								<span className="mb-2">{data.status.replace('_', ' ')}</span>
 								<em style={{ color: colorTextSecondary }}>
 									{data.statusDescription}
 								</em>
 							</Col>
 						</Row>
 
-						<Row align={'middle'} className="mb-12">
+						<Row align={'middle'} className="mb-3">
 							<Col md={12} xs={24}>
 								<strong>Informes:</strong>
 							</Col>
@@ -301,7 +307,7 @@ const ExpedientView: React.FC = () => {
 
 						{data.reviews.map((review) => (
 							<Card
-								className="mb-20"
+								className="mb-5 bg-layout-body"
 								key={review.id}
 								title={`${data.createdByUser?.firstName} ${data.createdByUser?.surname}`}
 								extra={
@@ -315,7 +321,7 @@ const ExpedientView: React.FC = () => {
 												<Tooltip title="Eliminar">
 													<Button
 														danger
-														className="ml-8"
+														className="ml-2"
 														icon={<DeleteOutlined />}
 														shape="circle"
 														onClick={() => openConfirmModal(mutate, review.id)}
@@ -335,9 +341,7 @@ const ExpedientView: React.FC = () => {
 			<Col md={{ span: 8, order: 2 }} xs={{ span: 24, order: 1 }}>
 				<div style={sectionStyle}>
 					<div className="d-flex justify-content-between flex-wrap">
-						<Title className="mb-0" level={5}>
-							Documentos
-						</Title>
+						<Text className="text-lg">Documentos</Text>
 						{isWritableByUser && (
 							<Button
 								icon={<PlusOutlined />}
@@ -356,7 +360,7 @@ const ExpedientView: React.FC = () => {
 						)}
 					</div>
 
-					<Divider className="my-12" />
+					<Divider className="my-3" />
 
 					<Spin spinning={documentFile.isLoading} tip="Consultando...">
 						<StyledScrollbar
@@ -367,7 +371,7 @@ const ExpedientView: React.FC = () => {
 									<div className="text-link w-100" key={document.id}>
 										<div className="d-flex justify-content-between align-items-center">
 											<div
-												className="mr-16"
+												className="mr-4"
 												style={{ wordBreak: 'break-all' }}
 												onClick={() =>
 													setDocumentFile((prev) => ({
@@ -388,7 +392,7 @@ const ExpedientView: React.FC = () => {
 															display: 'inline-block',
 														}}
 													/>
-													<div className="ml-8">
+													<div className="ml-2">
 														<p>{document.name}</p>
 														<p style={{ color: colorTextSecondary }}>
 															{document.updatedAt as string}
@@ -419,11 +423,10 @@ const ExpedientView: React.FC = () => {
 						</StyledScrollbar>
 					</Spin>
 				</div>
+
 				<div style={sectionStyle}>
 					<div className="d-flex justify-content-between flex-wrap">
-						<Title className="mb-0" level={5}>
-							Eventos
-						</Title>
+						<Text className="text-lg">Eventos</Text>
 						{isWritableByUser && (
 							<Button
 								icon={<PlusOutlined />}
@@ -441,7 +444,7 @@ const ExpedientView: React.FC = () => {
 						)}
 					</div>
 
-					<Divider className="my-12" />
+					<Divider className="my-3" />
 
 					<Spin spinning={documentFile.isLoading} tip="Consultando...">
 						<StyledScrollbar
@@ -449,7 +452,7 @@ const ExpedientView: React.FC = () => {
 						>
 							<Flex vertical wrap align="start">
 								{expedientEvents?.events.map((event) => (
-									<StyledCardNotification className="mb-12" key={event.id}>
+									<StyledCardNotification className="mb-3" key={event.id}>
 										<Flex>
 											<Flex>
 												<Avatar
@@ -463,7 +466,7 @@ const ExpedientView: React.FC = () => {
 											</Flex>
 											<Flex
 												vertical
-												className="ml-12 w-100"
+												className="ml-3 w-100"
 												justify="space-between"
 											>
 												<Flex justify="space-between">

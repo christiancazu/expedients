@@ -1,5 +1,5 @@
 import { Button, Flex } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const NotFoundView: React.FC = () => {
 	const navigate = useNavigate()
@@ -12,7 +12,7 @@ const NotFoundView: React.FC = () => {
 			style={{ minHeight: '100vh' }}
 		>
 			<section style={{ width: '300px' }}>
-				<h1 className="mb-20 text-center">Esta página no existe</h1>
+				<h1 className="mb-5 text-center">Esta página no existe</h1>
 				<Button block type="primary" onClick={() => navigate('/')}>
 					Volver
 				</Button>

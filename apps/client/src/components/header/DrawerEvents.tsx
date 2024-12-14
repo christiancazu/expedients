@@ -2,9 +2,10 @@ import { NotificationOutlined } from '@ant-design/icons'
 import { Avatar, Button, Flex, Modal, Typography } from 'antd'
 import Title from 'antd/es/typography/Title'
 import { type SetStateAction, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useEvents } from '../../hooks/useEvents'
 import useUserState from '../../hooks/useUserState'
+import { StyledScrollbar } from '../StyledScrollbar'
 import ButtonBase from '../base/ButtonBase'
 import {
 	StyledCardNotification,
@@ -50,38 +51,40 @@ export default function DrawerEvents({
 				onClose={() => setDrawer(false)}
 			>
 				<Title level={3}>Eventos</Title>
-				{data?.map((event) => (
-					<StyledCardNotification hoverable className="mb-12" key={event.id}>
-						<Flex
-							onClick={() => {
-								navigate(`/expedients/${event.expedient.id}`)
-								setDrawer(false)
-							}}
-						>
-							<Flex>
-								<Avatar
-									icon={<NotificationOutlined />}
-									size={32}
-									style={{
-										width: 32,
-										backgroundColor: 'var(--ant-color-warning)',
-									}}
-								/>
+				<StyledScrollbar style={{ height: '92%' }}>
+					{data?.map((event) => (
+						<StyledCardNotification hoverable className="mb-3" key={event.id}>
+							<Flex
+								onClick={() => {
+									navigate(`/expedients/${event.expedient.id}`)
+									setDrawer(false)
+								}}
+							>
+								<Flex>
+									<Avatar
+										icon={<NotificationOutlined />}
+										size={32}
+										style={{
+											width: 32,
+											backgroundColor: 'var(--ant-color-warning)',
+										}}
+									/>
+								</Flex>
+								<Flex vertical className="ml-3 w-100" justify="space-between">
+									<StyledCardNotificationText>
+										{event.message}
+									</StyledCardNotificationText>
+									<StyledCardNotificationText code $lineClamp="2">
+										exp: {event.expedient.code}
+									</StyledCardNotificationText>
+									<Text className="d-flex justify-content-end" type="secondary">
+										{event.scheduledAt as string}
+									</Text>
+								</Flex>
 							</Flex>
-							<Flex vertical className="ml-12 w-100" justify="space-between">
-								<StyledCardNotificationText>
-									{event.message}
-								</StyledCardNotificationText>
-								<StyledCardNotificationText code $lineClamp="2">
-									exp: {event.expedient.code}
-								</StyledCardNotificationText>
-								<Text className="d-flex justify-content-end" type="secondary">
-									{event.scheduledAt as string}
-								</Text>
-							</Flex>
-						</Flex>
-					</StyledCardNotification>
-				))}
+						</StyledCardNotification>
+					))}
+				</StyledScrollbar>
 			</StyledDrawer>
 
 			<Modal
@@ -99,7 +102,7 @@ export default function DrawerEvents({
 					</ButtonBase>,
 				]}
 			>
-				<Title className="my-20" level={3}>
+				<Title className="my-5" level={3}>
 					Es necesario {isUserNotificationEnabled ? 'desactivar' : 'activar'}{' '}
 					las notificaciones de forma manual en el navegador
 				</Title>

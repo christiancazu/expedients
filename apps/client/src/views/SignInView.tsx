@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Card, Col, Form, Input, Row } from 'antd'
 import type React from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router'
 
 import { useForm } from 'antd/es/form/Form'
 import useNotify from '../hooks/useNotification'
@@ -81,7 +81,7 @@ const SignInView: React.FC = () => {
 							<Form.Item className="mb-0">
 								<Button
 									block
-									className="mt-20"
+									className="mt-5"
 									htmlType="submit"
 									loading={isPending}
 									type="primary"

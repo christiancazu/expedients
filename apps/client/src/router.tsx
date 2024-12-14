@@ -3,12 +3,12 @@ import { Suspense, lazy, useMemo } from 'react'
 import {
 	Navigate,
 	Outlet,
-	RouterProvider,
 	createBrowserRouter,
 	useLocation,
 	useSearchParams,
-} from 'react-router-dom'
+} from 'react-router'
 
+import { RouterProvider } from 'react-router/dom'
 import useUserState from './hooks/useUserState'
 
 const VerifyAccount = lazy(() => import('./views/VerifyAccount'))
@@ -83,6 +83,7 @@ const router = createBrowserRouter(
 		{
 			path: '/',
 			element: <SessionRoutes />,
+			errorElement: <NotFoundView />,
 			children: [
 				{
 					index: true,
@@ -149,7 +150,7 @@ const RouterProviderComponent: React.FC<{
 }> = () => (
 	<Suspense
 		fallback={
-			<Spin className="d-flex justify-content-center my-20" size="large" />
+			<Spin className="d-flex justify-content-center my-5" size="large" />
 		}
 	>
 		<RouterProvider router={router} />

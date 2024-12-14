@@ -8,16 +8,20 @@ import setupNotificationPermission from '../notifications'
 import ButtonBase from './base/ButtonBase'
 
 export default function NotificationModal(): React.ReactNode {
-	const [showModal, setShowModal] = useState(
-		Notification.permission === 'default',
-	)
+	const [showModal, setShowModal] = useState(false)
 
 	usePushNotifications()
 
 	useEffect(() => {
-		addEventListener('message', () => {
-			setShowModal(false)
+		addEventListener('message', (e) => {
+			if (['granted', 'denied'].some((d) => d === e.data)) {
+				setShowModal(false)
+			}
 		})
+
+		setTimeout(() => {
+			setShowModal(Notification.permission === 'default')
+		}, 2000)
 	}, [])
 
 	return (
@@ -29,15 +33,14 @@ export default function NotificationModal(): React.ReactNode {
 					primary
 					icon={<NotificationOutlined />}
 					key="activate"
-					onClick={() => {
-						setupNotificationPermission()
-					}}
+					className="mt-5"
+					onClick={setupNotificationPermission}
 				>
 					Activar
 				</ButtonBase>,
 			]}
 		>
-			<Title className="my-20" level={3}>
+			<Title className="mt-5" level={3}>
 				Se recomienda activar las notificaciones
 			</Title>
 		</Modal>

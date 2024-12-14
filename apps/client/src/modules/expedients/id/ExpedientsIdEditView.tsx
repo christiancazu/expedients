@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Divider, theme } from 'antd'
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import { useForm } from 'antd/es/form/Form'
 import NavigationBackBtn from '../../../components/NavigationBackBtn'
@@ -51,7 +51,7 @@ export default function ExpedientsIdEditView(): React.ReactNode {
 	return (
 		<div style={sectionStyle}>
 			<NavigationBackBtn to="/expedients" />
-			<Divider className="my-12" />
+			<Divider className="my-3" />
 
 			<div className="d-flex justify-content-center">
 				<ExpedientForm

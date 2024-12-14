@@ -24,7 +24,7 @@ import Title from 'antd/es/typography/Title'
 import type { UploadChangeParam } from 'antd/es/upload'
 import Dragger from 'antd/es/upload/Dragger'
 import type { AxiosProgressEvent, AxiosRequestConfig } from 'axios'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { queryClient } from '../config/queryClient'
 import useNotify from '../hooks/useNotification'
 import { createDocument, updateDocument } from '../services/api.service'
@@ -179,7 +179,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 			]}
 			onCancel={handleClose}
 		>
-			<div className="my-20">
+			<div className="my-5">
 				{documentFile.action === 'edit' && (
 					<div className="d-flex">
 						<div
@@ -193,7 +193,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 								display: 'inline-block',
 							}}
 						/>
-						<Title className="text-primary ml-8" level={3}>
+						<Title className="text-primary ml-2" level={3}>
 							{documentFile?.name}
 						</Title>
 					</div>
@@ -201,13 +201,13 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 
 				<Dragger
 					{...props}
-					className="my-12"
+					className="my-3"
 					customRequest={customRequest}
 					defaultFileList={defaultFileList}
 					maxCount={1}
 					itemRender={(_, file, fileList, actions) =>
 						fileList.length ? (
-							<div className="mt-12">
+							<div className="mt-3">
 								<p>Nuevo documento:</p>
 								<div className="text-link d-flex justify-content-between align-items-center">
 									<p>{file.name}</p>
@@ -234,7 +234,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 					</p>
 				</Dragger>
 
-				<div className="my-12" style={{ position: 'relative' }}>
+				<div className="my-3" style={{ position: 'relative' }}>
 					<Form
 						autoComplete="off"
 						disabled={!checkChangeName}
@@ -268,7 +268,7 @@ const DocumentUpload: React.FC<Props> = ({ documentFile, setDocumentFile }) => {
 					)}
 				</div>
 
-				<div className="pb-12" style={{ position: 'relative' }}>
+				<div className="pb-3" style={{ position: 'relative' }}>
 					<div style={{ position: 'absolute', width: '100%' }}>
 						{progress > 0 ? <Progress percent={progress} /> : null}
 					</div>

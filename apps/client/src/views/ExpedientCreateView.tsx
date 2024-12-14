@@ -3,7 +3,7 @@ import { Button, Divider, Modal, theme } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import type React from 'react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import type { Expedient } from '@expedients/shared'
 import NavigationBackBtn from '../components/NavigationBackBtn'
@@ -41,7 +41,7 @@ const ExpedientsCreateView: React.FC = () => {
 	return (
 		<div style={sectionStyle}>
 			<NavigationBackBtn to="/expedients" />
-			<Divider className="my-12" />
+			<Divider className="my-3" />
 
 			<div className="d-flex justify-content-center">
 				<ExpedientForm form={form} isPending={isPending} onFinish={mutate} />

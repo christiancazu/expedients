@@ -15,7 +15,7 @@ import {
 	Tooltip,
 } from 'antd'
 import htmlReactParser from 'html-react-parser'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { dateUtil } from '../utils'
 import { TableBase } from './base/TableBase'
 import { StyledTable } from './styled/table.styled'

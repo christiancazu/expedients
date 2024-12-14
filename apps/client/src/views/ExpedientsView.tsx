@@ -3,7 +3,7 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import type { EXPEDIENT_STATUS, Expedient } from '@expedients/shared'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import FilterExpedients from '../components/ExpedientsFilters'
 import TableExpedients from '../components/ExpedientsTable'
 import ButtonBase from '../components/base/ButtonBase'
@@ -97,7 +97,7 @@ const ExpedientsView: React.FC = () => {
 		<>
 			<ButtonBase
 				primary
-				className="mb-16"
+				className="mb-4"
 				onClick={() => navigate('/expedients/create')}
 			>
 				Crear expediente

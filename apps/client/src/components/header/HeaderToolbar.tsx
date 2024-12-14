@@ -20,7 +20,7 @@ import {
 	theme,
 } from 'antd'
 import { useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 
 import useNotify from '../../hooks/useNotification'
 import useToogleTheme from '../../hooks/useToogleTheme'
@@ -104,7 +104,7 @@ export default function HeaderToolbar(): React.ReactNode {
 
 	return (
 		<>
-			<Space wrap className="pr-16 d-flex align-items-center" size={16}>
+			<Space wrap className="pr-1 d-flex align-items-center" size={16}>
 				{screens.md && (
 					<>
 						<Switch
@@ -121,9 +121,7 @@ export default function HeaderToolbar(): React.ReactNode {
 									onClick={() => setDrawer(true)}
 								>
 									<StyledNotificationAvatar
-										$colorPrimary={
-											isUserNotificationEnabled ? colorPrimary : undefined
-										}
+										$active={isUserNotificationEnabled}
 										icon={<NotificationOutlined />}
 									/>
 								</Badge>

@@ -112,7 +112,7 @@ export default function ExpedientForm({
 				)}
 			</Form.List>
 
-			<Form.Item className="d-flex justify-content-center mt-20">
+			<Form.Item className="d-flex justify-content-center mt-5">
 				<Button
 					htmlType="submit"
 					icon={<FolderAddOutlined />}

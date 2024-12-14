@@ -25,7 +25,7 @@ export const StyledCardNotificationText = styled(Text)<{ $lineClamp?: string }>`
 `
 
 export const StyledNotificationAvatar = styled(Avatar)<{
-	$colorPrimary?: string
+	$active?: boolean
 }>`
-  background-color: ${(p) => p.$colorPrimary};
+  background-color: ${(p) => (p.$active ? 'var(--ant-color-primary)' : '')};
 `

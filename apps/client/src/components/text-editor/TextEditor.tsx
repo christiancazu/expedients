@@ -206,10 +206,10 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
 				]}
 				onCancel={handleCloseModal}
 			>
-				<Typography.Text className="mr-8">Estableza la fecha</Typography.Text>
+				<Typography.Text className="mr-2">Estableza la fecha</Typography.Text>
 				<DatePicker
 					allowClear={false}
-					className="mb-20"
+					className="mb-5"
 					defaultValue={now}
 					disabledDate={disabledDate}
 					placeholder="Seleccione una fecha"
@@ -220,7 +220,7 @@ const TextEditor: React.FC<{ expedientId: string }> = ({ expedientId }) => {
 
 				<EditorContent editor={editor} />
 
-				<div className="d-flex my-8">
+				<div className="d-flex my-2">
 					<Alert
 						showIcon
 						message="usar @ para referenciar un documento"

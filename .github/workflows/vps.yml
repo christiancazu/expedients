@@ -1,0 +1,49 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: ["develop"]
+
+  workflow_dispatch:
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=4096"
+  WORKING_DIR: ${{ secrets.WORKING_DIR }}
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    environment: develop
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+
+    steps:
+      - name: Stop pm2
+        run: pm2 stop expedients
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Pull latest changes
+        run: git pull
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build package/shared
+        run: pnpm shared build
+
+      - name: Build apps/api
+        run: pnpm api build
+
+      - name: Build apps/client
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=4096"
+          pnpm client build
+
+      - name: Start pm2
+        run: pm2 start expedients

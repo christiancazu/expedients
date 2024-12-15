@@ -6,9 +6,9 @@ import { APP_GUARD } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule, type TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { registerTypeOrm } from './config/typeorm'
 import { AuthModule } from './modules/auth/auth.module'
 import { AuthGuard } from './modules/auth/guards/auth.guard'
+import { AppConfigModule } from './modules/config/app-config.module'
 import { DocumentsModule } from './modules/documents/documents.module'
 import { EventsModule } from './modules/events/events.module'
 import { ExpedientsModule } from './modules/expedients/expedients.module'
@@ -19,14 +19,15 @@ import { UsersModule } from './modules/users/users.module'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({
-			isGlobal: true,
-			load: [registerTypeOrm],
-			envFilePath: ['../../../.env'],
-		}),
-		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, '../../../..', 'client/dist'),
-			exclude: ['/api*', '/media*'],
+		AppConfigModule,
+		ServeStaticModule.forRootAsync({
+			inject: [ConfigService],
+			useFactory: async (configService: ConfigService) => [
+				{
+					rootPath: join(configService.get('path').root, 'apps/client/dist'),
+					exclude: ['/api*', '/media*'],
+				},
+			],
 		}),
 		TypeOrmModule.forRootAsync({
 			inject: [ConfigService],

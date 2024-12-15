@@ -15,11 +15,12 @@ async function bootstrap() {
 	}
 	app.setGlobalPrefix('api')
 
-	const mediaPath = app.get(ConfigService).get('STORAGE_MEDIA_PATH')
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 
-	app.useStaticAssets(join(__dirname, `../../../${mediaPath}/media`), {
-		prefix: '/media',
+	const path = app.get(ConfigService).get('path')
+
+	app.useStaticAssets(join(path.root, path.media), {
+		prefix: path.media,
 		index: false,
 	})
 

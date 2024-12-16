@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import htmlReactParser from 'html-react-parser'
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
 import {
@@ -49,6 +49,7 @@ import {
 import { queryClient } from '../config/queryClient'
 import useNotify from '../hooks/useNotification'
 import useUserState from '../hooks/useUserState'
+import UserAvatarName from '../modules/shared/components/UserAvatarName'
 import {
 	deleteEvent,
 	deleteExpedientReview,
@@ -160,9 +161,17 @@ const ExpedientView: React.FC = () => {
 
 	const { openConfirmModal } = useConfirmModal(isPending)
 
-	const isWritableByUser =
-		user?.id === data?.assignedLawyer?.id ||
-		user?.id === data?.assignedAssistant?.id
+	const isWritableByUser = useMemo(
+		() =>
+			user?.id === data?.assignedLawyer?.id ||
+			user?.id === data?.assignedAssistant?.id,
+		[data, user],
+	)
+
+	const isEditableByUser = useMemo(
+		() => user?.id === data?.createdByUser?.id,
+		[data, user],
+	)
 
 	useEffect(() => {
 		mentions = Array.from(dom.getElementsByClassName('mention'))
@@ -217,8 +226,8 @@ const ExpedientView: React.FC = () => {
 								<NavigationBackBtn to="/expedients" />
 								<Text className="ml-1 text-lg">{data.code}</Text>
 							</Flex>
-							{isWritableByUser && (
-								<Space>
+							<Space>
+								{isEditableByUser && (
 									<Button
 										onClick={() => navigate(`/expedients/${data.id}/edit`)}
 										variant="outlined"
@@ -226,9 +235,9 @@ const ExpedientView: React.FC = () => {
 									>
 										Editar
 									</Button>
-									<TextEditor expedientId={data.id} />
-								</Space>
-							)}
+								)}
+								{isWritableByUser && <TextEditor expedientId={data.id} />}
+							</Space>
 						</Flex>
 
 						<Divider className="my-3" />
@@ -265,25 +274,33 @@ const ExpedientView: React.FC = () => {
 									))}
 								</div>
 
-								<p className="mb-3">
+								<div className="mb-3">
 									<strong>Creado por:</strong>
-									{` ${data.createdByUser?.firstName} ${data.createdByUser?.surname}`}
-								</p>
+									<UserAvatarName user={data.createdByUser} />
+								</div>
 
 								<p className="mb-3">
 									<strong className="mb-3">Asignados:</strong>
 								</p>
 								<div className="mb-3">
-									<p className="mb-2">
-										{'ABOGADO: '}
-										{data.assignedLawyer?.firstName}{' '}
-										{data.assignedLawyer?.surname}
-									</p>
-									<p className="mb-2">
-										{'ASISTENTE: '}
-										{data.assignedAssistant?.firstName}{' '}
-										{data.assignedAssistant?.surname}
-									</p>
+									{data.assignedLawyer && (
+										<div className="mb-2">
+											<UserAvatarName
+												user={data.assignedLawyer}
+												title="Abogado"
+											/>
+										</div>
+									)}
+									<div className="mb-2">
+										{data.assignedAssistant && (
+											<div className="mb-2">
+												<UserAvatarName
+													user={data.assignedAssistant}
+													title="Asistente"
+												/>
+											</div>
+										)}
+									</div>
 								</div>
 							</Col>
 
@@ -309,7 +326,7 @@ const ExpedientView: React.FC = () => {
 							<Card
 								className="mb-5 bg-layout-body"
 								key={review.id}
-								title={`${data.createdByUser?.firstName} ${data.createdByUser?.surname}`}
+								title={<UserAvatarName user={review.createdByUser!} />}
 								extra={
 									<div
 										className="d-flex align-items-end flex-column"

@@ -69,6 +69,7 @@ export class ExpedientsService {
 			if (deletedParts.length) {
 				await this._partsRepository.remove(deletedParts)
 			}
+			return expedientSaved
 		} catch (error) {
 			throw new UnprocessableEntityException(
 				error?.driverError?.detail ?? error,
@@ -83,11 +84,23 @@ export class ExpedientsService {
 			.createQueryBuilder('expedients')
 			.select('expedients')
 			.leftJoin('expedients.updatedByUser', 'updatedByUser')
-			.addSelect(['updatedByUser.firstName', 'updatedByUser.surname'])
+			.addSelect([
+				'updatedByUser.firstName',
+				'updatedByUser.surname',
+				'updatedByUser.avatar',
+			])
 			.leftJoin('expedients.assignedLawyer', 'assignedLawyer')
-			.addSelect(['assignedLawyer.firstName', 'assignedLawyer.surname'])
+			.addSelect([
+				'assignedLawyer.firstName',
+				'assignedLawyer.surname',
+				'assignedLawyer.avatar',
+			])
 			.leftJoin('expedients.assignedAssistant', 'assignedAssistant')
-			.addSelect(['assignedAssistant.firstName', 'assignedAssistant.surname'])
+			.addSelect([
+				'assignedAssistant.firstName',
+				'assignedAssistant.surname',
+				'assignedLawyer.avatar',
+			])
 			.leftJoinAndSelect('expedients.parts', 'parts')
 
 		/** If exists filter: text will filter by each byText item */
@@ -200,20 +213,24 @@ export class ExpedientsService {
 					id: true,
 					firstName: true,
 					surname: true,
+					avatar: true,
 				},
 				assignedAssistant: {
 					id: true,
 					firstName: true,
 					surname: true,
+					avatar: true,
 				},
 				createdByUser: {
 					id: true,
 					firstName: true,
 					surname: true,
+					avatar: true,
 				},
 				updatedByUser: {
 					firstName: true,
 					surname: true,
+					avatar: true,
 				},
 				reviews: {
 					id: true,
@@ -223,6 +240,7 @@ export class ExpedientsService {
 						id: true,
 						firstName: true,
 						surname: true,
+						avatar: true,
 					},
 				},
 				documents: {

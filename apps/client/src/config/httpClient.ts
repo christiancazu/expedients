@@ -5,7 +5,7 @@ import persisterUtil from '../utils/persister.util'
 const sessionToken = localStorage.getItem('token') as string
 
 export const httpClient = axios.create({
-	baseURL: import.meta.env.VITE_API_URL || '/api',
+	baseURL: `${import.meta.env.VITE_DOMAIN_URL ?? ''}/api`,
 })
 
 httpClient.interceptors.response.use(

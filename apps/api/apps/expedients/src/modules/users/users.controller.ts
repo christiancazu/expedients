@@ -10,11 +10,14 @@ import {
 	Param,
 	Patch,
 	Post,
+	Put,
 } from '@nestjs/common'
 import type { ClientProxy } from '@nestjs/microservices'
 import type { MailActivateAccountPayload } from 'apps/messenger/src/types'
 import { firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth/auth.service'
+import { FileUploadInterceptor } from '../storage/decorators/file-interceptor.decorator'
+import { UploadedFileParam } from '../storage/decorators/uploaded-file-param.decorator'
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './entities/user.entity'
 import { UserRequest } from './user-request.decorator'
@@ -32,6 +35,11 @@ export class UsersController {
 	@Get()
 	findAll() {
 		return this._usersService.findAll()
+	}
+
+	@Get('me')
+	findMe(@UserRequest() user: User) {
+		return this._usersService.findMe(user)
 	}
 
 	@Post()
@@ -58,6 +66,15 @@ export class UsersController {
 		} catch {
 			throw new BadRequestException('error sending email')
 		}
+	}
+
+	@Put('avatar')
+	@FileUploadInterceptor('avatars')
+	uploadAvatar(
+		@UploadedFileParam() file: Express.Multer.File,
+		@UserRequest() user: User,
+	) {
+		return this._usersService.uploadAvatar(user, file)
 	}
 
 	@Patch(':id')

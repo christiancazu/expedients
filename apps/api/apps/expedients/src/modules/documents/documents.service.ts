@@ -12,10 +12,12 @@ import { Document } from './entities/document.entity'
 export class DocumentsService {
 	@InjectRepository(Document)
 	private readonly _documentsRepository: Repository<Document>
+
 	private readonly _path
 
 	constructor(private _configService: ConfigService) {
-		this._path = this._configService.get<Record<string, string>>('path')
+		const path = this._configService.get<Record<string, string>>('path')!
+		this._path = path
 	}
 
 	async create(
@@ -76,7 +78,7 @@ export class DocumentsService {
 
 			return {
 				...document,
-				url: `${this._path!.media}/documents/${document.key}.${document.extension}`,
+				url: `${this._path.media}/documents/${document.key}.${document.extension}`,
 			}
 		} catch (error) {
 			throw new UnprocessableEntityException(error)
@@ -105,7 +107,7 @@ export class DocumentsService {
 			}
 
 			unlink(
-				`${this._path!.media}/documents/${document.key}.${document.extension}`,
+				`${this._path.root}/${this._path.media}/documents/${document.key}.${document.extension}`,
 				(err) => {
 					if (err) {
 						throw err

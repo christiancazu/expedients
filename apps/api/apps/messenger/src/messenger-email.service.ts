@@ -32,7 +32,7 @@ export class MessengerEmailService {
 		try {
 			return this._mailerService.sendMail({
 				to: user.email,
-				from: `CORPORATIVO KALLPA <${this.sender_email}>`,
+				from: `Corporativo Kallpa <${this.sender_email}>`,
 				subject: 'Activación de cuenta',
 				template: './email-confirmation',
 				context: {
@@ -62,7 +62,7 @@ export class MessengerEmailService {
 				users.map((user) =>
 					this._mailerService.sendMail({
 						to: user.email,
-						from: `CORPORATIVO KALLPA <${this.sender_email}>`,
+						from: `Corporativo Kallpa <${this.sender_email}>`,
 						subject: 'Evento programado',
 						template: './scheduled-event',
 						context: {

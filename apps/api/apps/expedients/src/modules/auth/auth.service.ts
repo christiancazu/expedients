@@ -53,7 +53,7 @@ export class AuthService {
 		}
 	}
 
-	async signToken(user: User) {
+	async signToken(user: Partial<User>) {
 		return this._jwtService.signAsync({
 			id: user.id,
 			email: user.email,
@@ -61,7 +61,9 @@ export class AuthService {
 		})
 	}
 
-	private async provideSession(user: User): Promise<provideSessionPayload> {
+	private async provideSession(
+		user: Partial<User>,
+	): Promise<provideSessionPayload> {
 		return {
 			user,
 			token: await this.signToken(user),

@@ -7,13 +7,13 @@
   "license": "ISC",
   "scripts": {
     "build": "rm -rf dist && nest build",
-    "start:dev": "rm -rf dist && nest start api --watch",
-    "start:prod": "node dist/apps/expedients/main",
+    "start:dev": "rm -rf dist && nest start api --watch --experimental-require-module",
+    "start:prod": "node --experimental-require-module dist/apps/expedients/main",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./apps/expedients/src/config/typeorm.ts",
-    "migration:generate": "npx typeorm-ts-node-commonjs -d ./apps/expedients/src/config/typeorm.ts migration:generate ./apps/expedients/src/migrations/$name",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./apps/expedients/src/modules/config/typeorm.config.ts",
+    "migration:generate": "npx typeorm-ts-node-commonjs -d ./apps/expedients/src/modules/config/typeorm.config.ts migration:generate ./apps/expedients/src/migrations/$name",
     "migration:create": "npx typeorm-ts-node-commonjs migration:create ./apps/expedients/src/migrations/$name",
-    "migration:revert": "npx typeorm-ts-node-commonjs -d ./apps/expedients/src/config/typeorm.ts migration:revert",
+    "migration:revert": "npx typeorm-ts-node-commonjs -d ./apps/expedients/src/modules/config/typeorm.config.ts migration:revert",
     "lint": "pnpm biome lint ."
   },
   "dependencies": {

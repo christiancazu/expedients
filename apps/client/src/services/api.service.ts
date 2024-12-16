@@ -1,4 +1,4 @@
-import type { Expedient } from '@expedients/shared'
+import type { Expedient, User } from '@expedients/shared'
 import axios, { type AxiosRequestConfig } from 'axios'
 import { httpClient } from '../config/httpClient'
 import type { CreateEvent, UserSession } from '../types'
@@ -66,8 +66,12 @@ export async function deleteExpedientReview(id: string) {
 	return httpClient.delete(`/reviews/${id}`).then((res) => res.data)
 }
 
-export async function getUsers() {
+export async function getUsers(): Promise<User[]> {
 	return httpClient.get('/users').then((res) => res.data)
+}
+
+export async function getMe(): Promise<User> {
+	return httpClient.get('/users/me').then((res) => res.data)
 }
 
 export async function getDocument(id: string) {
@@ -112,4 +116,12 @@ export async function createEvent(payload: CreateEvent): Promise<any> {
 
 export async function deleteEvent(id: string): Promise<any> {
 	return httpClient.delete(`events/${id}`).then((res) => res.data)
+}
+
+export async function uploadAvatar(formData: FormData): Promise<any> {
+	return httpClient
+		.put('users/avatar', formData, {
+			headers: { 'content-type': 'multipart/form-data' },
+		})
+		.then((res) => res.data)
 }

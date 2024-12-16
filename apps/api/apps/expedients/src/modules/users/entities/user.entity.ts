@@ -44,6 +44,13 @@ export class User {
 	})
 	role: USER_ROLES
 
+	@Column({
+		type: 'varchar',
+		length: FIELD.USER_AVATAR_MAX_LENGTH,
+		nullable: true,
+	})
+	avatar: string
+
 	@OneToMany(
 		() => Review,
 		(review) => review.createdByUser,

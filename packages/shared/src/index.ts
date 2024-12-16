@@ -1,6 +1,7 @@
 export const FIELD = {
 	USER_EMAIL_MAX_LENGTH: 50,
 	USER_PASSWORD_MAX_LENGTH: 25,
+	USER_AVATAR_MAX_LENGTH: 40,
 
 	USER_FIRST_NAME_MAX_LENGTH: 50,
 	USER_LAST_NAME_MAX_LENGTH: 50,
@@ -64,6 +65,7 @@ export interface User {
 	firstName: string
 	surname: string
 	role: USER_ROLES
+	avatar?: string
 	createdExpedients?: Expedient[]
 	updatedExpedients?: Expedient[]
 	createdAt: Date | string

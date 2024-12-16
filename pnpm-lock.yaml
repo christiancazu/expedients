@@ -188,7 +188,7 @@ importers:
         version: 5.5.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@cyntler/react-doc-viewer':
         specifier: christiancazu/react-doc-viewer
-        version: https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/6647061c4a4fe2c65507bda94752124e068b37f8(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/89177a9ce7590132c5972ba849cb89269521b242(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@expedients/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -222,6 +222,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-image-crop:
+        specifier: ^11.0.7
+        version: 11.0.7(react@18.3.1)
       react-router:
         specifier: ^7.0.2
         version: 7.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -244,6 +247,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
+      monorepo-root:
+        specifier: ^3.3.1
+        version: 3.3.1
       postcss:
         specifier: ^8.4.49
         version: 8.4.49
@@ -1350,8 +1356,8 @@ packages:
     resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
     engines: {node: '>=10'}
 
-  '@cyntler/react-doc-viewer@https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/6647061c4a4fe2c65507bda94752124e068b37f8':
-    resolution: {tarball: https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/6647061c4a4fe2c65507bda94752124e068b37f8}
+  '@cyntler/react-doc-viewer@https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/89177a9ce7590132c5972ba849cb89269521b242':
+    resolution: {tarball: https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/89177a9ce7590132c5972ba849cb89269521b242}
     version: 1.17.0
     peerDependencies:
       react: '>=17.0.0'
@@ -6637,6 +6643,11 @@ packages:
       react: '>= 16.3.0'
       react-dom: '>= 16.3.0'
 
+  react-image-crop@11.0.7:
+    resolution: {integrity: sha512-ZciKWHDYzmm366JDL18CbrVyjnjH0ojufGDmScfS4ZUqLHg4nm6ATY+K62C75W4ZRNt4Ii+tX0bSjNk9LQ2xzQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -7299,9 +7310,11 @@ packages:
 
   sudo-prompt@8.2.5:
     resolution: {integrity: sha512-rlBo3HU/1zAJUrkY6jNxDOC9eVYliG6nS4JA8u8KAshITd07tafMc/Br7xQwCSseXwJ2iCcHCE8SNWX3q8Z+kw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   sudo-prompt@9.1.1:
     resolution: {integrity: sha512-es33J1g2HjMpyAhz8lOR+ICmXXAqTuKbuXuUWLhOLew20oN9oUCgCJx615U/v7aioZg7IX5lIh9x34vwneu4pA==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   superagent@9.0.2:
     resolution: {integrity: sha512-xuW7dzkUpcJq7QnhOsnNUgtYp3xRwpt2F7abdRYIpCsAt0hhUqia0EdxyXZQQpNmGtsCzYHryaKSV3q3GJnq7w==}
@@ -9622,7 +9635,7 @@ snapshots:
 
   '@ctrl/tinycolor@3.6.1': {}
 
-  '@cyntler/react-doc-viewer@https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/6647061c4a4fe2c65507bda94752124e068b37f8(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@cyntler/react-doc-viewer@https://codeload.github.com/christiancazu/react-doc-viewer/tar.gz/89177a9ce7590132c5972ba849cb89269521b242(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@types/mustache': 4.2.5
       '@types/papaparse': 5.3.15
@@ -16478,6 +16491,10 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  react-image-crop@11.0.7(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   react-is@16.13.1: {}
 

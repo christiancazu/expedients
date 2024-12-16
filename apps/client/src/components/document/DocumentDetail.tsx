@@ -170,7 +170,9 @@ export default function DocumentDetail({
 				>
 					<div style={{ height: '80vh' }}>
 						<DocViewer
-							documents={[{ uri: data?.url as string }]}
+							documents={[
+								{ uri: `${window.location.origin + data?.url}` as string },
+							]}
 							language="es"
 							pluginRenderers={DocViewerRenderers}
 							prefetchMethod="GET"

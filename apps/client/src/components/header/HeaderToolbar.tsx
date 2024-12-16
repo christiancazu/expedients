@@ -6,10 +6,8 @@ import {
 	ProfileOutlined,
 	SettingOutlined,
 	SunOutlined,
-	UserOutlined,
 } from '@ant-design/icons'
 import {
-	Avatar,
 	Badge,
 	Dropdown,
 	Grid,
@@ -20,7 +18,7 @@ import {
 	theme,
 } from 'antd'
 import { useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 
 import useNotify from '../../hooks/useNotification'
 import useToogleTheme from '../../hooks/useToogleTheme'
@@ -28,11 +26,14 @@ import useUserState from '../../hooks/useUserState'
 import DrawerEvents from './DrawerEvents'
 
 import './header-toolbar.scss'
+import { UserAvatar } from '../../modules/shared/components/UserAvatarName'
 import { StyledNotificationAvatar } from './styled'
 
 const { useBreakpoint } = Grid
 
 export default function HeaderToolbar(): React.ReactNode {
+	const navigate = useNavigate()
+
 	const { colorPrimary } = theme.useToken().token
 
 	const { isUserNotificationEnabled } = useUserState()
@@ -53,6 +54,7 @@ export default function HeaderToolbar(): React.ReactNode {
 				label: 'Mi perfil',
 				key: 'settings',
 				icon: <ProfileOutlined style={{ fontSize: 16, color: colorPrimary }} />,
+				onClick: () => navigate('/users/profile'),
 			},
 			...(!screens.md
 				? [
@@ -137,7 +139,7 @@ export default function HeaderToolbar(): React.ReactNode {
 				>
 					<div className="header-user-info__block">
 						<div className="header-user-info__block__avatar">
-							<Avatar icon={<UserOutlined />} size={32} />
+							<UserAvatar user={user!} />
 						</div>
 						<div className="header-user-info__block__name">
 							<span>

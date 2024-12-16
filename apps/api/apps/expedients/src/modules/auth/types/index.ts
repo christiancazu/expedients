@@ -6,7 +6,7 @@ export interface AccessTokenPayload {
 }
 
 export interface provideSessionPayload {
-	user: User
+	user: Partial<User>
 	token: string
 	vapidKey: string
 }

@@ -20,7 +20,7 @@ export class DocumentsController {
 	constructor(private readonly documentsService: DocumentsService) {}
 
 	@Post()
-	@FileUploadInterceptor()
+	@FileUploadInterceptor('documents')
 	create(
 		@UploadedFileParam() file: Express.Multer.File,
 		@Body() createDocumentDto: CreateDocumentDto,
@@ -35,7 +35,7 @@ export class DocumentsController {
 	}
 
 	@Patch(':id')
-	@FileUploadInterceptor()
+	@FileUploadInterceptor('documents')
 	update(
 		@Param('id', new ParseUUIDPipe()) id: string,
 		@UploadedFileParam() file: Express.Multer.File,

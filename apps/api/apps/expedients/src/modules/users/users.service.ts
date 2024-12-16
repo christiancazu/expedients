@@ -1,8 +1,10 @@
+import { unlink } from 'node:fs'
 import {
 	BadRequestException,
 	Injectable,
 	UnprocessableEntityException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import type { Repository } from 'typeorm'
 import type { CreateUserDto } from './dto/create-user.dto'
@@ -13,7 +15,14 @@ export class UsersService {
 	@InjectRepository(User)
 	private readonly _userRepository: Repository<User>
 
-	async create(createUserDto: CreateUserDto): Promise<User> {
+	private readonly _path: Record<string, string>
+
+	constructor(private _configService: ConfigService) {
+		const path = this._configService.get<Record<string, string>>('path')!
+		this._path = path
+	}
+
+	async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
 		const user = await this._userRepository.findOne({
 			where: { email: createUserDto.email },
 		})
@@ -39,10 +48,18 @@ export class UsersService {
 		return this._userRepository.save(user)
 	}
 
-	findAll() {
-		return this._userRepository.find({
-			select: ['id', 'firstName', 'surname'],
+	async findAll() {
+		const users = await this._userRepository.find({
+			select: ['id', 'firstName', 'surname', 'avatar'],
 		})
+
+		return users.map((user) => this.sanitizeUser(user))
+	}
+
+	async findMe(user: User) {
+		const _user = await this._userRepository.findOne({ where: { id: user.id } })
+
+		return this.sanitizeUser(_user!)
 	}
 
 	async findByEmailAndPassword({ email, password }: Partial<User>) {
@@ -75,9 +92,30 @@ export class UsersService {
 		return `This action updates a #${id} user`
 	}
 
-	private sanitizeUser(user: User) {
+	private sanitizeUser(user: User): Partial<User> {
 		user.password = undefined
 
 		return user
+	}
+
+	async uploadAvatar(user: User, file: Express.Multer.File) {
+		user.avatar = file.filename
+
+		const existsUser = await this._userRepository.findOne({
+			where: { id: user.id },
+		})
+
+		if (existsUser?.avatar) {
+			unlink(
+				`${this._path.root}/${this._path.media}/avatars/${existsUser.avatar}`,
+				(err) => {
+					if (err) {
+						throw err
+					}
+				},
+			)
+		}
+
+		return this.sanitizeUser(await this._userRepository.save(user))
 	}
 }

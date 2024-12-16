@@ -2,7 +2,7 @@ import { User } from 'apps/expedients/src/modules/users/entities/user.entity'
 import { WebPushError } from 'web-push'
 
 export interface MailActivateAccountPayload {
-	user: User
+	user: Partial<User>
 	token: string
 }
 

@@ -27,6 +27,7 @@
 		"html-react-parser": "^5.1.18",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
+		"react-image-crop": "^11.0.7",
 		"react-router": "^7.0.2",
 		"react-scrollbars-custom": "^4.1.1",
 		"tippy.js": "^6.3.7"
@@ -36,6 +37,7 @@
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react-swc": "^3.5.0",
 		"autoprefixer": "^10.4.20",
+		"monorepo-root": "^3.3.1",
 		"postcss": "^8.4.49",
 		"sass-embedded": "^1.80.5",
 		"styled-components": "^6.1.13",

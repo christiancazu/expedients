@@ -38,7 +38,9 @@ jobs:
         run: pnpm shared build
 
       - name: Build apps/api
-        run: pnpm api build
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=4096"
+          pnpm api build
 
       - name: Build apps/client
         run: |

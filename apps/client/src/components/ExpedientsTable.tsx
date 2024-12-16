@@ -16,6 +16,7 @@ import {
 } from 'antd'
 import htmlReactParser from 'html-react-parser'
 import { Link } from 'react-router'
+import UserAvatarName from '../modules/shared/components/UserAvatarName'
 import { dateUtil } from '../utils'
 import { TableBase } from './base/TableBase'
 import { StyledTable } from './styled/table.styled'
@@ -91,18 +92,13 @@ const columns: TableColumnsType<DataType> = [
 		render: (_, expedient) => (
 			<>
 				{expedient.assignedLawyer && (
-					<div>
-						<strong>{'Abogado: '}</strong>
-						{expedient.assignedLawyer?.firstName}{' '}
-						{expedient.assignedLawyer?.surname}
-					</div>
+					<UserAvatarName user={expedient.assignedLawyer} title="Abogado" />
 				)}
 				{expedient.assignedAssistant && (
-					<div>
-						<strong>{'Asistente: '}</strong>
-						{expedient.assignedAssistant?.firstName}{' '}
-						{expedient.assignedAssistant?.surname}
-					</div>
+					<UserAvatarName
+						user={expedient.assignedAssistant}
+						title="Asistente"
+					/>
 				)}
 			</>
 		),
@@ -113,11 +109,7 @@ const columns: TableColumnsType<DataType> = [
 		key: 'updatedByUser',
 		width: 140,
 		ellipsis: true,
-		render: (user: User) => (
-			<>
-				{user.firstName} {user.surname}
-			</>
-		),
+		render: (user: User) => <UserAvatarName user={user} />,
 	},
 	{
 		title: 'Actualizado el',

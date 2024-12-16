@@ -15,6 +15,9 @@ const VerifyAccount = lazy(() => import('./views/VerifyAccount'))
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'))
 
 // const HomeView = lazy(() => import('./views/HomeView'))
+
+const ProfileView = lazy(() => import('./modules/users/views/ProfileView'))
+
 const ExpedientsView = lazy(() => import('./views/ExpedientsView'))
 const ExpedientView = lazy(() => import('./views/ExpedientView'))
 const SignInView = lazy(() => import('./views/SignInView'))
@@ -108,6 +111,11 @@ const router = createBrowserRouter(
 					path: 'expedients/:id',
 					handle: 'Detalle de expediente',
 					element: <ExpedientView />,
+				},
+				{
+					path: 'users/profile',
+					handle: 'Perfil',
+					element: <ProfileView />,
 				},
 			],
 		},

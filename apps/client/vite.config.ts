@@ -1,32 +1,49 @@
 import react from '@vitejs/plugin-react-swc'
-import { defineConfig } from 'vite'
+import { monorepoRootSync } from 'monorepo-root'
+import { defineConfig, loadEnv } from 'vite'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [react()],
-	optimizeDeps: {
-		include: ['@expedients/shared'],
-	},
-	build: {
-		commonjsOptions: {
-			include: [/shared/, /node_modules/],
+export default defineConfig(({ mode }) => {
+	let server: any
+
+	if (process.env.NODE_ENV === 'development') {
+		const rootPath = monorepoRootSync()!
+		process.env = { ...process.env, ...loadEnv(mode, rootPath) }
+
+		server = {
+			port: process.env.VITE_PORT,
+			proxy: {
+				'/publicmedia': {
+					target: `${process.env.VITE_DOMAIN_URL}`,
+					changeOrigin: true,
+					rewrite: (path: any) => path.replace(/^\/publicmedia/, ''),
+				},
+			},
+		}
+	}
+
+	return {
+		plugins: [react()],
+		optimizeDeps: {
+			include: ['@expedients/shared'],
 		},
-	},
-	css: {
-		modules: {
-			scopeBehaviour: 'global',
-		},
-		preprocessorOptions: {
-			sass: {},
-			scss: {
-				silenceDeprecations: ['legacy-js-api'],
-				additionalData: '@use "./src/assets/styles/_variables.scss" as *;',
+		build: {
+			commonjsOptions: {
+				include: [/shared/, /node_modules/],
 			},
 		},
-	},
-	server: {
-		host: '0.0.0.0',
-	},
-	base: '/',
-	...(process.env.NODE_ENV === 'development' && { envDir: '../../' }),
+		css: {
+			modules: {
+				scopeBehaviour: 'global',
+			},
+			preprocessorOptions: {
+				sass: {},
+				scss: {
+					silenceDeprecations: ['legacy-js-api'],
+					additionalData: '@use "./src/assets/styles/_variables.scss" as *;',
+				},
+			},
+		},
+		server,
+	}
 })

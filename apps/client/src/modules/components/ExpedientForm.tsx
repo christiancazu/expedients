@@ -1,5 +1,5 @@
 import { CloseOutlined, FolderAddOutlined } from '@ant-design/icons'
-import { Button, Card, Form, Input } from 'antd'
+import { Button, Card, Col, Form, Grid, Input, Row } from 'antd'
 import type { FormInstance } from 'antd/lib'
 import ExpedientStatusSelect from '../../components/ExpedientStatusSelect'
 import PartsTypeSelect from '../../components/PartsTypeSelect'
@@ -11,6 +11,7 @@ interface Props {
 	onFinish: () => void
 	mode?: 'create' | 'edit'
 }
+const { useBreakpoint } = Grid
 
 export default function ExpedientForm({
 	form,
@@ -18,6 +19,8 @@ export default function ExpedientForm({
 	onFinish,
 	mode = 'create',
 }: Props): React.ReactNode {
+	const screens = useBreakpoint()
+
 	return (
 		<Form
 			autoComplete="off"
@@ -73,48 +76,64 @@ export default function ExpedientForm({
 
 			<UsersSelect label={'Asistente asignado'} name={'assignedAssistantId'} />
 
-			<Form.List name="parts">
-				{(fields, { add, remove }) => (
-					<div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
-						{fields.map((field) => (
-							<Card
-								key={field.key}
-								size="small"
-								title={`Parte ${field.name + 1}`}
-								extra={
-									<CloseOutlined
-										onClick={() => {
-											remove(field.name)
-										}}
-									/>
-								}
+			<Row>
+				<Col xs={{ span: 24 }} lg={{ span: 18, offset: 6 }}>
+					<Form.List name="parts">
+						{(fields, { add, remove }) => (
+							<div
+								style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}
 							>
-								<PartsTypeSelect
-									label={'Tipo'}
-									name={[field.name, 'type']}
-									rules={[{ required: true, message: 'El campo es requerido' }]}
-								/>
+								{fields.map((field) => (
+									<Card
+										key={field.key}
+										size="small"
+										title={`Parte ${field.name + 1}`}
+										extra={
+											<CloseOutlined
+												onClick={() => {
+													remove(field.name)
+												}}
+											/>
+										}
+									>
+										<PartsTypeSelect
+											label={'Tipo'}
+											className="mt-6"
+											labelCol={{ span: 3 }}
+											wrapperCol={{ span: 21 }}
+											name={[field.name, 'type']}
+											rules={[
+												{ required: true, message: 'El campo es requerido' },
+											]}
+										/>
 
-								<Form.Item
-									label="Nombre"
-									name={[field.name, 'name']}
-									rules={[{ required: true, message: 'El campo es requerido' }]}
-								>
-									<Input />
-								</Form.Item>
-							</Card>
-						))}
+										<Form.Item
+											label="Nombre"
+											name={[field.name, 'name']}
+											labelCol={{ span: 3 }}
+											wrapperCol={{ span: 21 }}
+											rules={[
+												{ required: true, message: 'El campo es requerido' },
+											]}
+										>
+											<Input />
+										</Form.Item>
+									</Card>
+								))}
 
-						<Button type="dashed" onClick={() => add()}>
-							+ Agregar parte
-						</Button>
-					</div>
-				)}
-			</Form.List>
+								<Button type="dashed" onClick={() => add()}>
+									+ Agregar parte
+								</Button>
+							</div>
+						)}
+					</Form.List>
+				</Col>
+			</Row>
 
-			<Form.Item className="d-flex justify-content-center mt-5">
+			<Form.Item wrapperCol={{ offset: screens.md ? 6 : 0 }} className="mt-8">
 				<Button
 					htmlType="submit"
+					style={{ width: '256px' }}
 					icon={<FolderAddOutlined />}
 					loading={isPending}
 					type="primary"

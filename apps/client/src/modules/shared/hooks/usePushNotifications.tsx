@@ -12,7 +12,7 @@ import persisterUtil from '../../../utils/persister.util'
 let sw: ServiceWorkerRegistration
 
 async function registerServiceWorker() {
-	if ('serviceWorker' in navigator) {
+	if ('serviceWorker' in navigator && "PushManager" in window) {
 		sw = await navigator.serviceWorker.register('/service-worker.js', {
 			scope: '/',
 		})

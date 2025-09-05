@@ -1,9 +1,11 @@
 import {
+  EXPEDIENT_TYPE_FRONTEND_TO_BACKEND_ENDPOINT,
   ICreateExpedientDto,
   IExpedient,
   IPaginationDto,
 } from '@expedients/shared'
 import { useQuery } from '@tanstack/react-query'
+import { useLocation } from 'react-router'
 import { httpClient } from '../config/httpClient'
 import { useExpedientsState } from '../hooks/useExpedientsState'
 
@@ -24,10 +26,15 @@ const getExpedients = () => {
 
 export const useExpedientsService = () => {
   const { currentExpedientTypeEndpoint } = useExpedientsState()
+  const location = useLocation()
+  const [, rawExpedientPath] = location.pathname.split('/')
+  const expedientPath =
+    rawExpedientPath as keyof typeof EXPEDIENT_TYPE_FRONTEND_TO_BACKEND_ENDPOINT
 
   const getExpedient = async (id: string): Promise<IExpedient> => {
     return httpClient
-      .get(`${currentExpedientTypeEndpoint}/${id}`)
+      .get(`${EXPEDIENT_TYPE_FRONTEND_TO_BACKEND_ENDPOINT[expedientPath]}/${id}
+      `)
       .then((res) => res.data)
   }
 
